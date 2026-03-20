@@ -21,6 +21,10 @@ const WrapperPartners = async () => {
     "akartos.webp",
     "apice.webp",
     "contabexpress.png",
+    "ers.webp",
+    "omnia.png",
+    "pessato.png",
+    "zeleve.png",
   ];
   
   return (

@@ -1,10 +1,12 @@
-import { AppBody } from "@/components";
+import { AppBody, Footer } from "@/components";
 import {
   Contact,
   Experience,
   Products,
   Start,
   Packages,
+  Onboarding,
+  Testimonials,
 } from "@/components/mainPageComponents";
 import { WrapperPartners } from "@/components/mainPageComponents/partners/wrapper";
 
@@ -14,9 +16,12 @@ export default function Home() {
       <Start />
       <Products />
       <Packages />
+      <Onboarding />
+      <Testimonials />
       <Experience />
       <WrapperPartners />
       <Contact />
+      <Footer />
     </AppBody>
   );
 }

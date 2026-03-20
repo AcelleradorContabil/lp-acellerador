@@ -16,34 +16,21 @@ const config: Config = {
       },
       keyframes: {
         "fade-in-top": {
-          "0%": {
-            opacity: "0",
-            transform: "translateY(-20px)",
-          },
-          "100%": {
-            opacity: "1",
-            transform: "translateY(0)",
-          },
+          "0%": { opacity: "0", transform: "translateY(-20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "fade-scale": {
-          "0%": {
-            opacity: "0",
-            transform: "scale(0.95) translateY(20px)",
-          },
-          "100%": {
-            opacity: "1",
-            transform: "scale(1) translateY(0)",
-          },
+          "0%": { opacity: "0", transform: "scale(0.95) translateY(20px)" },
+          "100%": { opacity: "1", transform: "scale(1) translateY(0)" },
         },
-        fade: {
-          to: {
-            scale: "1",
-            opacity: "1",
-          },
-        },
+        fade: { to: { scale: "1", opacity: "1" } },
         blink: {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-18px)" },
         },
       },
       animation: {
@@ -51,6 +38,7 @@ const config: Config = {
         fade: "fade linear forwards",
         "fade-scale": "fade-scale 0.4s ease-out forwards",
         blink: "blink 1s step-end infinite",
+        float: "float 6s ease-in-out infinite",
       },
     },
   },

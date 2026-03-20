@@ -33,11 +33,25 @@ const initialState: CartState = {
 
 // Dados dos robôs com preços padrão
 export const robotsData = [
-  { id: 'dctf-web', title: 'DCTF WEB', defaultPrice: 2.94 },
-  { id: 'reinf', title: 'REINF', defaultPrice: 2.94 },
-  { id: 'fgts', title: 'FGTS', defaultPrice: 2.10 },
-  { id: 'rescisao', title: 'RESCISÃO', defaultPrice: 7.56 },
-  { id: 'folha', title: 'FOLHA', defaultPrice: 1.68 },
+  // DP
+  { id: 'esocial', title: 'eSocial', defaultPrice: 2.94, category: 'dp' },
+  { id: 'dctf-web', title: 'DCTF WEB', defaultPrice: 2.94, category: 'dp' },
+  { id: 'fgts', title: 'FGTS', defaultPrice: 2.10, category: 'dp' },
+  { id: 'folha', title: 'FOLHA', defaultPrice: 1.68, category: 'dp' },
+  { id: 'rescisao', title: 'RESCISÃO', defaultPrice: 7.56, category: 'dp' },
+  { id: 'domestica', title: 'DOMÉSTICA', defaultPrice: 3.50, category: 'dp' },
+  // Fiscal
+  { id: 'reinf', title: 'REINF', defaultPrice: 2.94, category: 'fiscal' },
+  { id: 'mit', title: 'MIT', defaultPrice: 2.94, category: 'fiscal' },
+  { id: 'transmissao-dctf', title: 'TRANSMISSÃO DCTF WEB', defaultPrice: 2.94, category: 'fiscal' },
+  { id: 'destda', title: 'DESTDA', defaultPrice: 2.94, category: 'fiscal' },
+  { id: 'das', title: 'DAS', defaultPrice: 2.10, category: 'fiscal' },
+  { id: 'efd', title: 'EFD', defaultPrice: 3.50, category: 'fiscal' },
+  { id: 'sped-fiscal', title: 'SPED FISCAL', defaultPrice: 3.50, category: 'fiscal' },
+  { id: 'notas-sefaz', title: 'NOTAS SEFAZ', defaultPrice: 2.10, category: 'fiscal' },
+  { id: 'notas-prestadas', title: 'NOTAS PRESTADAS', defaultPrice: 2.10, category: 'fiscal' },
+  { id: 'notas-tomadas', title: 'NOTAS TOMADAS', defaultPrice: 2.10, category: 'fiscal' },
+  { id: 'dec-poa', title: 'DEC POA', defaultPrice: 2.10, category: 'fiscal' },
 ];
 
 // IDs dos itens que não devem receber desconto
