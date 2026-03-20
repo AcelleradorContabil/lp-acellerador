@@ -362,37 +362,87 @@ const InfoPanel = ({ inView }: { inView: boolean }) => {
   );
 };
 
+// ── Statement banner ──────────────────────────────────────────────────────────
+const StatementBanner = ({ inView }: { inView: boolean }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 24 }}
+    animate={inView ? { opacity: 1, y: 0 } : {}}
+    transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+    className="w-full mb-14"
+    style={{
+      background: "linear-gradient(155deg, rgba(4,50,95,0.92) 0%, rgba(2,18,44,0.97) 100%)",
+      border: "1px solid rgba(255,255,255,0.10)",
+      borderLeft: "none",
+      borderRight: "none",
+      backdropFilter: "blur(20px)",
+      WebkitBackdropFilter: "blur(20px)",
+      boxShadow: "0 0 80px rgba(231,103,20,0.06), inset 0 1px 0 rgba(255,255,255,0.10)",
+    }}
+  >
+    {/* top shimmer */}
+    <div className="h-px bg-gradient-to-r from-transparent via-mainOrange/40 to-transparent" />
+
+    <div className="px-6 md:px-16 lg:px-20 py-12 flex flex-col md:flex-row items-center justify-between gap-8">
+      {/* Left: headline */}
+      <div className="flex-1">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mainOrange/[0.12] border border-mainOrange/25 text-mainOrange text-xs font-semibold uppercase tracking-wider mb-5">
+          <Zap className="w-3 h-3" />
+          Comece agora
+        </div>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
+          Pronto para parar de{" "}
+          <br className="hidden md:block" />
+          perder tempo{" "}
+          <span style={{ color: "#e76714", textShadow: "0 0 20px rgba(231,103,20,0.5)" }}>
+            com o manual?
+          </span>
+        </h2>
+      </div>
+
+      {/* Right: action pills */}
+      <div className="flex flex-col gap-3 shrink-0 md:items-end">
+        {[
+          { icon: Clock, text: "Resposta em até 24h úteis" },
+          { icon: Bot, text: "Robô no ar em até 5 dias" },
+          { icon: ShieldCheck, text: "Sem fidelidade contratual" },
+        ].map(({ icon: Icon, text }) => (
+          <div key={text} className="flex items-center gap-2.5 text-sm"
+            style={{ color: "rgba(180,210,255,0.70)" }}>
+            <Icon className="w-4 h-4 shrink-0" style={{ color: "#e76714" }} />
+            {text}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* bottom shimmer */}
+    <div className="h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+  </motion.div>
+);
+
 // ── Main section ──────────────────────────────────────────────────────────────
 const Contact = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.15 });
+  const inView = useInView(ref, { once: true, amount: 0.10 });
 
   return (
-    <section id="contato" className="scroll-mt-20 relative min-h-[80vh] flex items-center overflow-hidden py-20">
+    <section id="contato" className="scroll-mt-20 relative overflow-hidden py-10">
       <BackgroundElements />
 
       {/* top separator */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
 
-      <div ref={ref} className="relative z-10 w-full px-6 md:px-16 lg:px-20">
+      <div ref={ref} className="relative z-10 w-full">
 
-        {/* Section badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="flex justify-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mainOrange/[0.12] border border-mainOrange/25 text-mainOrange text-xs font-semibold uppercase tracking-wider">
-            <Zap className="w-3 h-3" />
-            Contato
-          </div>
-        </motion.div>
+        {/* Full-width statement banner */}
+        <StatementBanner inView={inView} />
 
         {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto items-center">
-          <InfoPanel inView={inView} />
-          <ContactForm inView={inView} />
+        <div className="px-6 md:px-16 lg:px-20 pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto items-center">
+            <InfoPanel inView={inView} />
+            <ContactForm inView={inView} />
+          </div>
         </div>
 
       </div>

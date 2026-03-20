@@ -8,11 +8,10 @@ import {
 } from "lucide-react";
 
 interface SLA { whatsapp: string; ajustes: string; }
-interface Investment { label: string; value: string; highlight?: boolean; }
 interface Package {
   id: string; name: string; tagline: string; ideal_for: string;
   cnpj_range: string; popular?: boolean; robots: string; users: string;
-  features: string[]; sla: SLA; investments: Investment[];
+  features: string[]; sla: SLA;
   cta_label: string; cta_custom?: boolean;
 }
 
@@ -28,12 +27,6 @@ const packages: Package[] = [
       "NPS mensal automatizado", "Infraestrutura AcelleraInfra",
     ],
     sla: { whatsapp: "Resposta em até 5 min", ajustes: "Resposta 24h úteis · Execução 72h úteis" },
-    investments: [
-      { label: "Até 50 CNPJs", value: "R$ 500/mês" },
-      { label: "Até 100 CNPJs", value: "R$ 800/mês", highlight: true },
-      { label: "Implantação", value: "R$ 1.000 à vista" },
-      { label: "Excedente", value: "R$ 2,00 / op." },
-    ],
     cta_label: "Começar com Starter",
   },
   {
@@ -48,11 +41,6 @@ const packages: Package[] = [
       "Infraestrutura para 3 usuários simultâneos",
     ],
     sla: { whatsapp: "Resposta em até 5 min", ajustes: "Resposta 24h úteis · Execução 72h úteis" },
-    investments: [
-      { label: "Mensalidade", value: "R$ 2.500/mês", highlight: true },
-      { label: "Implantação", value: "R$ 1.750 à vista" },
-      { label: "Excedente", value: "R$ 2,00 / op." },
-    ],
     cta_label: "Quero o Growth",
   },
   {
@@ -67,7 +55,6 @@ const packages: Package[] = [
       "Infraestrutura para 5 usuários simultâneos",
     ],
     sla: { whatsapp: "Resposta em até 5 min", ajustes: "Resposta 24h úteis · Execução 48h úteis" },
-    investments: [{ label: "Mensalidade", value: "Sob consulta", highlight: true }],
     cta_label: "Falar com especialista", cta_custom: true,
   },
   {
@@ -82,7 +69,6 @@ const packages: Package[] = [
       "SLA com garantia contratual",
     ],
     sla: { whatsapp: "Resposta em até 5 min", ajustes: "Resposta 24h úteis · Execução 48h úteis" },
-    investments: [{ label: "Mensalidade", value: "Sob consulta", highlight: true }],
     cta_label: "Falar com especialista", cta_custom: true,
   },
 ];
@@ -129,7 +115,6 @@ const PackageCard = ({
   const textFeat = orange ? "rgba(255,210,170,0.70)" : "rgba(200,225,255,0.60)";
 
   const titleColor = { color: orange ? "#e76714" : "rgba(220,235,255,0.95)" };
-  const highlightValueColor = { color: orange ? "#e76714" : "rgba(200,225,255,0.90)", fontWeight: 800 as const };
 
   return (
     <motion.div
@@ -236,28 +221,24 @@ const PackageCard = ({
           ))}
         </div>
 
-        {/* Investment panel */}
+        {/* Pricing on request */}
         <div
-          className="rounded-xl p-4"
+          className="rounded-xl p-4 flex items-center gap-3"
           style={{
-            background: orange ? "rgba(231,103,20,0.05)" : "rgba(255,255,255,0.04)",
-            border: orange ? "1px solid rgba(231,103,20,0.14)" : "1px solid rgba(120,180,255,0.12)",
+            background: orange ? "rgba(231,103,20,0.06)" : "rgba(255,255,255,0.04)",
+            border: orange ? "1px solid rgba(231,103,20,0.20)" : "1px solid rgba(120,180,255,0.12)",
             backdropFilter: "blur(12px)",
             boxShadow: "inset 0 1px 0 rgba(255,255,255,0.07)",
           }}
         >
-          <GlassLabel orange={orange}>Investimento</GlassLabel>
-          <div className="mt-3 space-y-2">
-            {pkg.investments.map((inv) => (
-              <div key={inv.label} className="flex items-center justify-between">
-                <span className="text-xs" style={{ color: textSub }}>{inv.label}</span>
-                {inv.highlight ? (
-                  <span className="text-base" style={highlightValueColor}>{inv.value}</span>
-                ) : (
-                  <span className="text-sm font-semibold" style={{ color: textFeat }}>{inv.value}</span>
-                )}
-              </div>
-            ))}
+          <MessageCircle className="w-4 h-4 shrink-0" style={{ color: orange ? "#e76714" : "rgba(120,180,255,0.55)" }} />
+          <div>
+            <p className="text-xs font-bold" style={{ color: orange ? "rgba(255,210,170,0.90)" : "rgba(200,225,255,0.80)" }}>
+              Valor sob consulta
+            </p>
+            <p className="text-[10px] mt-0.5" style={{ color: textSub }}>
+              Fale com nosso comercial para uma proposta personalizada
+            </p>
           </div>
         </div>
 
@@ -454,6 +435,45 @@ export function Packages() {
             <span>{text}</span>
           </motion.div>
         ))}
+      </motion.div>
+
+      {/* ── Benefits strip ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.35, ease: [0.4, 0, 0.2, 1] }}
+        className="w-full mb-10 rounded-2xl overflow-hidden"
+        style={{
+          background: "linear-gradient(155deg, rgba(4,50,95,0.90) 0%, rgba(2,18,44,0.96) 100%)",
+          border: "1px solid rgba(255,255,255,0.09)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.10), 0 8px 40px rgba(0,0,0,0.35)",
+        }}
+      >
+        <div className="h-px bg-gradient-to-r from-transparent via-mainOrange/35 to-transparent" />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 divide-x divide-white/[0.06]">
+          {[
+            { n: "01", text: "Sem fidelidade" },
+            { n: "02", text: "Onboarding em 5 dias" },
+            { n: "03", text: "Suporte via WhatsApp" },
+            { n: "04", text: "Robôs 24h por dia" },
+            { n: "05", text: "Parametrização incluída" },
+            { n: "06", text: "Cancele quando quiser" },
+          ].map(({ n, text }, i) => (
+            <motion.div
+              key={n}
+              initial={{ opacity: 0, y: 10 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0.4 + i * 0.06 }}
+              className="flex flex-col items-center justify-center gap-1 py-5 px-4 text-center"
+            >
+              <span className="text-2xl font-black" style={{ color: "rgba(231,103,20,0.55)" }}>{n}</span>
+              <span className="text-xs font-medium leading-snug" style={{ color: "rgba(180,210,255,0.65)" }}>{text}</span>
+            </motion.div>
+          ))}
+        </div>
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
       </motion.div>
 
       {/* Cards */}

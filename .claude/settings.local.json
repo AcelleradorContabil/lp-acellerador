@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:contus.com.br)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}

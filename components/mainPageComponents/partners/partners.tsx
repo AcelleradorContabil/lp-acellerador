@@ -85,7 +85,7 @@ const Partners = ({ partners }: { partners: string[] }) => {
         >
           <span>18+ escritórios parceiros</span>
           <span className="w-1 h-1 rounded-full bg-white/20" />
-          <span>+1,3M automações executadas</span>
+          <span>+3,3M execuções realizadas</span>
           <span className="w-1 h-1 rounded-full bg-white/20" />
           <span>100% de satisfação</span>
         </motion.div>

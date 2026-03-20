@@ -130,7 +130,7 @@ const testimonials = [
 const row1 = testimonials.slice(0, 6);
 const row2 = testimonials.slice(6);
 
-// ── Stars ─────────────────────────────────────────────────────────────────────
+// ── Stars ──────────────────────────────────────────────────────────────────────
 const Stars = ({ count }: { count: number }) => (
   <div className="flex gap-0.5">
     {Array.from({ length: count }).map((_, i) => (
@@ -139,45 +139,63 @@ const Stars = ({ count }: { count: number }) => (
   </div>
 );
 
-// ── Card ──────────────────────────────────────────────────────────────────────
+// ── Marquee card ──────────────────────────────────────────────────────────────
 const TestimonialCard = ({ t }: { t: (typeof testimonials)[0] }) => (
   <div
-    className="group relative mx-3 w-80 shrink-0 flex flex-col gap-4 p-5 rounded-2xl
-      bg-white/[0.04] border border-white/[0.08]
-      hover:bg-white/[0.08] hover:border-white/[0.15]
-      transition-all duration-300 cursor-default"
-    style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.25)" }}
+    className="group relative mx-3 w-[340px] shrink-0 flex flex-col gap-4 p-5 rounded-2xl overflow-hidden cursor-default"
+    style={{
+      background: "linear-gradient(155deg, rgba(4,50,95,0.92) 0%, rgba(2,18,44,0.97) 100%)",
+      border: "1px solid rgba(255,255,255,0.09)",
+      boxShadow: "0 8px 28px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
+      transition: "transform 300ms cubic-bezier(0.34,1.2,0.64,1), box-shadow 300ms, border-color 300ms",
+    }}
+    onMouseEnter={e => {
+      (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+      (e.currentTarget as HTMLElement).style.boxShadow = "0 20px 50px rgba(0,0,0,0.45), 0 0 32px rgba(231,103,20,0.10), inset 0 1px 0 rgba(255,255,255,0.10)";
+      (e.currentTarget as HTMLElement).style.borderColor = "rgba(231,103,20,0.30)";
+    }}
+    onMouseLeave={e => {
+      (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+      (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)";
+      (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.09)";
+    }}
   >
-    {/* Quote icon */}
-    <Quote className="w-5 h-5 text-mainOrange/40 shrink-0" />
+    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+    <div className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-2xl bg-gradient-to-b from-mainOrange/70 to-mainOrange/10" />
+    <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-mainOrange/[0.05] blur-[40px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-    {/* Highlight */}
-    <p className="text-sm font-bold text-white leading-snug">{t.highlight}</p>
-
-    {/* Text */}
-    <p className="text-sm text-white/50 leading-relaxed flex-1">"{t.text}"</p>
-
-    {/* Footer */}
-    <div className="flex items-center gap-3 pt-2 border-t border-white/[0.06]">
-      {/* Avatar */}
-      <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center shrink-0`}>
-        <span className="text-xs font-bold text-white">{t.avatar}</span>
+    <div className="relative z-10 flex flex-col gap-4 flex-1">
+      <div className="flex items-center justify-between">
+        <Quote className="w-5 h-5 shrink-0" style={{ color: "rgba(231,103,20,0.50)" }} />
+        <Stars count={t.stars} />
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-white truncate">{t.name}</p>
-        <p className="text-xs text-white/35 truncate">{t.role} · {t.company}</p>
+
+      <p
+        className="text-sm font-extrabold leading-snug"
+        style={{ color: "#e76714", textShadow: "0 0 8px rgba(231,103,20,0.30)" }}
+      >
+        {t.highlight}
+      </p>
+
+      <p className="text-sm text-white/48 leading-relaxed flex-1">&ldquo;{t.text}&rdquo;</p>
+
+      <div
+        className="flex items-center gap-3 pt-3"
+        style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+      >
+        <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${t.color} flex items-center justify-center shrink-0`}>
+          <span className="text-xs font-bold text-white">{t.avatar}</span>
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-white truncate">{t.name}</p>
+          <p className="text-xs text-white/35 truncate">{t.role} · {t.company}</p>
+        </div>
       </div>
-      <Stars count={t.stars} />
     </div>
-
-    {/* Hover glow */}
-    <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-      style={{ background: "radial-gradient(circle at 50% 0%, rgba(231,103,20,0.06) 0%, transparent 60%)" }}
-    />
   </div>
 );
 
-// ── Section ───────────────────────────────────────────────────────────────────
+// ── Section ────────────────────────────────────────────────────────────────────
 const Testimonials = () => (
   <section className="scroll-mt-20 relative overflow-hidden py-8">
 
@@ -191,52 +209,59 @@ const Testimonials = () => (
     </div>
 
     <div className="relative z-10">
-      {/* Header */}
+      {/* ── Header ── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-        className="text-center mb-12 px-6"
+        className="text-center mb-10 px-6"
       >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mainOrange/[0.12] border border-mainOrange/25 text-mainOrange text-xs font-semibold uppercase tracking-wider mb-5">
-          <Star className="w-3 h-3 fill-mainOrange" />
-          Depoimentos
-        </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45, delay: 0.1 }}
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-bold uppercase tracking-widest mb-5"
+          style={{
+            background: "rgba(231,103,20,0.12)",
+            border: "1px solid rgba(231,103,20,0.35)",
+            color: "#e76714",
+            boxShadow: "0 0 20px rgba(231,103,20,0.12)",
+          }}
+        >
+          <Star className="w-3.5 h-3.5 fill-mainOrange" />
+          +16 estados · 5 estrelas
+        </motion.div>
+
         <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
           Escritórios que já{" "}
-          <span
-            style={{
-              background: "linear-gradient(135deg, #e76714 0%, #ff9a56 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
+          <span style={{ color: "#e76714", textShadow: "0 0 4px #e76714, 0 0 16px rgba(231,103,20,0.45)" }}>
             viraram o jogo.
           </span>
         </h2>
         <p className="text-white/45 text-lg max-w-xl mx-auto leading-relaxed">
-          Mais de 120 escritórios já eliminaram o trabalho repetitivo. Veja o que eles têm a dizer.
+          Presentes em mais de 16 estados, escritórios já eliminaram o trabalho repetitivo. Veja o que eles têm a dizer.
         </p>
       </motion.div>
 
-      {/* Marquee row 1 — left */}
+      {/* ── Marquee row 1 — left ── */}
       <div className="mb-4">
-        <Marquee speed={30} pauseOnHover gradient gradientColor="#033f6f" gradientWidth={100}>
+        <Marquee speed={30} pauseOnHover gradient gradientColor="#021530" gradientWidth={120}>
           {[...row1, ...row1].map((t, i) => (
             <TestimonialCard key={`r1-${t.name}-${i}`} t={t} />
           ))}
         </Marquee>
       </div>
 
-      {/* Marquee row 2 — right */}
-      <Marquee direction="right" speed={24} pauseOnHover gradient gradientColor="#033f6f" gradientWidth={100}>
+      {/* ── Marquee row 2 — right ── */}
+      <Marquee direction="right" speed={24} pauseOnHover gradient gradientColor="#021530" gradientWidth={120}>
         {[...row2, ...row2].map((t, i) => (
           <TestimonialCard key={`r2-${t.name}-${i}`} t={t} />
         ))}
       </Marquee>
 
-      {/* Bottom social proof bar */}
+      {/* ── Social proof bar ── */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -257,7 +282,7 @@ const Testimonials = () => (
         <div className="flex flex-col sm:flex-row items-center gap-1.5 ml-2">
           <Stars count={5} />
           <span className="text-sm text-white/50">
-            <span className="text-white font-semibold">+120 escritórios</span> avaliam com 5 estrelas
+            <span className="text-white font-semibold">+16 estados</span> presentes, clientes avaliam com 5 estrelas
           </span>
         </div>
       </motion.div>

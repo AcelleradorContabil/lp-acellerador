@@ -44,7 +44,9 @@ const Header = () => {
           maxWidth: isMinimized ? "720px" : "82%",
           borderRadius: "16px",
           padding: isMinimized ? "5px 10px" : "8px 14px",
-          background: "rgba(5,65,115,0.62)",
+          background: isMinimized
+            ? "rgba(5,65,115,0.62)"
+            : "linear-gradient(135deg, rgba(4,52,98,0.92) 0%, rgba(2,22,52,0.96) 60%, rgba(6,38,80,0.90) 100%)",
           backdropFilter: "blur(28px) saturate(1.6)",
           WebkitBackdropFilter: "blur(28px) saturate(1.6)",
           border: "1px solid rgba(231,103,20,0.18)",
@@ -55,6 +57,7 @@ const Header = () => {
             `max-width ${ease}`,
             `padding ${ease}`,
             `box-shadow ${ease}`,
+            `background ${ease}`,
           ].join(", "),
         }}
       >

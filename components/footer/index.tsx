@@ -20,13 +20,17 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/[0.07]">
+    <footer className="relative overflow-hidden" style={{
+      background: "linear-gradient(180deg, rgba(1,10,28,0) 0%, rgba(1,8,22,0.98) 8%)",
+      borderTop: "1px solid rgba(231,103,20,0.20)",
+    }}>
 
       {/* Ambient glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-mainOrange/[0.04] blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-blueAcellera/[0.12] blur-[100px] rounded-full pointer-events-none" />
 
       {/* Top shimmer */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-mainOrange/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-mainOrange/40 to-transparent" />
 
       <div className="relative z-10 px-6 md:px-16 lg:px-20 pt-16 pb-8">
 

@@ -15,8 +15,8 @@ export default function Home() {
     <AppBody>
       <Start />
       <Products />
-      <Packages />
       <Onboarding />
+      <Packages />
       <Testimonials />
       <Experience />
       <WrapperPartners />
