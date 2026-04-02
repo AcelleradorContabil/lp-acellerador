@@ -28,7 +28,7 @@ const dpRobots: Robot[] = [
     title: "FGTS",
     benefit: "Todas as guias em segundos",
     description: "Confere Domínio × FGTS Digital, emite a guia e salva os detalhamentos por empresa em segundos. Chega de abrir portal um a um.",
-    timeSaved: "~12h/mês",
+    timeSaved: "~5min",
     videoUrl: "https://www.youtube.com/embed/tYlcLEI9ShY",
     highlight: true,
     icon: <Wallet className="w-5 h-5" />,
@@ -38,7 +38,7 @@ const dpRobots: Robot[] = [
     title: "eSocial",
     benefit: "Fim das transmissões manuais",
     description: "Transmite todos os eventos do eSocial automaticamente, valida, gera relatório e alerta erros em tempo real — sem sua equipe tocar no sistema.",
-    timeSaved: "~17h/mês",
+    timeSaved: "~4min",
     highlight: true,
     icon: <Users className="w-5 h-5" />,
   },
@@ -47,7 +47,7 @@ const dpRobots: Robot[] = [
     title: "DCTFWEB",
     benefit: "Conferência e envio em 1 clique",
     description: "Confere Domínio × eCac, transmite automaticamente e salva guias e recibos organizados. Zero intervenção manual, 100% de conformidade.",
-    timeSaved: "~17h/mês",
+    timeSaved: "~7min",
     videoUrl: "https://www.youtube.com/embed/0mxEvzoj8kI",
     highlight: true,
     icon: <FileText className="w-5 h-5" />,
@@ -57,7 +57,7 @@ const dpRobots: Robot[] = [
     title: "Relatório de Folha / Holerite",
     benefit: "PDFs gerados e prontos para envio",
     description: "Gera automaticamente extrato mensal, recibos, pensão e líquidos em PDF — organizados e prontos para enviar ao cliente sem esforço.",
-    timeSaved: "~17h/mês",
+    timeSaved: "~8min",
     videoUrl: "https://www.youtube.com/embed/RF_AuQPXfRM",
     icon: <FileSpreadsheet className="w-5 h-5" />,
   },
@@ -66,7 +66,7 @@ const dpRobots: Robot[] = [
     title: "Recalculo FGTS Sefip / Digital",
     benefit: "Recálculo sem abrir empresa a empresa",
     description: "Realiza o recálculo do FGTS via SEFIP ou FGTS Digital automaticamente, gerando os relatórios de diferença por empresa sem intervenção manual.",
-    timeSaved: "~25h/mês",
+    timeSaved: "~15min (SEFIP) / ~5min (Digital)",
     icon: <RefreshCw className="w-5 h-5" />,
   },
   {
@@ -74,7 +74,7 @@ const dpRobots: Robot[] = [
     title: "Rescisão",
     benefit: "Documentos completos sem retrabalho",
     description: "Calcula, gera e salva todos os documentos de rescisão automaticamente. Seu time recebe o processo pronto — sem abrir o sistema.",
-    timeSaved: "~1,5h/processo",
+    timeSaved: "~30min",
     videoUrl: "https://www.youtube.com/embed/74rR0g5cphs",
     icon: <UserMinus className="w-5 h-5" />,
   },
@@ -86,7 +86,7 @@ const fiscalRobots: Robot[] = [
     title: "REINF",
     benefit: "Apuração e transmissão automática",
     description: "Apura, transmite todos os blocos, salva relatório de envio e totalizadores no eCac — sem você precisar acessar nenhum portal.",
-    timeSaved: "~20h/mês",
+    timeSaved: "~7min",
     videoUrl: "https://www.youtube.com/embed/66oMW_UkQnc",
     highlight: true,
     icon: <BarChart2 className="w-5 h-5" />,
@@ -96,7 +96,7 @@ const fiscalRobots: Robot[] = [
     title: "DESTDA",
     benefit: "Geração e envio sem esforço",
     description: "Gera e transmite a DESTDA automaticamente com validação de dados e salvamento de relatórios — sem abrir o sistema manualmente.",
-    timeSaved: "~12h/mês",
+    timeSaved: "~6min",
     icon: <FileCheck className="w-5 h-5" />,
   },
   {
@@ -104,7 +104,7 @@ const fiscalRobots: Robot[] = [
     title: "MIT",
     benefit: "Monitora e transmite sozinho",
     description: "Monitora e transmite informações no MIT com validação e controle de status automático. Você não precisa nem abrir o portal.",
-    timeSaved: "~17h/mês",
+    timeSaved: "~7min",
     highlight: true,
     icon: <Monitor className="w-5 h-5" />,
   },
@@ -113,7 +113,7 @@ const fiscalRobots: Robot[] = [
     title: "Tomados",
     benefit: "Lote baixado e conferido",
     description: "Baixa e organiza em lote as notas tomadas com conferência automática de dados fiscais. Sem abrir empresa por empresa.",
-    timeSaved: "~17h/mês",
+    timeSaved: "~8min/nota",
     icon: <FileInput className="w-5 h-5" />,
   },
   {
@@ -121,7 +121,7 @@ const fiscalRobots: Robot[] = [
     title: "Download Portal Nacional",
     benefit: "Documentos baixados em lote",
     description: "Acessa o Portal Nacional e baixa automaticamente documentos e certidões por empresa, sem nenhum acesso manual ao portal.",
-    timeSaved: "~20h/mês",
+    timeSaved: "Depende do volume",
     icon: <Download className="w-5 h-5" />,
   },
   {
@@ -129,7 +129,7 @@ const fiscalRobots: Robot[] = [
     title: "Transmissão Final DCTFWEB",
     benefit: "Recibo salvo sem intervenção",
     description: "Realiza a transmissão final da DCTF WEB fiscal, confere valores e salva recibo e declaração automaticamente.",
-    timeSaved: "~10h/mês",
+    timeSaved: "~4min",
     icon: <Upload className="w-5 h-5" />,
   },
 ];
@@ -197,7 +197,7 @@ const MobileRobotCard = ({ robot, index }: { robot: Robot; index: number }) => {
 
         <div className="flex items-center gap-2 self-start px-3 py-1.5 rounded-xl" style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.20)" }}>
           <Clock className="w-3 h-3 text-green-400" />
-          <span className="text-xs font-semibold text-green-300">{robot.timeSaved} economizados</span>
+          <span className="text-xs font-semibold text-green-300">{robot.timeSaved} economizados/processo</span>
         </div>
 
         <div className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: "rgba(231,103,20,0.07)", border: "1px solid rgba(231,103,20,0.18)" }}>
@@ -322,7 +322,7 @@ const DetailPanel = ({ robot }: { robot: Robot }) => {
           style={{ background: "rgba(34,197,94,0.09)", border: "1px solid rgba(34,197,94,0.22)" }}
         >
           <Clock className="w-4 h-4 text-green-400" />
-          <span className="text-sm font-semibold text-green-300">{robot.timeSaved} economizados</span>
+          <span className="text-sm font-semibold text-green-300">{robot.timeSaved} economizados/processo</span>
         </div>
 
         {/* Divider */}
@@ -441,7 +441,7 @@ const Products = () => {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-blueAcellera/30 blur-[100px]" />
       </div>
 
-      <div className="relative z-10 px-6 md:px-16 lg:px-20 py-12">
+      <div className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-12">
 
         {/* ── Hero banner ── */}
         <motion.div

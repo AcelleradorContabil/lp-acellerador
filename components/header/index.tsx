@@ -43,7 +43,7 @@ const Header = () => {
       <div
         className="flex items-center pointer-events-auto w-full"
         style={{
-          maxWidth: isMinimized ? "860px" : "82%",
+          maxWidth: isMinimized ? "min(860px, 94vw)" : "min(82%, 1600px)",
           borderRadius: "16px",
           padding: isMinimized ? "5px 12px" : "12px 20px",
           background: isMinimized

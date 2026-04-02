@@ -10,7 +10,8 @@
       "Bash(cmd /c \"cd /d C:\\\\Users\\\\Acellerador\\\\Documents\\\\lp-acelleraHub && yarn lint 2>&1\")",
       "Bash(cmd /c \"cd /d C:\\\\Users\\\\Acellerador\\\\Documents\\\\lp-acelleraHub && npx eslint components/mainPageComponents/start.tsx components/mainPageComponents/onboarding.tsx components/header/index.tsx 2>&1\")",
       "Bash(cmd /c \"cd /d C:\\\\Users\\\\Acellerador\\\\Documents\\\\lp-acelleraHub && npx tsc --noEmit --skipLibCheck 2>&1 | head -30\")",
-      "WebFetch(domain:jhonnymartins.com.br)"
+      "WebFetch(domain:jhonnymartins.com.br)",
+      "Bash(curl:*)"
     ]
   }
 }

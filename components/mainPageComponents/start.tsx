@@ -33,7 +33,7 @@ const RoboVisual = ({ visible }: { visible: boolean }) => (
         alt="Robô Acellerador"
         width={480}
         height={480}
-        className="w-[340px] md:w-[400px] lg:w-[460px] h-auto"
+        className="w-[220px] sm:w-[280px] md:w-[340px] lg:w-[400px] xl:w-[460px] h-auto"
         priority
       />
 
@@ -165,8 +165,8 @@ const Start = () => {
       </div>
 
       {/* ── Two-column layout ── */}
-      <div className="relative z-10 w-full px-6 md:px-16 lg:px-20 py-20 md:py-24">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="relative z-10 w-full px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-20 md:py-24">
+        <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-16 items-center">
 
           {/* ── LEFT: copy ── */}
           <div className="flex flex-col items-start">
@@ -195,7 +195,7 @@ const Start = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-[1.9rem] sm:text-4xl lg:text-7xl xl:text-[78px] font-black text-white leading-[1.04] tracking-[-0.025em] mb-6"
+              className="text-[1.75rem] xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-[78px] font-black text-white leading-[1.04] tracking-[-0.025em] mb-6"
             >
               Robôs{" "}
               <span
@@ -226,12 +226,29 @@ const Start = () => {
               </span>
             </motion.h1>
 
+            {/* Robot — mobile only, between title and paragraph */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="lg:hidden flex justify-center w-full mb-4 -mt-2"
+            >
+              <Image
+                src="/logos/Icones/RoboSolito.png"
+                alt="Robô Acellerador"
+                width={260}
+                height={260}
+                className="w-[160px] sm:w-[200px] md:w-[220px] h-auto"
+                style={{ filter: "drop-shadow(0 20px 40px rgba(231,103,20,0.25))" }}
+              />
+            </motion.div>
+
             {/* Sub-headline */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.35 }}
-              className="text-lg md:text-xl text-white/60 leading-relaxed mb-10 max-w-lg"
+              className="text-base sm:text-lg md:text-xl text-white/60 leading-relaxed mb-10 max-w-lg"
             >
               Automatize as tarefas repetitivas do seu escritório e libere sua equipe
               para o que realmente importa: crescer.
@@ -283,7 +300,7 @@ const Start = () => {
             </motion.div>
           </div>
 
-          {/* ── RIGHT: robot ── */}
+          {/* ── RIGHT: robot (desktop only) ── */}
           <div className="hidden lg:flex justify-center items-center">
             <RoboVisual visible={isVisible} />
           </div>

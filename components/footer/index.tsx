@@ -32,7 +32,7 @@ const Footer = () => {
       {/* Top shimmer */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-mainOrange/40 to-transparent" />
 
-      <div className="relative z-10 px-6 md:px-16 lg:px-20 pt-16 pb-8">
+      <div className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 pt-16 pb-8 max-w-[1800px] mx-auto">
 
         {/* ── Main grid ── */}
         <motion.div
@@ -40,7 +40,7 @@ const Footer = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 mb-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10 mb-12"
         >
 
           {/* ── Brand column ── */}
@@ -124,6 +124,19 @@ const Footer = () => {
                   </div>
                   <span className="leading-snug break-all">
                     joao.v@acelleradorcontabil.com.br
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:comercial@acelleradorcontabil.com.br"
+                  className="group flex items-start gap-3 text-sm text-white/50 hover:text-white transition-colors duration-200"
+                >
+                  <div className="w-7 h-7 shrink-0 rounded-lg bg-mainOrange/[0.10] border border-mainOrange/20 flex items-center justify-center text-mainOrange mt-0.5">
+                    <Mail className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="leading-snug break-all">
+                    comercial@acelleradorcontabil.com.br
                   </span>
                 </a>
               </li>

@@ -142,7 +142,7 @@ const Stars = ({ count }: { count: number }) => (
 // ── Marquee card ──────────────────────────────────────────────────────────────
 const TestimonialCard = ({ t }: { t: (typeof testimonials)[0] }) => (
   <div
-    className="group relative mx-3 w-[340px] shrink-0 flex flex-col gap-4 p-5 rounded-2xl overflow-hidden cursor-default"
+    className="group relative mx-3 w-[280px] sm:w-[320px] md:w-[340px] shrink-0 flex flex-col gap-4 p-4 sm:p-5 rounded-2xl overflow-hidden cursor-default"
     style={{
       background: "linear-gradient(155deg, rgba(4,50,95,0.92) 0%, rgba(2,18,44,0.97) 100%)",
       border: "1px solid rgba(255,255,255,0.09)",
@@ -215,7 +215,7 @@ const Testimonials = () => (
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-        className="text-center mb-10 px-6"
+        className="text-center mb-10 px-5 sm:px-8"
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }}
@@ -234,7 +234,7 @@ const Testimonials = () => (
           +16 estados · 5 estrelas
         </motion.div>
 
-        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
           Escritórios que já{" "}
           <span style={{ color: "#e76714" }}>
             viraram o jogo.
@@ -247,7 +247,7 @@ const Testimonials = () => (
 
       {/* ── Marquee row 1 — left ── */}
       <div className="mb-4">
-        <Marquee speed={30} pauseOnHover gradient gradientColor="#021530" gradientWidth={120}>
+        <Marquee speed={30} pauseOnHover gradient gradientColor="#021530" gradientWidth={60}>
           {[...row1, ...row1].map((t, i) => (
             <TestimonialCard key={`r1-${t.name}-${i}`} t={t} />
           ))}
@@ -255,7 +255,7 @@ const Testimonials = () => (
       </div>
 
       {/* ── Marquee row 2 — right ── */}
-      <Marquee direction="right" speed={24} pauseOnHover gradient gradientColor="#021530" gradientWidth={120}>
+      <Marquee direction="right" speed={24} pauseOnHover gradient gradientColor="#021530" gradientWidth={60}>
         {[...row2, ...row2].map((t, i) => (
           <TestimonialCard key={`r2-${t.name}-${i}`} t={t} />
         ))}

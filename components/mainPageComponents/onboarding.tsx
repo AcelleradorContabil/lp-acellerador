@@ -73,7 +73,7 @@ const Onboarding = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section ref={sectionRef} id="onboarding" className="scroll-mt-20 relative overflow-hidden px-4 md:px-16 lg:px-20 py-16 md:py-28">
+    <section ref={sectionRef} id="onboarding" className="scroll-mt-20 relative overflow-hidden px-4 sm:px-6 md:px-16 lg:px-20 xl:px-24 py-16 md:py-28">
       
       {/* Background High-Tech Decor */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -89,7 +89,7 @@ const Onboarding = () => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-mainOrange/10 border border-mainOrange/25 text-mainOrange text-[11px] font-black uppercase tracking-[0.25em] mb-8 shadow-[0_0_20px_rgba(231,103,20,0.15)]"
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-mainOrange/10 border border-mainOrange/25 text-mainOrange text-[10px] sm:text-[11px] font-black uppercase tracking-[0.12em] sm:tracking-[0.20em] mb-8 shadow-[0_0_20px_rgba(231,103,20,0.15)]"
           >
             <Sparkles className="w-4 h-4" /> 
             Implementação em Tempo Recorde
@@ -98,7 +98,7 @@ const Onboarding = () => {
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[1] tracking-tighter mb-8"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[1] tracking-tighter mb-8"
           >
             Sua jornada para o <br />
             <span className="relative inline-block mt-2">
@@ -110,7 +110,7 @@ const Onboarding = () => {
           <motion.p 
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            className="text-lg md:text-xl text-white/40 max-w-3xl mx-auto leading-relaxed font-medium"
+            className="text-base sm:text-lg md:text-xl text-white/40 max-w-3xl mx-auto leading-relaxed font-medium"
           >
             Acellera assume a complexidade. Você assume o controle. <br className="hidden md:block" />
             O processo mais rápido e seguro do mercado contábil.
@@ -130,7 +130,7 @@ const Onboarding = () => {
              />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 xl:gap-6 items-stretch">
             {steps.map((step, i) => {
               const Icon = step.icon;
               const isHovered = hoveredIndex === i;

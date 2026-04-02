@@ -209,10 +209,10 @@ const PurchaseModal = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.97 }}
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none"
           >
             <div
-              className="relative w-full max-w-4xl max-h-[90vh] flex flex-col pointer-events-auto rounded-2xl overflow-hidden"
+              className="relative w-full max-w-4xl max-h-[92vh] sm:max-h-[90vh] flex flex-col pointer-events-auto rounded-t-2xl sm:rounded-2xl overflow-hidden"
               style={{
                 background:
                   "linear-gradient(135deg, rgba(3,40,70,0.97) 0%, rgba(2,28,50,0.99) 100%)",

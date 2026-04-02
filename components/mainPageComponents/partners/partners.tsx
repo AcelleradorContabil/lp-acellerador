@@ -4,11 +4,7 @@ import Marquee from "react-fast-marquee";
 import { motion } from "framer-motion";
 
 // logos that have dark background and need a light pill
-const darkLogos = new Set(["cardeal.png", "ers.webp", "conzatti.png", "contabexpress.png"]);
-
-// logos that need a smaller render size
-const smallLogos = new Set(["lk.png", "medassist.svg", "cg.png"]);
-const largeLogos = new Set(["3c.jpg", "apice.webp"]);
+const darkLogos = new Set(["contabexpress.png"]);
 
 const LogoItem = ({ item }: { item: string }) => {
   const needsBg = darkLogos.has(item);
@@ -57,12 +53,12 @@ const Partners = ({ partners }: { partners: string[] }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-          className="text-center mb-16 px-6"
+          className="text-center mb-16 px-5 sm:px-8"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mainOrange/10 border border-mainOrange/20 text-mainOrange text-xs font-bold uppercase tracking-wider mb-4">
             Nossos Parceiros
           </div>
-          <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-white leading-tight mb-6">
             Escritórios que já lideram com <span className="text-mainOrange">automação.</span>
           </h2>
           
@@ -87,8 +83,8 @@ const Partners = ({ partners }: { partners: string[] }) => {
         <div className="flex flex-col gap-8">
           {/* Row 1 — left */}
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[#020c1e] to-transparent z-10" />
-            <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-[#020c1e] to-transparent z-10" />
+            <div className="absolute inset-y-0 left-0 w-16 sm:w-24 md:w-40 bg-gradient-to-r from-[#020c1e] to-transparent z-10" />
+            <div className="absolute inset-y-0 right-0 w-16 sm:w-24 md:w-40 bg-gradient-to-l from-[#020c1e] to-transparent z-10" />
             <Marquee
               speed={40}
               pauseOnHover
@@ -102,8 +98,8 @@ const Partners = ({ partners }: { partners: string[] }) => {
 
           {/* Row 2 — right */}
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[#020c1e] to-transparent z-10" />
-            <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-[#020c1e] to-transparent z-10" />
+            <div className="absolute inset-y-0 left-0 w-16 sm:w-24 md:w-40 bg-gradient-to-r from-[#020c1e] to-transparent z-10" />
+            <div className="absolute inset-y-0 right-0 w-16 sm:w-24 md:w-40 bg-gradient-to-l from-[#020c1e] to-transparent z-10" />
             <Marquee
               direction="right"
               speed={35}

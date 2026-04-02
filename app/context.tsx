@@ -35,7 +35,7 @@ const GlobalContextProvider = ({
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState<boolean>(false);
   const isBigScreen = useMediaQuery({ query: "(min-width: 1280px)" });
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1280px)" });
-  const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 1279px)" });
 
   const openSidebar = () => {
     setIsSidebarOpen(true);

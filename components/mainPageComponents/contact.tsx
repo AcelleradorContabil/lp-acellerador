@@ -382,14 +382,14 @@ const StatementBanner = ({ inView }: { inView: boolean }) => (
     {/* top shimmer */}
     <div className="h-px bg-gradient-to-r from-transparent via-mainOrange/40 to-transparent" />
 
-    <div className="px-6 md:px-16 lg:px-20 py-12 flex flex-col md:flex-row items-center justify-between gap-8">
+    <div className="px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-10 md:py-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-8">
       {/* Left: headline */}
       <div className="flex-1">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mainOrange/[0.12] border border-mainOrange/25 text-mainOrange text-xs font-semibold uppercase tracking-wider mb-5">
           <Zap className="w-3 h-3" />
           Comece agora
         </div>
-        <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
+        <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
           Pronto para parar de{" "}
           <br className="hidden md:block" />
           perder tempo{" "}
@@ -438,8 +438,8 @@ const Contact = () => {
         <StatementBanner inView={inView} />
 
         {/* Two-column layout */}
-        <div className="px-6 md:px-16 lg:px-20 pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto items-center">
+        <div className="px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 pb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 max-w-6xl mx-auto items-start md:items-center">
             <InfoPanel inView={inView} />
             <ContactForm inView={inView} />
           </div>

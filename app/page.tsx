@@ -18,7 +18,7 @@ export default function Home() {
       <Products />
       <Onboarding />
       <Packages />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <VideoTestimonials />
       <Experience />
       <WrapperPartners />

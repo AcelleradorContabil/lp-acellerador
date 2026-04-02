@@ -356,7 +356,7 @@ export function Packages() {
     setExpandedCards((prev) => ({ ...prev, [id]: !prev[id] }));
 
   return (
-    <section ref={sectionRef} id="pacotes" className="scroll-mt-20 relative overflow-hidden px-6 md:px-12 lg:px-16 py-20 md:py-28">
+    <section ref={sectionRef} id="pacotes" className="scroll-mt-20 relative overflow-hidden px-5 sm:px-8 md:px-12 lg:px-16 xl:px-24 py-20 md:py-28 max-w-[1800px] mx-auto">
 
       {/* Background glows */}
       <div className="absolute inset-0 pointer-events-none">
@@ -437,7 +437,7 @@ export function Packages() {
       </motion.div>
 
       {/* Cards */}
-      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 items-start">
+      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-5 items-start">
         {packages.map((pkg, i) => (
           <PackageCard
             key={pkg.id} pkg={pkg} index={i}
@@ -488,7 +488,7 @@ export function Packages() {
         {/* Glow blob */}
         <div className="absolute right-[-80px] top-[-60px] w-[360px] h-[260px] rounded-full bg-mainOrange/[0.07] blur-[80px] pointer-events-none" />
 
-        <div className="relative px-8 py-10 md:px-14 md:py-12 flex flex-col md:flex-row items-start md:items-center gap-8">
+        <div className="relative px-6 py-8 sm:px-8 sm:py-10 md:px-14 md:py-12 flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8">
 
           {/* Icon */}
           <div

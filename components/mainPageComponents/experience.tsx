@@ -50,7 +50,7 @@ const StatCounter = ({
       transition={{ duration: 0.55, delay: delay / 1000, ease: [0.4, 0, 0.2, 1] }}
       className="flex flex-col items-center text-center px-2"
     >
-      <span className="text-2xl md:text-3xl font-black tabular-nums" style={{ color: "#e76714" }}>
+      <span className="text-lg sm:text-2xl md:text-3xl font-black tabular-nums" style={{ color: "#e76714" }}>
         {animated}
       </span>
       <span className="text-xs font-bold text-white/70 mt-1 leading-tight">{label}</span>
@@ -136,7 +136,7 @@ const DashboardMockup = ({ isInView }: { isInView: boolean }) => {
       {/* Stats row */}
       <div
         ref={statsRef as React.RefObject<HTMLDivElement>}
-        className="grid grid-cols-3 sm:grid-cols-5 gap-px"
+        className="grid grid-cols-3 sm:grid-cols-5 gap-px overflow-x-auto"
         style={{ background: "rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
       >
         {[
@@ -419,7 +419,7 @@ const Experience = () => {
         <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-mainOrange/[0.07] blur-[100px] pointer-events-none" />
         <div className="absolute -left-16 bottom-0 w-60 h-60 rounded-full bg-blueAcellera/30 blur-[80px] pointer-events-none" />
 
-        <div className="relative z-10 px-6 md:px-16 lg:px-20 py-14 md:py-18">
+        <div className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-14 md:py-18">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.88 }}
@@ -500,7 +500,7 @@ const Experience = () => {
       </motion.div>
 
       {/* ── 2. Megaoffice Section ── */}
-      <div ref={megaRef} className="relative z-10 px-6 md:px-16 lg:px-20 py-20">
+      <div ref={megaRef} className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-20">
         <div className="max-w-6xl mx-auto">
 
           {/* Section header */}
@@ -523,7 +523,7 @@ const Experience = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
 
             {/* LEFT: Megaoffice branded card */}
             <motion.div
@@ -626,7 +626,7 @@ const Experience = () => {
           <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-mainOrange/15 to-transparent" />
         </div>
 
-        <div className="relative z-10 px-6 md:px-16 lg:px-20 py-24">
+        <div className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-20 md:py-24">
           <div className="max-w-6xl mx-auto">
 
             {/* Section label */}
@@ -643,7 +643,7 @@ const Experience = () => {
             </motion.div>
 
             {/* Main grid: video LEFT, content RIGHT */}
-            <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] xl:grid-cols-[380px_1fr] gap-10 lg:gap-14 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] xl:grid-cols-[380px_1fr] gap-8 md:gap-10 lg:gap-14 items-center">
 
               {/* ── Video — left, hero position ── */}
               <motion.div
@@ -737,7 +737,7 @@ const Experience = () => {
               >
                 {/* Credential chips */}
                 <div className="flex flex-wrap gap-2">
-                  {["Vice-Presidente · SERAC", "O Contador das Estrelas", "Speaker Nacional", "+3.000 clientes recorrentes"].map((chip) => (
+                  {["Vice-Presidente · SERAC", "O Contador das Estrelas", "Speaker Nacional", "+10.000 clientes recorrentes"].map((chip) => (
                     <span
                       key={chip}
                       className="px-3 py-1 rounded-full text-xs font-semibold"
@@ -779,14 +779,14 @@ const Experience = () => {
 
                 {/* Description */}
                 <p className="text-white/45 leading-relaxed">
-                  Somos sócios de Jhonny Martins no Fireclub. Vice-Presidente da SERAC e referência nacional em contabilidade, ele atende mais de 3.000 clientes recorrentes em todo o Brasil — entre eles XP Investimentos, Bradesco, Thiago Nigro e Boca Rosa. Uma parceria construída sobre autoridade real e propósito compartilhado.
+                  Somos sócios de Jhonny Martins no Fireclub. Vice-Presidente da SERAC e referência nacional em contabilidade, ele atende mais de 10.000 clientes recorrentes em todo o Brasil — entre eles XP Investimentos, Bradesco, Thiago Nigro e Boca Rosa. Uma parceria construída sobre autoridade real e propósito compartilhado.
                 </p>
 
                 {/* Value points */}
                 <div className="space-y-3 pt-1">
                   {[
                     { icon: <ShieldCheck className="w-4 h-4" />, text: "Sociedade no Fireclub — parceria de negócios real" },
-                    { icon: <TrendingUp className="w-4 h-4" />, text: "+3.000 clientes recorrentes: XP, Bradesco, Thiago Nigro e mais" },
+                    { icon: <TrendingUp className="w-4 h-4" />, text: "+10.000 clientes recorrentes: XP, Bradesco, Thiago Nigro e mais" },
                     { icon: <Zap className="w-4 h-4" />, text: "Homenageado no Top of Business 2025 em Dubai" },
                   ].map(({ icon, text }) => (
                     <div key={text} className="flex items-start gap-3">
@@ -811,7 +811,7 @@ const Experience = () => {
           borderBottom: "1px solid rgba(231,103,20,0.20)",
         }}
       >
-        <div className="px-6 md:px-16 lg:px-20">
+        <div className="px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24">
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/[0.06]">
             {[
               { end: 25, prefix: "+", suffix: " anos", label: "de expertise contábil" },
@@ -834,7 +834,7 @@ const Experience = () => {
       </div>
 
       {/* ── 4. 2-col: Values + Dashboard ── */}
-      <div className="relative z-10 px-6 md:px-16 lg:px-20 py-16">
+      <div className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-16">
 
         {/* Values section */}
         <div ref={valuesRef} className="mb-16">

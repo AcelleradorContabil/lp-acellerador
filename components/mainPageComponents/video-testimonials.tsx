@@ -116,7 +116,7 @@ const VideoTestimonials = () => {
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-mainOrange/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blueAcellera/10 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
+      <div className="max-w-[1800px] mx-auto px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 relative z-10">
 
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
@@ -150,7 +150,7 @@ const VideoTestimonials = () => {
         </div>
 
         {/* Main carousel layout */}
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-10 lg:gap-14">
 
           {/* ── Portrait video ── */}
           <div className="relative flex items-center gap-4 lg:gap-6 flex-shrink-0">
@@ -158,7 +158,7 @@ const VideoTestimonials = () => {
             {/* Desktop prev button */}
             <button
               onClick={prev}
-              className="hidden lg:flex w-11 h-11 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center hover:bg-mainOrange hover:border-mainOrange transition-all duration-300 shrink-0"
+              className="hidden md:flex w-11 h-11 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center hover:bg-mainOrange hover:border-mainOrange transition-all duration-300 shrink-0"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -186,7 +186,6 @@ const VideoTestimonials = () => {
                 <video
                   ref={videoRef}
                   className="w-full h-full object-cover"
-                  poster={current.thumbnail}
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
                   playsInline
@@ -196,7 +195,7 @@ const VideoTestimonials = () => {
 
                 {/* Play overlay */}
                 {!isPlaying && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/35 hover:bg-black/25 transition-all duration-300">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/35 hover:bg-black/25 transition-all duration-300">
                     <motion.div
                       whileHover={{ scale: 1.08 }}
                       whileTap={{ scale: 0.95 }}
@@ -244,7 +243,7 @@ const VideoTestimonials = () => {
             {/* Desktop next button */}
             <button
               onClick={next}
-              className="hidden lg:flex w-11 h-11 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center hover:bg-mainOrange hover:border-mainOrange transition-all duration-300 shrink-0"
+              className="hidden md:flex w-11 h-11 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center hover:bg-mainOrange hover:border-mainOrange transition-all duration-300 shrink-0"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -305,7 +304,7 @@ const VideoTestimonials = () => {
                 {/* Mobile nav buttons */}
                 <button
                   onClick={prev}
-                  className="lg:hidden flex w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center active:bg-mainOrange active:border-mainOrange transition-all duration-300 shrink-0"
+                  className="md:hidden flex w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center active:bg-mainOrange active:border-mainOrange transition-all duration-300 shrink-0"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -326,7 +325,7 @@ const VideoTestimonials = () => {
                 {/* Mobile next button */}
                 <button
                   onClick={next}
-                  className="lg:hidden flex w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center active:bg-mainOrange active:border-mainOrange transition-all duration-300 shrink-0"
+                  className="md:hidden flex w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center active:bg-mainOrange active:border-mainOrange transition-all duration-300 shrink-0"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>

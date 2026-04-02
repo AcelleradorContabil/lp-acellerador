@@ -56,7 +56,7 @@ const Sidebar = () => {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
-            className="absolute top-0 left-0 h-full w-[78%] max-w-[320px] flex flex-col overflow-hidden"
+            className="absolute top-0 left-0 h-full w-[85%] max-w-[300px] sm:w-[78%] sm:max-w-[320px] flex flex-col overflow-y-auto overflow-x-hidden"
             style={{
               background: "linear-gradient(155deg, rgba(4,50,95,0.99) 0%, rgba(2,18,44,1) 100%)",
               borderRight: "1px solid rgba(231,103,20,0.22)",
