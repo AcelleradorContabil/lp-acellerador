@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:contus.com.br)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(find /c/Users/Acellerador/Documents/lp-acelleraHub/node_modules/react-fast-marquee -name *.d.ts)",
+      "Bash(yarn lint:*)",
+      "Bash(cmd /c \"cd /d C:\\\\Users\\\\Acellerador\\\\Documents\\\\lp-acelleraHub && yarn lint 2>&1\")",
+      "Bash(cmd /c \"cd /d C:\\\\Users\\\\Acellerador\\\\Documents\\\\lp-acelleraHub && npx eslint components/mainPageComponents/start.tsx components/mainPageComponents/onboarding.tsx components/header/index.tsx 2>&1\")",
+      "Bash(cmd /c \"cd /d C:\\\\Users\\\\Acellerador\\\\Documents\\\\lp-acelleraHub && npx tsc --noEmit --skipLibCheck 2>&1 | head -30\")",
+      "WebFetch(domain:jhonnymartins.com.br)"
     ]
   }
 }

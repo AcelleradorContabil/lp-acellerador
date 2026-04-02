@@ -5,47 +5,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
   Bot,
-  CheckCircle2,
   Plus,
   Minus,
   ChevronDown,
   ShoppingCart,
-  Calendar,
-  CreditCard,
   MessageCircle,
   Zap,
 } from "lucide-react";
-import { robotsData, getDiscountPercent } from "@/app/cart-context";
+import { robotsData } from "@/app/cart-context";
 import { useGlobalContext, GlobalContextType } from "@/app/context";
-
-// ── Types ────────────────────────────────────────────────────────────────────
-interface SelectedRobot {
-  id: string;
-  cnpjs: number;
-}
-
-// ── Payment schedule helper ───────────────────────────────────────────────────
-function getPaymentSchedule() {
-  const today = new Date();
-  const day = today.getDate();
-
-  // Activation: day ≤ 5 → day 10 same month; day > 5 → day 10 next month
-  const activationDate = new Date(today.getFullYear(), today.getMonth() + (day <= 5 ? 0 : 1), 10);
-
-  // First monthly: 1 month after activation
-  const firstMonthlyDate = new Date(activationDate);
-  firstMonthlyDate.setMonth(firstMonthlyDate.getMonth() + 1);
-
-  const fmt = (d: Date) =>
-    d.toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
-
-  return {
-    activationDate: fmt(activationDate),
-    firstMonthlyDate: fmt(firstMonthlyDate),
-    activationRaw: activationDate,
-    firstMonthlyRaw: firstMonthlyDate,
-  };
-}
 
 // ── QtyControl ───────────────────────────────────────────────────────────────
 const QtyControl = ({
@@ -95,10 +63,6 @@ const RobotRow = ({
   onToggle: () => void;
   onCnpjsChange: (v: number) => void;
 }) => {
-  const discount = getDiscountPercent(cnpjs);
-  const unitPrice = robot.defaultPrice * (1 - discount);
-  const lineTotal = unitPrice * cnpjs;
-
   return (
     <motion.div
       layout
@@ -144,7 +108,7 @@ const RobotRow = ({
         {robot.title}
       </span>
 
-      {/* Qty + price — only when selected */}
+      {/* Qty — only when selected */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -155,13 +119,8 @@ const RobotRow = ({
             onClick={(e) => e.stopPropagation()}
           >
             <QtyControl value={cnpjs} onChange={onCnpjsChange} />
-            <div className="text-right min-w-[68px]">
-              <p className="text-xs font-bold text-white">
-                {lineTotal.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-              </p>
-              {discount > 0 && (
-                <p className="text-[10px] text-mainOrange">-{(discount * 100).toFixed(0)}%</p>
-              )}
+            <div className="text-right min-w-[50px]">
+              <p className="text-[10px] text-white/40 uppercase font-bold tracking-tighter">CNPJs</p>
             </div>
           </motion.div>
         )}
@@ -177,8 +136,7 @@ const PurchaseModal = () => {
 
   const [activeTab, setActiveTab] = useState<"dp" | "fiscal">("dp");
   const [selected, setSelected] = useState<Record<string, number>>({}); // id → cnpjQty
-  const [installments, setInstallments] = useState<1 | 2 | 3>(1);
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
 
   const dpRobots = robotsData.filter((r) => r.category === "dp");
   const fiscalRobots = robotsData.filter((r) => r.category === "fiscal");
@@ -198,59 +156,31 @@ const PurchaseModal = () => {
     setSelected((prev) => ({ ...prev, [id]: qty }));
   };
 
-  const { monthlyTotal, activationFee, selectedList } = useMemo(() => {
-    let total = 0;
-    const list: { title: string; cnpjs: number; unitPrice: number; lineTotal: number }[] = [];
+  const selectedList = useMemo(() => {
+    const list: { title: string; cnpjs: number; category: string }[] = [];
 
     for (const [id, cnpjs] of Object.entries(selected)) {
       const robot = robotsData.find((r) => r.id === id);
       if (!robot) continue;
-      const discount = getDiscountPercent(cnpjs);
-      const unitPrice = robot.defaultPrice * (1 - discount);
-      const lineTotal = unitPrice * cnpjs;
-      total += lineTotal;
-      list.push({ title: robot.title, cnpjs, unitPrice, lineTotal });
+      list.push({ title: robot.title, cnpjs, category: robot.category });
     }
 
-    return {
-      monthlyTotal: total,
-      activationFee: total, // activation = 1x monthly
-      selectedList: list,
-    };
+    return list;
   }, [selected]);
-
-  const installmentValue = activationFee / installments;
-  const { activationDate, firstMonthlyDate } = getPaymentSchedule();
 
   const hasSelection = Object.keys(selected).length > 0;
 
   const handleWhatsApp = () => {
     if (!hasSelection) return;
     const lines = [
-      "Olá! Gostaria de contratar os seguintes robôs:",
+      "Olá! Gostaria de solicitar um orçamento para os seguintes robôs:",
       "",
       ...selectedList.map(
         (r) =>
-          `• ${r.title}: ${r.cnpjs} CNPJs — ${r.lineTotal.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          })}/mês`
+          `• [${r.category.toUpperCase()}] ${r.title}: ${r.cnpjs} CNPJs`
       ),
       "",
-      `*Mensalidade total:* ${monthlyTotal.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      })}`,
-      `*Taxa de ativação:* ${activationFee.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      })} (${installments}x de ${installmentValue.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      })})`,
-      "",
-      `*Vencimento ativação:* ${activationDate}`,
-      `*Início mensalidade:* ${firstMonthlyDate}`,
+      "Fico no aguardo de mais informações sobre valores e ativação!",
     ];
 
     const msg = encodeURIComponent(lines.join("\n"));
@@ -301,10 +231,10 @@ const PurchaseModal = () => {
                 </div>
                 <div>
                   <h2 className="text-base font-bold text-white leading-tight">
-                    Monte seu pacote
+                    Solicitar Orçamento
                   </h2>
                   <p className="text-xs text-white/40">
-                    Selecione os robôs e a quantidade de CNPJs
+                    Selecione os robôs e quantidades para receber uma proposta personalizada
                   </p>
                 </div>
                 <button
@@ -318,7 +248,7 @@ const PurchaseModal = () => {
               {/* Body */}
               <div className="flex flex-col lg:flex-row gap-0 flex-1 overflow-hidden min-h-0">
                 {/* ── Left: Robot selector ── */}
-                <div className="flex-1 flex flex-col overflow-hidden border-r border-white/[0.06]">
+                <div className="flex-1 flex flex-col overflow-hidden border-r-0 lg:border-r border-white/[0.06]">
                   {/* Tabs */}
                   <div className="flex gap-1 px-4 pt-4 pb-3 shrink-0">
                     {(["dp", "fiscal"] as const).map((tab) => (
@@ -360,227 +290,78 @@ const PurchaseModal = () => {
                       </motion.div>
                     </AnimatePresence>
                   </div>
-
-                  {/* Discount legend */}
-                  <div className="px-4 pb-4 shrink-0">
-                    <div className="flex flex-wrap gap-1.5">
-                      {[
-                        { min: 101, max: null, pct: 20 },
-                        { min: 201, max: null, pct: 30 },
-                        { min: 301, max: null, pct: 35 },
-                        { min: 401, max: null, pct: 40 },
-                        { min: 501, max: null, pct: 50 },
-                      ].map((d) => (
-                        <span
-                          key={d.min}
-                          className="text-[10px] px-2 py-0.5 rounded-full bg-mainOrange/[0.08] border border-mainOrange/20 text-mainOrange/80"
-                        >
-                          +{d.min} CNPJs → -{d.pct}%
-                        </span>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
                 {/* ── Right: Summary ── */}
-                <div className="w-full lg:w-72 flex flex-col shrink-0 overflow-hidden">
-                  <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+                <div className="w-full lg:w-80 flex flex-col shrink-0 overflow-hidden bg-white/[0.02] max-h-[45vh] lg:max-h-none border-t lg:border-t-0 border-white/[0.06]">
+                  <div className="flex-1 overflow-y-auto px-5 py-6 space-y-6">
                     {/* Robots summary */}
                     {hasSelection ? (
                       <div>
-                        <button
-                          onClick={() => setShowDetails((v) => !v)}
-                          className="w-full flex items-center justify-between text-xs font-semibold text-white/50 uppercase tracking-wider mb-2"
-                        >
-                          <span>Robôs selecionados ({selectedList.length})</span>
-                          <ChevronDown
-                            className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                              showDetails ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
-                        <AnimatePresence>
-                          {showDetails && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.25 }}
-                              className="overflow-hidden"
+                        <div className="flex items-center gap-2 mb-4">
+                           <Zap className="w-4 h-4 text-mainOrange" />
+                           <span className="text-xs font-bold text-white uppercase tracking-wider">Seu Pacote</span>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          {selectedList.map((r) => (
+                            <div
+                              key={r.title}
+                              className="flex justify-between items-center py-2 px-3 rounded-xl bg-white/[0.04] border border-white/[0.06]"
                             >
-                              <div className="space-y-1 mb-3">
-                                {selectedList.map((r) => (
-                                  <div
-                                    key={r.title}
-                                    className="flex justify-between items-center py-1 px-2 rounded-lg bg-white/[0.03]"
-                                  >
-                                    <div>
-                                      <p className="text-[11px] font-semibold text-white/80">
-                                        {r.title}
-                                      </p>
-                                      <p className="text-[10px] text-white/35">
-                                        {r.cnpjs} CNPJs ×{" "}
-                                        {r.unitPrice.toLocaleString("pt-BR", {
-                                          style: "currency",
-                                          currency: "BRL",
-                                          minimumFractionDigits: 2,
-                                        })}
-                                      </p>
-                                    </div>
-                                    <p className="text-[11px] font-bold text-white">
-                                      {r.lineTotal.toLocaleString("pt-BR", {
-                                        style: "currency",
-                                        currency: "BRL",
-                                      })}
-                                    </p>
-                                  </div>
-                                ))}
+                              <div className="flex-1 min-w-0 pr-2">
+                                <p className="text-[12px] font-bold text-white truncate">
+                                  {r.title}
+                                </p>
+                                <p className="text-[10px] text-white/30 uppercase tracking-tight">
+                                  {r.category === 'dp' ? 'Depart. Pessoal' : 'Fiscal'}
+                                </p>
                               </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center py-8 text-center">
-                        <Bot className="w-10 h-10 text-white/15 mb-3" />
-                        <p className="text-xs text-white/30">
-                          Selecione ao menos um robô para ver o resumo
-                        </p>
-                      </div>
-                    )}
+                              <div className="text-right shrink-0">
+                                <p className="text-[12px] font-black text-mainOrange">
+                                  {r.cnpjs}
+                                </p>
+                                <p className="text-[9px] text-white/40 font-bold">CNPJs</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
 
-                    {/* Billing */}
-                    {hasSelection && (
-                      <>
-                        {/* Monthly */}
-                        <div className="rounded-xl bg-white/[0.04] border border-white/[0.07] p-3 space-y-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Zap className="w-3.5 h-3.5 text-mainOrange" />
-                            <span className="text-xs font-semibold text-white/60 uppercase tracking-wider">
-                              Mensalidade
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-baseline">
-                            <span className="text-white/50 text-xs">Total mensal</span>
-                            <span className="text-xl font-bold text-white">
-                              {monthlyTotal.toLocaleString("pt-BR", {
-                                style: "currency",
-                                currency: "BRL",
-                              })}
-                            </span>
-                          </div>
-                          <p className="text-[10px] text-white/30">
-                            Cobrado todo dia 10, a partir de{" "}
-                            <span className="text-white/50">{firstMonthlyDate}</span>
+                        <div className="mt-8 p-4 rounded-2xl bg-mainOrange/[0.05] border border-mainOrange/20">
+                          <p className="text-[11px] text-white/60 leading-relaxed">
+                            <strong className="text-white">Nota:</strong> Os valores finais de mensalidade e taxa de ativação dependem do volume total de CNPJs e serão calculados pelo nosso comercial.
                           </p>
                         </div>
-
-                        {/* Activation */}
-                        <div className="rounded-xl bg-mainOrange/[0.07] border border-mainOrange/25 p-3 space-y-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <CreditCard className="w-3.5 h-3.5 text-mainOrange" />
-                            <span className="text-xs font-semibold text-mainOrange/80 uppercase tracking-wider">
-                              Taxa de ativação
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-baseline">
-                            <span className="text-white/50 text-xs">Total</span>
-                            <span className="text-lg font-bold text-white">
-                              {activationFee.toLocaleString("pt-BR", {
-                                style: "currency",
-                                currency: "BRL",
-                              })}
-                            </span>
-                          </div>
-
-                          {/* Installments */}
-                          <div>
-                            <p className="text-[10px] text-white/40 mb-1.5">Parcelamento</p>
-                            <div className="flex gap-1.5">
-                              {([1, 2, 3] as const).map((n) => (
-                                <button
-                                  key={n}
-                                  onClick={() => setInstallments(n)}
-                                  className={`flex-1 py-1 rounded-lg text-xs font-semibold transition-all duration-150 ${
-                                    installments === n
-                                      ? "bg-mainOrange text-white"
-                                      : "bg-white/[0.07] text-white/50 hover:bg-white/[0.12] hover:text-white"
-                                  }`}
-                                >
-                                  {n}x
-                                </button>
-                              ))}
-                            </div>
-                            <p className="text-[11px] font-semibold text-white/70 mt-1.5 text-center">
-                              {installments}x de{" "}
-                              {installmentValue.toLocaleString("pt-BR", {
-                                style: "currency",
-                                currency: "BRL",
-                              })}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Payment schedule */}
-                        <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3 space-y-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Calendar className="w-3.5 h-3.5 text-white/40" />
-                            <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
-                              Calendário de pagamentos
-                            </span>
-                          </div>
-                          <div className="space-y-1.5">
-                            <div className="flex items-start gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-mainOrange mt-1.5 shrink-0" />
-                              <div>
-                                <p className="text-[11px] font-semibold text-white/80">
-                                  Ativação — {activationDate}
-                                </p>
-                                <p className="text-[10px] text-white/35">
-                                  {installments}x de{" "}
-                                  {installmentValue.toLocaleString("pt-BR", {
-                                    style: "currency",
-                                    currency: "BRL",
-                                  })}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-green-400 mt-1.5 shrink-0" />
-                              <div>
-                                <p className="text-[11px] font-semibold text-white/80">
-                                  1ª mensalidade — {firstMonthlyDate}
-                                </p>
-                                <p className="text-[10px] text-white/35">
-                                  Todo dia 10 a partir desta data
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center py-12 text-center h-full">
+                        <Bot className="w-12 h-12 text-white/10 mb-4" />
+                        <p className="text-sm text-white/30 font-medium">
+                          Selecione os robôs desejados para montar seu orçamento personalizado.
+                        </p>
+                      </div>
                     )}
                   </div>
 
                   {/* Footer CTA */}
-                  <div className="px-5 pb-5 pt-3 border-t border-white/[0.06] shrink-0">
+                  <div className="px-5 pb-6 pt-4 border-t border-white/[0.06] shrink-0">
                     <button
                       onClick={handleWhatsApp}
                       disabled={!hasSelection}
-                      className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
+                      className={`w-full flex items-center justify-center gap-3 py-4 rounded-2xl text-sm font-black transition-all duration-300 ${
                         hasSelection
-                          ? "bg-green-500 text-white hover:bg-green-400 hover:shadow-[0_0_24px_rgba(74,222,128,0.35)] active:scale-95"
-                          : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                          ? "bg-green-600 text-white hover:bg-green-500 hover:shadow-[0_8px_32px_rgba(22,163,74,0.3)] active:scale-95"
+                          : "bg-white/[0.06] text-white/20 cursor-not-allowed"
                       }`}
                     >
-                      <MessageCircle className="w-4 h-4" />
+                      <MessageCircle className="w-5 h-5" />
                       {hasSelection
-                        ? "Finalizar pelo WhatsApp"
-                        : "Selecione ao menos um robô"}
+                        ? "ENVIAR PARA O COMERCIAL"
+                        : "SELECIONE OS ROBÔS"}
                     </button>
                     {hasSelection && (
-                      <p className="text-[10px] text-white/25 text-center mt-2">
-                        Você será redirecionado ao WhatsApp com o resumo completo
+                      <p className="text-[10px] text-white/30 text-center mt-3 font-medium">
+                        Você será levado ao WhatsApp para finalizar a solicitação
                       </p>
                     )}
                   </div>

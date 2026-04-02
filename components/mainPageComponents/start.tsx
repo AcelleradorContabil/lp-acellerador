@@ -5,8 +5,8 @@ import { useGlobalContext, GlobalContextType } from "@/app/context";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import {
-  CheckCircle2, Bot, Zap,
-  ArrowRight, Play,
+  CheckCircle2, Zap, MapPin,
+  ArrowRight, Play, ShieldCheck,
 } from "lucide-react";
 
 // ── Robot visual ──────────────────────────────────────────────────────────────
@@ -55,6 +55,24 @@ const RoboVisual = ({ visible }: { visible: boolean }) => (
           <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-60" />
         </div>
         <span className="text-[11px] font-bold text-white/80">+60 robôs disponíveis</span>
+      </motion.div>
+
+      {/* Pill — top right */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, x: 10 }}
+        animate={visible ? { opacity: 1, scale: 1, x: 0 } : {}}
+        transition={{ duration: 0.5, delay: 0.97 }}
+        className="absolute top-[12%] right-[-14%] flex items-center gap-2 px-3 py-2 rounded-xl"
+        style={{
+          background: "rgba(3,42,82,0.90)",
+          border: "1px solid rgba(231,103,20,0.30)",
+          backdropFilter: "blur(16px)",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.40)",
+          filter: "none",
+        }}
+      >
+        <ShieldCheck className="w-3.5 h-3.5 text-mainOrange shrink-0" />
+        <span className="text-[11px] font-bold text-white/80">Sem fidelidade</span>
       </motion.div>
 
       {/* Pill — bottom right */}
@@ -129,7 +147,7 @@ const Start = () => {
   return (
     <section
       id="inicio"
-      className="relative min-h-screen flex items-center overflow-hidden"
+      className="relative min-h-[100svh] flex items-center overflow-hidden"
     >
       {/* ── Background glows ── */}
       <div className="absolute inset-0 pointer-events-none select-none">
@@ -169,7 +187,7 @@ const Start = () => {
                 className="w-1.5 h-1.5 rounded-full bg-mainOrange animate-pulse shrink-0"
                 style={{ boxShadow: "0 0 8px rgba(231,103,20,0.90), 0 0 16px rgba(231,103,20,0.40)" }}
               />
-              <span className="text-white/65 text-sm font-medium">Automação RPA para escritórios contábeis</span>
+              <span className="text-white/65 text-xs sm:text-sm font-medium">Automação inteligente para escritórios contábeis</span>
             </motion.div>
 
             {/* Headline */}
@@ -177,7 +195,7 @@ const Start = () => {
               initial={{ opacity: 0, y: 24 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-5xl sm:text-6xl lg:text-7xl xl:text-[78px] font-black text-white leading-[1.04] tracking-[-0.025em] mb-6"
+              className="text-[1.9rem] sm:text-4xl lg:text-7xl xl:text-[78px] font-black text-white leading-[1.04] tracking-[-0.025em] mb-6"
             >
               Robôs{" "}
               <span
@@ -185,7 +203,6 @@ const Start = () => {
                   background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
-                  filter: "drop-shadow(0 0 3px #e76714) drop-shadow(0 0 12px rgba(231,103,20,0.45))",
                 }}
               >
                 {typedExec}
@@ -200,7 +217,6 @@ const Start = () => {
                   background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
-                  filter: "drop-shadow(0 0 3px #e76714) drop-shadow(0 0 12px rgba(231,103,20,0.45))",
                 }}
               >
                 {typedLider}
@@ -215,7 +231,7 @@ const Start = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.35 }}
-              className="text-lg md:text-xl text-white/45 leading-relaxed mb-10 max-w-lg"
+              className="text-lg md:text-xl text-white/60 leading-relaxed mb-10 max-w-lg"
             >
               Automatize as tarefas repetitivas do seu escritório e libere sua equipe
               para o que realmente importa: crescer.
@@ -226,11 +242,11 @@ const Start = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.45 }}
-              className="flex items-center gap-4 flex-wrap mb-10"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-10 w-full sm:w-auto"
             >
               <button
                 onClick={openPurchaseModal}
-                className="flex items-center gap-2 px-7 py-3.5 rounded-xl bg-mainOrange text-white font-bold text-sm active:scale-95 transition-all duration-200"
+                className="flex items-center justify-center gap-2 px-7 py-4 sm:py-3.5 rounded-xl bg-mainOrange text-white font-bold text-sm active:scale-95 transition-all duration-200"
                 style={{ boxShadow: "0 0 20px rgba(231,103,20,0.50), 0 4px 16px rgba(231,103,20,0.30)" }}
                 onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 36px rgba(231,103,20,0.75), 0 4px 24px rgba(231,103,20,0.45)")}
                 onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 20px rgba(231,103,20,0.50), 0 4px 16px rgba(231,103,20,0.30)")}
@@ -240,7 +256,7 @@ const Start = () => {
               </button>
               <button
                 onClick={() => scrollToSection("produtos")}
-                className="flex items-center gap-2 px-7 py-3.5 rounded-xl font-medium text-sm text-white/80 bg-white/[0.07] border border-white/[0.18] backdrop-blur-sm transition-all duration-200 hover:bg-white/[0.13] hover:text-white hover:border-white/30 active:scale-95"
+                className="flex items-center justify-center gap-2 px-7 py-4 sm:py-3.5 rounded-xl font-medium text-sm text-white/80 bg-white/[0.07] border border-white/[0.18] backdrop-blur-sm transition-all duration-200 hover:bg-white/[0.13] hover:text-white hover:border-white/30 active:scale-95"
               >
                 <Play className="w-3.5 h-3.5" />
                 Ver os robôs
@@ -257,7 +273,7 @@ const Start = () => {
               {[
                 { icon: <Zap className="w-3.5 h-3.5" />, text: "Ativo em até 5 dias" },
                 { icon: <CheckCircle2 className="w-3.5 h-3.5" />, text: "Sem fidelidade" },
-                { icon: <Bot className="w-3.5 h-3.5" />, text: "Presentes em mais de 16 estados" },
+                { icon: <MapPin className="w-3.5 h-3.5" />, text: "Presentes em mais de 16 estados" },
               ].map(({ icon, text }) => (
                 <div key={text} className="flex items-center gap-2" style={{ color: "rgba(255,255,255,0.35)" }}>
                   <span style={{ color: "rgba(231,103,20,0.70)" }}>{icon}</span>

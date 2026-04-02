@@ -11,33 +11,25 @@ const smallLogos = new Set(["lk.png", "medassist.svg", "cg.png"]);
 const largeLogos = new Set(["3c.jpg", "apice.webp"]);
 
 const LogoItem = ({ item }: { item: string }) => {
-  const size = smallLogos.has(item) ? 64 : largeLogos.has(item) ? 110 : 90;
   const needsBg = darkLogos.has(item);
 
   return (
     <div
       className={`
-        group mx-6 flex items-center justify-center
-        transition-all duration-400
+        group mx-8 flex items-center justify-center
+        transition-all duration-500 py-4 px-6 rounded-xl
         ${needsBg
-          ? "px-4 py-2 rounded-xl bg-white/[0.07] hover:bg-white/[0.12]"
-          : ""}
+          ? "bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.10] hover:border-white/[0.15]"
+          : "hover:bg-white/[0.04] hover:border-white/[0.08] border border-transparent"}
       `}
-      style={{ filter: "grayscale(1) brightness(0.65)", transition: "filter 0.4s ease" }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.filter = "grayscale(0) brightness(1)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.filter = "grayscale(1) brightness(0.65)";
-      }}
     >
       <Image
         alt={`Parceiro ${item}`}
         src={`/partners/${item}`}
-        height={size}
-        width={size}
-        className="object-contain max-h-10"
-        style={{ width: "auto", height: "auto", maxHeight: "40px" }}
+        height={100}
+        width={140}
+        className="object-contain transition-all duration-500 group-hover:scale-105"
+        style={{ width: "auto", height: "48px" }}
       />
     </div>
   );
@@ -48,58 +40,59 @@ const Partners = ({ partners }: { partners: string[] }) => {
   const row2 = partners.slice(Math.ceil(partners.length / 2));
 
   return (
-    <section id="parceiros" className="scroll-mt-20 py-16 relative overflow-hidden">
+    <section id="parceiros" className="scroll-mt-20 py-24 relative overflow-hidden bg-gradient-to-b from-transparent via-blueAcellera/5 to-transparent">
 
       {/* top separator */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-mainOrange/20 to-transparent" />
 
       {/* ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-mainOrange/[0.04] blur-[80px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-mainOrange/[0.06] blur-[120px] rounded-full" />
       </div>
 
       <div className="relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-          className="text-center mb-10 px-6"
+          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          className="text-center mb-16 px-6"
         >
-          <p className="text-xs text-white/30 font-semibold uppercase tracking-[0.2em] mb-3">
-            Confiado por
-          </p>
-          <h2 className="text-2xl md:text-3xl font-bold text-white/80 leading-tight">
-            Escritórios que já lideram com automação.
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mainOrange/10 border border-mainOrange/20 text-mainOrange text-xs font-bold uppercase tracking-wider mb-4">
+            Nossos Parceiros
+          </div>
+          <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-6">
+            Escritórios que já lideram com <span className="text-mainOrange">automação.</span>
           </h2>
-        </motion.div>
-
-        {/* Stats strip */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="flex items-center justify-center gap-2 mb-10 text-sm text-white/30"
-        >
-          <span>18+ escritórios parceiros</span>
-          <span className="w-1 h-1 rounded-full bg-white/20" />
-          <span>+3,3M execuções realizadas</span>
-          <span className="w-1 h-1 rounded-full bg-white/20" />
-          <span>100% de satisfação</span>
+          
+          {/* Stats strip */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm md:text-base text-white/40 font-medium">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-mainOrange" />
+              <span>Presente em 16 estados do Brasil</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-mainOrange" />
+              <span>+3,3M execuções realizadas</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-mainOrange" />
+              <span>98% de satisfação</span>
+            </div>
+          </div>
         </motion.div>
 
         {/* Marquee rows */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-8">
           {/* Row 1 — left */}
           <div className="relative">
+            <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[#020c1e] to-transparent z-10" />
+            <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-[#020c1e] to-transparent z-10" />
             <Marquee
-              speed={28}
+              speed={40}
               pauseOnHover
-              gradient
-              gradientColor="#033f6f"
-              gradientWidth={120}
+              gradient={false}
             >
               {[...row1, ...row1].map((item, i) => (
                 <LogoItem key={`r1-${item}-${i}`} item={item} />
@@ -109,13 +102,13 @@ const Partners = ({ partners }: { partners: string[] }) => {
 
           {/* Row 2 — right */}
           <div className="relative">
+            <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[#020c1e] to-transparent z-10" />
+            <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-[#020c1e] to-transparent z-10" />
             <Marquee
               direction="right"
-              speed={22}
+              speed={35}
               pauseOnHover
-              gradient
-              gradientColor="#033f6f"
-              gradientWidth={120}
+              gradient={false}
             >
               {[...row2, ...row2].map((item, i) => (
                 <LogoItem key={`r2-${item}-${i}`} item={item} />
@@ -124,20 +117,10 @@ const Partners = ({ partners }: { partners: string[] }) => {
           </div>
         </div>
 
-        {/* Bottom note */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center text-xs text-white/20 mt-10 px-6"
-        >
-          Passe o cursor sobre os logos para conhecer nossos parceiros.
-        </motion.p>
       </div>
 
       {/* bottom separator */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-mainOrange/20 to-transparent" />
     </section>
   );
 };

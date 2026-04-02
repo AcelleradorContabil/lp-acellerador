@@ -40,7 +40,7 @@ const Footer = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 mb-12"
         >
 
           {/* ── Brand column ── */}
@@ -116,14 +116,14 @@ const Footer = () => {
             <ul className="flex flex-col gap-4">
               <li>
                 <a
-                  href="mailto:comercial@acelleradorcontabil.com.br"
+                  href="mailto:joao.v@acelleradorcontabil.com.br"
                   className="group flex items-start gap-3 text-sm text-white/50 hover:text-white transition-colors duration-200"
                 >
                   <div className="w-7 h-7 shrink-0 rounded-lg bg-mainOrange/[0.10] border border-mainOrange/20 flex items-center justify-center text-mainOrange mt-0.5">
                     <Mail className="w-3.5 h-3.5" />
                   </div>
                   <span className="leading-snug break-all">
-                    comercial@acelleradorcontabil.com.br
+                    joao.v@acelleradorcontabil.com.br
                   </span>
                 </a>
               </li>

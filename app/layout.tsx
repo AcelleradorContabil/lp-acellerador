@@ -18,10 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <GlobalContextProvider>
-        <CartProvider>
-          <body className={`${outfit.className} h-screen bg-blueAcellera`}>
+    <html lang="pt-BR">
+      <body className={`${outfit.className} bg-blueAcellera`}>
+        <GlobalContextProvider>
+          <CartProvider>
             {children}
             <Toaster
               position="top-right"
@@ -33,9 +33,9 @@ export default function RootLayout({
                 },
               }}
             />
-          </body>
-        </CartProvider>
-      </GlobalContextProvider>
+          </CartProvider>
+        </GlobalContextProvider>
+      </body>
     </html>
   );
 }

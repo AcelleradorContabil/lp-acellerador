@@ -224,7 +224,7 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
       {/* top shimmer line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-      <div className="p-7 flex flex-col gap-5">
+      <div className="p-5 md:p-7 flex flex-col gap-5">
         <div>
           <h3 className="text-lg font-bold text-white mb-1">Fale com a gente</h3>
           <p className="text-sm text-white/40">Nossa equipe responde em até 24 horas úteis.</p>
@@ -281,9 +281,9 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
 // ── Info panel ────────────────────────────────────────────────────────────────
 const InfoPanel = ({ inView }: { inView: boolean }) => {
   const benefits = [
-    { icon: Clock, title: "Resposta em até 24h", desc: "Nosso time comercial entra em contato rapidamente." },
-    { icon: Bot, title: "Onboarding em 5 dias", desc: "Do contrato ao robô operando em menos de uma semana." },
     { icon: ShieldCheck, title: "Sem fidelidade", desc: "Você cancela quando quiser, sem multa ou burocracia." },
+    { icon: Bot, title: "Onboarding de 5 a 15 dias úteis", desc: "Do contrato ao robô operando, com parametrização completa." },
+    { icon: Clock, title: "Resposta em até 24h", desc: "Nosso time comercial entra em contato rapidamente." },
     { icon: MessageCircle, title: "Suporte humanizado", desc: "Atendimento real, não bots, direto no WhatsApp." },
   ];
 
@@ -389,11 +389,11 @@ const StatementBanner = ({ inView }: { inView: boolean }) => (
           <Zap className="w-3 h-3" />
           Comece agora
         </div>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
+        <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
           Pronto para parar de{" "}
           <br className="hidden md:block" />
           perder tempo{" "}
-          <span style={{ color: "#e76714", textShadow: "0 0 20px rgba(231,103,20,0.5)" }}>
+          <span style={{ color: "#e76714" }}>
             com o manual?
           </span>
         </h2>

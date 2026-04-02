@@ -3,9 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
   ShoppingCart, Play, Zap, ArrowRight, Clock,
-  Users, FileText, Wallet, FileSpreadsheet, UserMinus, Home,
-  BarChart2, Monitor, Upload, FileCheck, Receipt, Database,
-  Package, Download, FileOutput, FileInput, Building2,
+  Users, FileText, Wallet, FileSpreadsheet, UserMinus,
+  BarChart2, Monitor, Upload, FileCheck,
+  Download, FileInput, RefreshCw,
   ChevronRight,
 } from "lucide-react";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
@@ -24,58 +24,59 @@ type Robot = {
 
 const dpRobots: Robot[] = [
   {
+    id: "fgts",
+    title: "FGTS",
+    benefit: "Todas as guias em segundos",
+    description: "Confere Domínio × FGTS Digital, emite a guia e salva os detalhamentos por empresa em segundos. Chega de abrir portal um a um.",
+    timeSaved: "~12h/mês",
+    videoUrl: "https://www.youtube.com/embed/tYlcLEI9ShY",
+    highlight: true,
+    icon: <Wallet className="w-5 h-5" />,
+  },
+  {
     id: "esocial",
     title: "eSocial",
     benefit: "Fim das transmissões manuais",
     description: "Transmite todos os eventos do eSocial automaticamente, valida, gera relatório e alerta erros em tempo real — sem sua equipe tocar no sistema.",
-    timeSaved: "~12h/mês",
+    timeSaved: "~17h/mês",
     highlight: true,
     icon: <Users className="w-5 h-5" />,
   },
   {
     id: "dctf-web",
-    title: "DCTF WEB",
+    title: "DCTFWEB",
     benefit: "Conferência e envio em 1 clique",
     description: "Confere Domínio × eCac, transmite automaticamente e salva guias e recibos organizados. Zero intervenção manual, 100% de conformidade.",
-    timeSaved: "~8h/mês",
+    timeSaved: "~17h/mês",
     videoUrl: "https://www.youtube.com/embed/0mxEvzoj8kI",
     highlight: true,
     icon: <FileText className="w-5 h-5" />,
   },
   {
-    id: "fgts",
-    title: "FGTS Digital",
-    benefit: "Todas as guias em segundos",
-    description: "Confere Domínio × FGTS Digital, emite a guia e salva os detalhamentos por empresa em segundos. Chega de abrir portal um a um.",
-    timeSaved: "~6h/mês",
-    videoUrl: "https://www.youtube.com/embed/tYlcLEI9ShY",
-    icon: <Wallet className="w-5 h-5" />,
-  },
-  {
     id: "folha",
-    title: "Folha",
+    title: "Relatório de Folha / Holerite",
     benefit: "PDFs gerados e prontos para envio",
     description: "Gera automaticamente extrato mensal, recibos, pensão e líquidos em PDF — organizados e prontos para enviar ao cliente sem esforço.",
-    timeSaved: "~5h/mês",
+    timeSaved: "~17h/mês",
     videoUrl: "https://www.youtube.com/embed/RF_AuQPXfRM",
     icon: <FileSpreadsheet className="w-5 h-5" />,
+  },
+  {
+    id: "recalculo-fgts",
+    title: "Recalculo FGTS Sefip / Digital",
+    benefit: "Recálculo sem abrir empresa a empresa",
+    description: "Realiza o recálculo do FGTS via SEFIP ou FGTS Digital automaticamente, gerando os relatórios de diferença por empresa sem intervenção manual.",
+    timeSaved: "~25h/mês",
+    icon: <RefreshCw className="w-5 h-5" />,
   },
   {
     id: "rescisao",
     title: "Rescisão",
     benefit: "Documentos completos sem retrabalho",
     description: "Calcula, gera e salva todos os documentos de rescisão automaticamente. Seu time recebe o processo pronto — sem abrir o sistema.",
-    timeSaved: "~4h/processo",
+    timeSaved: "~1,5h/processo",
     videoUrl: "https://www.youtube.com/embed/74rR0g5cphs",
     icon: <UserMinus className="w-5 h-5" />,
-  },
-  {
-    id: "domestica",
-    title: "Doméstica",
-    benefit: "Processamento completo sem esforço",
-    description: "Processa guias, relatórios e conferência de valores de empregada doméstica de ponta a ponta. Libera sua equipe para o que importa.",
-    timeSaved: "~3h/mês",
-    icon: <Home className="w-5 h-5" />,
   },
 ];
 
@@ -85,91 +86,51 @@ const fiscalRobots: Robot[] = [
     title: "REINF",
     benefit: "Apuração e transmissão automática",
     description: "Apura, transmite todos os blocos, salva relatório de envio e totalizadores no eCac — sem você precisar acessar nenhum portal.",
-    timeSaved: "~10h/mês",
+    timeSaved: "~20h/mês",
     videoUrl: "https://www.youtube.com/embed/66oMW_UkQnc",
     highlight: true,
     icon: <BarChart2 className="w-5 h-5" />,
-  },
-  {
-    id: "mit",
-    title: "MIT",
-    benefit: "Monitora e transmite sozinho",
-    description: "Monitora e transmite informações no MIT com validação e controle de status automático. Você não precisa nem abrir o portal.",
-    timeSaved: "~6h/mês",
-    highlight: true,
-    icon: <Monitor className="w-5 h-5" />,
-  },
-  {
-    id: "transmissao-dctf",
-    title: "Transmissão DCTF WEB",
-    benefit: "Recibo salvo sem intervenção",
-    description: "Realiza a transmissão final da DCTF WEB fiscal, confere valores e salva recibo e declaração automaticamente.",
-    timeSaved: "~4h/mês",
-    icon: <Upload className="w-5 h-5" />,
   },
   {
     id: "destda",
     title: "DESTDA",
     benefit: "Geração e envio sem esforço",
     description: "Gera e transmite a DESTDA automaticamente com validação de dados e salvamento de relatórios — sem abrir o sistema manualmente.",
-    timeSaved: "~3h/mês",
+    timeSaved: "~12h/mês",
     icon: <FileCheck className="w-5 h-5" />,
   },
   {
-    id: "das",
-    title: "DAS Simples",
-    benefit: "Lote inteiro em minutos",
-    description: "Emite automaticamente todas as guias DAS do Simples Nacional em lote, com conferência de vencimentos. Em minutos, não horas.",
-    timeSaved: "~5h/mês",
-    icon: <Receipt className="w-5 h-5" />,
-  },
-  {
-    id: "efd",
-    title: "EFD",
-    benefit: "SPED sem uma linha de esforço",
-    description: "Gera, valida e envia a Escrituração Fiscal Digital ao SPED de forma completamente automatizada. Zero intervenção humana.",
-    timeSaved: "~8h/mês",
-    icon: <Database className="w-5 h-5" />,
-  },
-  {
-    id: "sped-fiscal",
-    title: "SPED Fiscal",
-    benefit: "Arquivo validado e transmitido",
-    description: "Gera, valida inconsistências e transmite o arquivo SPED Fiscal automaticamente. Sem erros, sem retrabalho.",
-    timeSaved: "~8h/mês",
-    icon: <Package className="w-5 h-5" />,
-  },
-  {
-    id: "notas-sefaz",
-    title: "Notas SEFAZ",
-    benefit: "Download em lote, organizado",
-    description: "Baixa e organiza automaticamente todas as notas fiscais direto da SEFAZ, em lote por empresa. Sem acesso manual.",
-    timeSaved: "~4h/mês",
-    icon: <Download className="w-5 h-5" />,
-  },
-  {
-    id: "notas-prestadas",
-    title: "Notas Prestadas",
-    benefit: "Captura e organiza sozinho",
-    description: "Captura e organiza automaticamente as notas de serviços prestados com conferência de valores. Tudo pronto na pasta certa.",
-    timeSaved: "~3h/mês",
-    icon: <FileOutput className="w-5 h-5" />,
+    id: "mit",
+    title: "MIT",
+    benefit: "Monitora e transmite sozinho",
+    description: "Monitora e transmite informações no MIT com validação e controle de status automático. Você não precisa nem abrir o portal.",
+    timeSaved: "~17h/mês",
+    highlight: true,
+    icon: <Monitor className="w-5 h-5" />,
   },
   {
     id: "notas-tomadas",
-    title: "Notas Tomadas",
+    title: "Tomados",
     benefit: "Lote baixado e conferido",
     description: "Baixa e organiza em lote as notas tomadas com conferência automática de dados fiscais. Sem abrir empresa por empresa.",
-    timeSaved: "~3h/mês",
+    timeSaved: "~17h/mês",
     icon: <FileInput className="w-5 h-5" />,
   },
   {
-    id: "dec-poa",
-    title: "DEC POA",
-    benefit: "Documentos baixados automaticamente",
-    description: "Acessa, baixa e organiza documentos fiscais do DEC Porto Alegre sem nenhum acesso manual. Simples e direto.",
-    timeSaved: "~2h/mês",
-    icon: <Building2 className="w-5 h-5" />,
+    id: "download-portal-nacional",
+    title: "Download Portal Nacional",
+    benefit: "Documentos baixados em lote",
+    description: "Acessa o Portal Nacional e baixa automaticamente documentos e certidões por empresa, sem nenhum acesso manual ao portal.",
+    timeSaved: "~20h/mês",
+    icon: <Download className="w-5 h-5" />,
+  },
+  {
+    id: "transmissao-dctf",
+    title: "Transmissão Final DCTFWEB",
+    benefit: "Recibo salvo sem intervenção",
+    description: "Realiza a transmissão final da DCTF WEB fiscal, confere valores e salva recibo e declaração automaticamente.",
+    timeSaved: "~10h/mês",
+    icon: <Upload className="w-5 h-5" />,
   },
 ];
 
@@ -236,7 +197,7 @@ const MobileRobotCard = ({ robot, index }: { robot: Robot; index: number }) => {
 
         <div className="flex items-center gap-2 self-start px-3 py-1.5 rounded-xl" style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.20)" }}>
           <Clock className="w-3 h-3 text-green-400" />
-          <span className="text-xs font-semibold text-green-300">{robot.timeSaved} economizados/mês</span>
+          <span className="text-xs font-semibold text-green-300">{robot.timeSaved} economizados</span>
         </div>
 
         <div className="flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: "rgba(231,103,20,0.07)", border: "1px solid rgba(231,103,20,0.18)" }}>
@@ -259,7 +220,7 @@ const MobileRobotCard = ({ robot, index }: { robot: Robot; index: number }) => {
             <ShoppingCart className="w-3.5 h-3.5" />
             Quero este robô
           </button>
-          {robot.videoUrl && (
+          {robot.videoUrl ? (
             <a
               href={robot.videoUrl}
               target="_blank"
@@ -270,6 +231,14 @@ const MobileRobotCard = ({ robot, index }: { robot: Robot; index: number }) => {
               <Play className="w-3.5 h-3.5" />
               Demo
             </a>
+          ) : (
+            <span
+              className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-semibold cursor-not-allowed select-none"
+              style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.22)" }}
+            >
+              <Play className="w-3.5 h-3.5" />
+              Demo
+            </span>
           )}
         </div>
       </div>
@@ -336,7 +305,7 @@ const DetailPanel = ({ robot }: { robot: Robot }) => {
           <h3 className="text-3xl font-black text-white leading-tight tracking-tight mb-2">{robot.title}</h3>
           <p
             className="text-sm font-bold uppercase tracking-widest"
-            style={{ color: "#e76714", textShadow: "0 0 12px rgba(231,103,20,0.45)" }}
+            style={{ color: "#e76714" }}
           >
             {robot.benefit}
           </p>
@@ -353,7 +322,7 @@ const DetailPanel = ({ robot }: { robot: Robot }) => {
           style={{ background: "rgba(34,197,94,0.09)", border: "1px solid rgba(34,197,94,0.22)" }}
         >
           <Clock className="w-4 h-4 text-green-400" />
-          <span className="text-sm font-semibold text-green-300">{robot.timeSaved} economizados/mês</span>
+          <span className="text-sm font-semibold text-green-300">{robot.timeSaved} economizados</span>
         </div>
 
         {/* Divider */}
@@ -387,7 +356,7 @@ const DetailPanel = ({ robot }: { robot: Robot }) => {
             Quero este robô
           </button>
 
-          {robot.videoUrl && (
+          {robot.videoUrl ? (
             <a
               href={robot.videoUrl}
               target="_blank"
@@ -410,6 +379,18 @@ const DetailPanel = ({ robot }: { robot: Robot }) => {
               <Play className="w-4 h-4" />
               Demo
             </a>
+          ) : (
+            <span
+              className="flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-sm font-semibold cursor-not-allowed select-none"
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.07)",
+                color: "rgba(255,255,255,0.25)",
+              }}
+            >
+              <Play className="w-4 h-4" />
+              Demo
+            </span>
           )}
         </div>
       </div>
@@ -479,7 +460,7 @@ const Products = () => {
           <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-mainOrange/[0.09] blur-[80px] pointer-events-none" />
           <div className="absolute -left-10 bottom-0 w-48 h-48 rounded-full bg-blueAcellera/40 blur-[70px] pointer-events-none" />
 
-          <div className="relative z-10 px-8 md:px-14 py-10 md:py-12">
+          <div className="relative z-10 px-5 md:px-14 py-8 md:py-12">
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -502,7 +483,7 @@ const Products = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.05] tracking-tight mb-4"
+                  className="text-2xl md:text-4xl lg:text-6xl font-black text-white leading-[1.05] tracking-tight mb-4"
                 >
                   Seu escritório trabalhando{" "}
                   <span
@@ -510,7 +491,6 @@ const Products = () => {
                       background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
-                      filter: "drop-shadow(0 0 4px #e76714) drop-shadow(0 0 16px rgba(231,103,20,0.50))",
                     }}
                   >
                     {typed}
@@ -526,7 +506,7 @@ const Products = () => {
                   transition={{ duration: 0.6, delay: 0.35 }}
                   className="text-white/50 text-base md:text-lg leading-relaxed"
                 >
-                  Cada robô elimina horas de trabalho manual por mês. Pague apenas pelo que usar — por CNPJ, sem mensalidade fixa.
+                  Cada robô elimina horas de trabalho manual por mês. Mensalidade por CNPJ, sem fidelidade — cancele quando quiser.
                 </motion.p>
               </div>
 
@@ -535,7 +515,7 @@ const Products = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="flex flex-row lg:flex-col gap-4 lg:gap-3 shrink-0"
+                className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0"
               >
                 {[
                   { value: "+3,3M", label: "Execuções realizadas" },
@@ -550,7 +530,7 @@ const Products = () => {
                     className="flex items-center gap-3 px-4 py-2.5 rounded-2xl"
                     style={{ background: "rgba(231,103,20,0.08)", border: "1px solid rgba(231,103,20,0.20)" }}
                   >
-                    <span className="text-xl font-black whitespace-nowrap" style={{ color: "#e76714", textShadow: "0 0 14px rgba(231,103,20,0.55)" }}>{value}</span>
+                    <span className="text-xl font-black whitespace-nowrap" style={{ color: "#e76714" }}>{value}</span>
                     <span className="text-xs text-white/40 leading-snug">{label}</span>
                   </motion.div>
                 ))}
@@ -586,7 +566,7 @@ const Products = () => {
             <div>
               <h3 className="text-2xl font-extrabold text-white tracking-tight">
                 Nossos{" "}
-                <span style={{ color: "#e76714", textShadow: "0 0 18px rgba(231,103,20,0.50)" }}>Robôs</span>
+                <span style={{ color: "#e76714" }}>Robôs</span>
               </h3>
               <p className="text-sm text-white/35 mt-0.5">Selecione o departamento para explorar</p>
             </div>
@@ -599,7 +579,7 @@ const Products = () => {
                 <button
                   key={tab}
                   onClick={() => handleTabChange(tab)}
-                  className={`relative px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${activeTab === tab ? "text-white" : "text-white/40 hover:text-white/70"}`}
+                  className={`relative px-4 sm:px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${activeTab === tab ? "text-white" : "text-white/40 hover:text-white/70"}`}
                   style={activeTab === tab ? {
                     background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
                     boxShadow: "0 0 24px rgba(231,103,20,0.45), 0 4px 12px rgba(231,103,20,0.30)",

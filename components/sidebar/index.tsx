@@ -4,137 +4,165 @@ import { Context, GlobalContextType } from "@/app/context";
 import Image from "next/image";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Home, Bot, Users, Handshake, Mail, X, ArrowRight, ChevronRight,
+} from "lucide-react";
+import { useGlobalContext } from "@/app/context";
+
+const navigationItems = [
+  { id: "inicio",    label: "Início",    icon: Home },
+  { id: "produtos",  label: "Produtos",  icon: Bot },
+  { id: "sobre",     label: "Sobre",     icon: Users },
+  { id: "parceiros", label: "Parceiros", icon: Handshake },
+  { id: "contato",   label: "Contato",   icon: Mail },
+];
 
 const Sidebar = () => {
-  const { closeSidebar, isSidebarOpen } = useContext(
-    Context
-  ) as GlobalContextType;
+  const { closeSidebar, isSidebarOpen } = useContext(Context) as GlobalContextType;
+  const { openPurchaseModal } = useGlobalContext() as GlobalContextType;
   const { scrollToSection } = useScrollToSection();
-  const [isClosing, setIsClosing] = useState(false);
-
-  const navigationItems = [
-    { id: "inicio", label: "Home", icon: "🏠" },
-    { id: "produtos", label: "Produtos", icon: "🤖" },
-    { id: "sobre", label: "Sobre", icon: "📊" },
-    { id: "parceiros", label: "Parceiros", icon: "🤝" },
-    { id: "contato", label: "Contato", icon: "📧" },
-  ];
 
   const sectionIds = navigationItems.map((item) => item.id);
   const activeSection = useActiveSection(sectionIds);
 
-  const handleNavClick = async (sectionId: string) => {
-    setIsClosing(true);
-    await new Promise((resolve) => setTimeout(resolve, 300));
+  const handleNavClick = (sectionId: string) => {
     closeSidebar();
-    setIsClosing(false);
-    scrollToSection(sectionId);
+    setTimeout(() => scrollToSection(sectionId), 300);
   };
 
   useEffect(() => {
-    if (isSidebarOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-
-    return () => {
-      document.body.style.overflow = "unset";
-    };
+    document.body.style.overflow = isSidebarOpen ? "hidden" : "unset";
+    return () => { document.body.style.overflow = "unset"; };
   }, [isSidebarOpen]);
 
   return (
-    <div
-      className={`
-      w-full h-screen top-0 left-0 z-50 bg-transparent fixed
-      transition-all duration-300 ease-out
-      ${isSidebarOpen ? "visible" : "invisible"}
-    `}
-    >
-      <div className="flex h-full">
-        <div
-          className={`
-          flex flex-col p-5 bg-gradient-to-br from-mainOrange to-orange-700 
-          h-full w-[75%] max-w-[320px] shadow-2xl
-          transform transition-transform duration-300 ease-out
-          ${isSidebarOpen && !isClosing ? "translate-x-0" : "-translate-x-full"}
-        `}
-        >
-          <div className="flex items-center gap-2 mb-8 pb-4 border-b-2 border-white/30">
-            <Image
-              src="/logos/Icones/TituloBranco2.png"
-              alt="Logo acelerador"
-              width="180"
-              height="60"
-              className="animate-fade-in"
-            />
-          </div>
-          <nav className="flex flex-col gap-4">
-            {navigationItems.map((item, index) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`
-                  group flex items-center gap-4 text-white text-2xl font-medium
-                  transition-all duration-300 ease-out
-                  transform hover:translate-x-2
-                  ${activeSection === item.id ? "translate-x-2" : ""}
-                  animate-slide-in
-                `}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <span className="text-3xl opacity-80 group-hover:opacity-100 transition-opacity">
-                  {item.icon}
-                </span>
-                <span
-                  className={`
-                  relative
-                  ${
-                    activeSection === item.id
-                      ? "after:scale-x-100"
-                      : "after:scale-x-0"
-                  }
-                  after:content-[''] after:absolute after:bottom-0 after:left-0
-                  after:w-full after:h-[2px] after:bg-white
-                  after:transform after:origin-left
-                  group-hover:after:scale-x-100 after:transition-transform after:duration-300
-                `}
-                >
-                  {item.label}
-                </span>
-              </button>
-            ))}
-          </nav>
+    <AnimatePresence>
+      {isSidebarOpen && (
+        <div className="fixed inset-0 z-50">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={closeSidebar}
+          />
 
-          <div className="mt-auto pt-8">
-            <button
-              className="
-              w-full p-4 bg-white/20 backdrop-blur-sm text-white rounded-lg
-              border border-white/30
-              transition-all duration-300 ease-out
-              hover:bg-white/30 hover:shadow-lg
-              active:scale-95
-            "
-              onClick={() => {
-                closeSidebar();
-                scrollToSection("contato");
-              }}
+          {/* Panel */}
+          <motion.div
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
+            className="absolute top-0 left-0 h-full w-[78%] max-w-[320px] flex flex-col overflow-hidden"
+            style={{
+              background: "linear-gradient(155deg, rgba(4,50,95,0.99) 0%, rgba(2,18,44,1) 100%)",
+              borderRight: "1px solid rgba(231,103,20,0.22)",
+              boxShadow: "4px 0 40px rgba(0,0,0,0.60)",
+            }}
+          >
+            {/* Orange top shimmer */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-mainOrange/70 to-transparent" />
+            {/* Ambient orb */}
+            <div className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-mainOrange/[0.07] blur-[80px] pointer-events-none" />
+
+            {/* Header */}
+            <div
+              className="relative z-10 flex items-center justify-between px-5 py-4"
+              style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}
             >
-              Acelere sua produtividade
-            </button>
-          </div>
-        </div>
+              <Image
+                src="/logos/Icones/TituloBranco.png"
+                alt="Acellerador"
+                width={120}
+                height={40}
+                priority
+              />
+              <button
+                onClick={closeSidebar}
+                className="w-8 h-8 flex items-center justify-center rounded-xl transition-colors duration-200"
+                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.10)" }}
+              >
+                <X className="w-4 h-4 text-white/60" />
+              </button>
+            </div>
 
-        <div
-          onClick={() => closeSidebar()}
-          className={`
-            flex-1 h-full bg-black/50 backdrop-blur-sm
-            transition-opacity duration-300 ease-out
-            ${isSidebarOpen && !isClosing ? "opacity-100" : "opacity-0"}
-          `}
-        />
-      </div>
-    </div>
+            {/* Nav */}
+            <nav className="relative z-10 flex flex-col gap-4 px-4 pt-12 flex-1">
+              {navigationItems.map((item, i) => {
+                const Icon = item.icon;
+                const isActive = activeSection === item.id;
+                return (
+                  <motion.button
+                    key={item.id}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                    onClick={() => handleNavClick(item.id)}
+                    className="flex items-center gap-5 px-5 py-4 rounded-2xl text-left transition-all duration-300 group relative"
+                    style={{
+                      background: isActive ? "rgba(231,103,20,0.08)" : "transparent",
+                      border: "1px solid",
+                      borderColor: isActive ? "rgba(231,103,20,0.2)" : "transparent",
+                    }}
+                  >
+                    <div
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-300"
+                      style={{
+                        background: isActive ? "rgba(231,103,20,0.15)" : "rgba(255,255,255,0.03)",
+                        border: "1px solid",
+                        borderColor: isActive ? "rgba(231,103,20,0.3)" : "rgba(255,255,255,0.06)",
+                        color: isActive ? "#e76714" : "rgba(255,255,255,0.4)",
+                        boxShadow: isActive ? "0 0 15px rgba(231,103,20,0.2)" : "none",
+                      }}
+                    >
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <span
+                      className="text-lg font-bold tracking-tight transition-colors duration-300"
+                      style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.5)" }}
+                    >
+                      {item.label}
+                    </span>
+                    <ChevronRight
+                      className="w-5 h-5 ml-auto transition-all duration-300"
+                      style={{ 
+                        color: isActive ? "#e76714" : "rgba(255,255,255,0.15)",
+                        transform: isActive ? "translateX(0)" : "translateX(-4px)",
+                        opacity: isActive ? 1 : 0.5
+                      }}
+                    />
+                  </motion.button>
+                );
+              })}
+            </nav>
+
+            {/* CTA */}
+            <div
+              className="relative z-10 p-4"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+            >
+              <motion.button
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.28 }}
+                onClick={() => { closeSidebar(); setTimeout(openPurchaseModal, 300); }}
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-white text-sm font-bold active:scale-95 transition-all duration-200"
+                style={{
+                  background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
+                  boxShadow: "0 0 20px rgba(231,103,20,0.40), 0 4px 14px rgba(231,103,20,0.25)",
+                }}
+              >
+                Começar agora
+                <ArrowRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 };
 

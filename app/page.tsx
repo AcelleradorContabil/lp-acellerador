@@ -7,6 +7,7 @@ import {
   Packages,
   Onboarding,
   Testimonials,
+  VideoTestimonials,
 } from "@/components/mainPageComponents";
 import { WrapperPartners } from "@/components/mainPageComponents/partners/wrapper";
 
@@ -18,6 +19,7 @@ export default function Home() {
       <Onboarding />
       <Packages />
       <Testimonials />
+      <VideoTestimonials />
       <Experience />
       <WrapperPartners />
       <Contact />

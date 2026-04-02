@@ -172,7 +172,7 @@ const TestimonialCard = ({ t }: { t: (typeof testimonials)[0] }) => (
 
       <p
         className="text-sm font-extrabold leading-snug"
-        style={{ color: "#e76714", textShadow: "0 0 8px rgba(231,103,20,0.30)" }}
+        style={{ color: "#e76714" }}
       >
         {t.highlight}
       </p>
@@ -188,7 +188,7 @@ const TestimonialCard = ({ t }: { t: (typeof testimonials)[0] }) => (
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-white truncate">{t.name}</p>
-          <p className="text-xs text-white/35 truncate">{t.role} · {t.company}</p>
+          <p className="text-xs text-white/35 truncate">{t.role}</p>
         </div>
       </div>
     </div>
@@ -234,9 +234,9 @@ const Testimonials = () => (
           +16 estados · 5 estrelas
         </motion.div>
 
-        <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
+        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight tracking-tight mb-4">
           Escritórios que já{" "}
-          <span style={{ color: "#e76714", textShadow: "0 0 4px #e76714, 0 0 16px rgba(231,103,20,0.45)" }}>
+          <span style={{ color: "#e76714" }}>
             viraram o jogo.
           </span>
         </h2>
