@@ -146,7 +146,7 @@ const Start = () => {
 
   return (
     <section
-      id="inicio"
+
       className="relative min-h-[100svh] flex items-center overflow-hidden"
     >
       {/* ── Background glows ── */}

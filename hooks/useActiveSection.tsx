@@ -35,7 +35,7 @@ export const useActiveSection = (
       // Se estiver no topo da página, ativa a primeira seção
       if (window.scrollY < 100 && activeSection !== sectionIds[0]) {
         setActiveSection("inicio");
-        window.history.replaceState(null, "", `#inicio`);
+        window.history.replaceState(null, "", window.location.pathname);
       }
     };
 
