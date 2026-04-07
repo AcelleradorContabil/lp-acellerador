@@ -25,7 +25,6 @@ export const useActiveSection = (
           ) {
             if (activeSection !== sectionIds[i]) {
               setActiveSection(sectionIds[i]);
-              window.history.replaceState(null, "", `#${sectionIds[i]}`);
             }
             return;
           }

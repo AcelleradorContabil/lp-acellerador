@@ -40,8 +40,6 @@ export const useScrollToSection = () => {
           requestAnimationFrame(animateScroll);
         } else {
           setIsScrolling(false);
-          // Atualiza a URL com pushState para navegação por clique
-          window.history.pushState(null, "", `#${sectionId}`);
         }
       };
 
