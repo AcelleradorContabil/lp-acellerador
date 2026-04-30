@@ -34,9 +34,9 @@ const packages: Package[] = [
   {
     id: "growth", name: "Growth", tagline: "O preferido dos escritórios",
     ideal_for: "Para escritórios em crescimento que precisam de mais robôs, suporte estratégico e acompanhamento próximo.",
-    cnpj_range: "101 a 300 CNPJs", popular: true, robots: "Até 7 robôs",
+    cnpj_range: "101 a 300 CNPJs", popular: true, robots: "Até 8 robôs",
     features: [
-      "Tudo do Starter, mais:", "7 robôs ativos (DP + Fiscal)",
+      "Tudo do Starter, mais:", "8 robôs ativos (DP + Fiscal)",
       "Criação de novos robôs sem custo de desenvolvimento", "Parametrização completa e estratégica",
       "Monitoramento com prioridade de atendimento", "NPS mensal + call de acompanhamento",
       "Reunião estratégica trimestral", "Auditoria trimestral de uso",
