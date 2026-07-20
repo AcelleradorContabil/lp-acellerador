@@ -8,15 +8,15 @@ declare global {
 }
 
 export type WhatsappLocation =
-  | "floating" // botão flutuante (todas as telas)
-  | "footer" // rodapé
-  | "contact_cta" // seção Contato — "Falar no WhatsApp agora"
-  | "packages_cta" // card de pacote — CTA principal
-  | "packages_footer" // link "Dúvidas?" abaixo dos pacotes
-  | "packages_custom" // CTA de projeto personalizado
-  | "cart_checkout" // finalizar compra pelo carrinho
-  | "cart_plan_accept" // aceitou a sugestão de pacote no carrinho
-  | "purchase_modal"; // modal de orçamento de robôs
+    | "floating"
+    | "footer"
+    | "contact_cta"
+    | "packages_cta"
+    | "packages_footer"
+    | "packages_custom"
+    | "cart_checkout"
+    | "cart_plan_accept"
+    | "purchase_modal";
 
 export const trackEvent = (
     name: string,
