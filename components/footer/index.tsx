@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Mail, MapPin, Phone, ArrowUpRight, Instagram, Linkedin } from "lucide-react";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
-import { trackWhatsappClick } from "@/lib/analytics";
+import { useWhatsappGate } from "@/app/whatsapp-gate-context";
 
 const navLinks = [
     { id: "inicio", label: "Início" },
@@ -18,6 +18,7 @@ const navLinks = [
 
 const Footer = () => {
     const { scrollToSection } = useScrollToSection();
+    const { requestWhatsapp } = useWhatsappGate();
     const year = new Date().getFullYear();
 
     return (
@@ -133,7 +134,10 @@ const Footer = () => {
                     href="https://wa.me/5551993437038"
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => trackWhatsappClick("footer")}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        requestWhatsapp("https://wa.me/5551993437038", "footer");
+                    }}
                     className="group flex items-start gap-3 text-sm text-white/50 hover:text-white transition-colors duration-200"
                     >
                     <div className="w-7 h-7 shrink-0 rounded-lg bg-mainOrange/[0.10] border border-mainOrange/20 flex items-center justify-center text-mainOrange mt-0.5">

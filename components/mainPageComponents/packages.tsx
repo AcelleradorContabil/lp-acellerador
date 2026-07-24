@@ -7,7 +7,7 @@ import {
     ArrowRight, MessageCircle, Bot, ChevronDown, Building2,
     Wrench, Sparkles,
 } from "lucide-react";
-import { trackWhatsappClick } from "@/lib/analytics";
+import { useWhatsappGate } from "@/app/whatsapp-gate-context";
 
 interface SLA { whatsapp: string; ajustes: string; }
 interface Package {
@@ -86,6 +86,7 @@ const PackageCard = ({
 }: {
     pkg: Package; index: number; expanded: boolean; onToggle: () => void; isInView: boolean;
 }) => {
+    const { requestWhatsapp } = useWhatsappGate();
     const isPopular = !!pkg.popular;
     const [hovered, setHovered] = useState(false);
 
@@ -313,7 +314,10 @@ const PackageCard = ({
                 href={buildWaLink(pkg)}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackWhatsappClick("packages_cta")}
+                onClick={(e) => {
+                    e.preventDefault();
+                    requestWhatsapp(buildWaLink(pkg), "packages_cta");
+                }}
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold text-sm active:scale-[0.97] text-white transition-all duration-300"
                 style={active ? {
                 background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
@@ -351,6 +355,8 @@ export function Packages() {
         const t = setTimeout(() => setTyped(TYPED.slice(0, typed.length + 1)), 65);
         return () => clearTimeout(t);
     }, [typed, typingStarted]);
+
+    const { requestWhatsapp } = useWhatsappGate();
 
     const toggleCard = (id: string) =>
         setExpandedCards((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -461,7 +467,10 @@ export function Packages() {
             href={`https://wa.me/${WHATSAPP}`}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackWhatsappClick("packages_footer")}
+            onClick={(e) => {
+                e.preventDefault();
+                requestWhatsapp(`https://wa.me/${WHATSAPP}`, "packages_footer");
+            }}
             className="underline underline-offset-2 transition-colors duration-200"
             style={{ color: "rgba(231,103,20,0.60)" }}
             onMouseEnter={e => (e.currentTarget.style.color = "#e76714")}
@@ -526,7 +535,13 @@ export function Packages() {
                 href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Tenho uma rotina que gostaria de automatizar e quero saber mais sobre projetos personalizados.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackWhatsappClick("packages_custom")}
+                onClick={(e) => {
+                    e.preventDefault();
+                    requestWhatsapp(
+                        `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Tenho uma rotina que gostaria de automatizar e quero saber mais sobre projetos personalizados.")}`,
+                        "packages_custom"
+                    );
+                }}
                 className="shrink-0 flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white whitespace-nowrap transition-all duration-200 active:scale-95"
                 style={{
                 background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",

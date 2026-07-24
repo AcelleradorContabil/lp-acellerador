@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { sendClickupLead } from "@/app/utils";
-import { trackWhatsappClick } from "@/lib/analytics";
+import { useWhatsappGate } from "@/app/whatsapp-gate-context";
 import { GlassInput } from "@/components/glass-input";
 import toast from "react-hot-toast";
 import {
@@ -228,6 +228,7 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
 };
 
 const InfoPanel = ({ inView }: { inView: boolean }) => {
+    const { requestWhatsapp } = useWhatsappGate();
     const benefits = [
         { icon: ShieldCheck, title: "Sem fidelidade", desc: "Você cancela quando quiser, sem multa ou burocracia." },
         { icon: Bot, title: "Onboarding de 5 a 15 dias úteis", desc: "Do contrato ao robô operando, com parametrização completa." },
@@ -292,7 +293,13 @@ const InfoPanel = ({ inView }: { inView: boolean }) => {
             href="https://wa.me/5551993437038?text=Olá! Quero saber mais sobre a Acellerador."
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackWhatsappClick("contact_cta")}
+            onClick={(e) => {
+                e.preventDefault();
+                requestWhatsapp(
+                    "https://wa.me/5551993437038?text=Olá! Quero saber mais sobre a Acellerador.",
+                    "contact_cta"
+                );
+            }}
             initial={{ opacity: 0, y: 12 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.55 }}

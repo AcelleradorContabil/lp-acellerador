@@ -3,9 +3,11 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { GlobalContextProvider } from "./context";
 import { CartProvider } from "./cart-context";
+import { WhatsappGateProvider } from "./whatsapp-gate-context";
 import { Toaster } from "react-hot-toast";
 import Script from "next/script";
 import { GA_ID } from "@/lib/analytics";
+import { CookieConsent } from "@/components/cookie-consent";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -116,9 +118,12 @@ export default function RootLayout({
             )}
         </head>
         <body className={`${outfit.className} bg-blueAcellera`}>
+            <CookieConsent />
             <GlobalContextProvider>
             <CartProvider>
+                <WhatsappGateProvider>
                 {children}
+                </WhatsappGateProvider>
                 <Toaster
                 position="top-right"
                 toastOptions={{

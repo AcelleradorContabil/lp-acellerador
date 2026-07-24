@@ -5,13 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { User, Mail, Phone, MessageSquare, Send, CheckCircle2, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { sendClickupLead } from "@/app/utils";
+import { useWhatsappGate } from "@/app/whatsapp-gate-context";
 import { GlassInput } from "@/components/glass-input";
 
-const STORAGE_KEY = "lead_captured";
-const DELAY_MS = 5000;
-
 const LeadGateModal = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, pendingUrl, close, markCaptured } = useWhatsappGate();
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -20,14 +18,6 @@ const LeadGateModal = () => {
     message: "",
     terms: false,
   });
-
-  // ── Abre o formulário após 5s (uma única vez por navegador) ──
-  useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY) === "true") return;
-
-    const timer = setTimeout(() => setIsOpen(true), DELAY_MS);
-    return () => clearTimeout(timer);
-  }, []);
 
   // ── Bloqueia o scroll da página enquanto o modal está aberto ──
   useEffect(() => {
@@ -39,11 +29,7 @@ const LeadGateModal = () => {
     };
   }, [isOpen]);
 
-  // ── Fecha o modal e não o abre novamente neste navegador ──
-  const handleClose = () => {
-    localStorage.setItem(STORAGE_KEY, "true");
-    setIsOpen(false);
-  };
+  const handleClose = () => close();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -60,19 +46,33 @@ const LeadGateModal = () => {
 
     setSubmitting(true);
 
+    // Abre a aba do WhatsApp já no clique — evita que o bloqueador de popup
+    // barre a abertura depois do await (perda da "ativação do usuário").
+    const waWindow = pendingUrl ? window.open("about:blank", "_blank") : null;
+    if (waWindow) waWindow.opener = null;
+
     const description = `
       Email: ${form.email}
       Whatsapp: ${form.whatsapp}
       Mensagem: ${form.message}
-      Origem: Formulário obrigatório (5s)
+      Origem: ${pendingUrl ? "Botão de WhatsApp (formulário)" : "Formulário automático (5s)"}
     `;
 
     try {
       await sendClickupLead(form.name, description);
-      localStorage.setItem(STORAGE_KEY, "true");
-      toast.success("Obrigado! Em breve nossa equipe entrará em contato.");
-      setIsOpen(false);
+      markCaptured();
+
+      if (pendingUrl) {
+        // Redireciona a aba já aberta para o WhatsApp
+        if (waWindow) waWindow.location.href = pendingUrl;
+        else window.location.href = pendingUrl; // fallback se o popup foi bloqueado
+      } else {
+        toast.success("Obrigado! Em breve nossa equipe entrará em contato.");
+      }
+
+      close();
     } catch {
+      waWindow?.close();
       toast.error("Não foi possível enviar. Tente novamente.");
     } finally {
       setSubmitting(false);
@@ -130,10 +130,12 @@ const LeadGateModal = () => {
               <div className="p-5 md:p-7 flex flex-col gap-5">
                 <div>
                   <h3 className="text-lg font-bold text-white mb-1">
-                    Fale com a gente
+                    {pendingUrl ? "Antes de continuar" : "Fale com a gente"}
                   </h3>
                   <p className="text-sm text-white/40">
-                    Nossa equipe responde em até 24 horas úteis.
+                    {pendingUrl
+                      ? "Deixe seus dados e te levamos direto para o WhatsApp."
+                      : "Nossa equipe responde em até 24 horas úteis."}
                   </p>
                 </div>
 
@@ -194,7 +196,7 @@ const LeadGateModal = () => {
                     {submitting ? "Enviando..." : (
                       <>
                         <Send className="w-4 h-4" />
-                        Enviar mensagem
+                        {pendingUrl ? "Ir para o WhatsApp" : "Enviar mensagem"}
                       </>
                     )}
                   </button>
