@@ -78,7 +78,7 @@ const packages: Package[] = [
 
 const WHATSAPP = "5551993437038";
 function buildWaLink(pkg: Package) {
-  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá! Gostaria de saber mais sobre o pacote ${pkg.name} da Acellerador.`)}`;
+    return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá! Gostaria de saber mais sobre o pacote ${pkg.name} da Acellerador.`)}`;
 }
 
 const PackageCard = ({

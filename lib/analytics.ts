@@ -33,7 +33,6 @@ export const trackWhatsappClick = (location: WhatsappLocation) => {
     trackEvent("whatsapp_click", { location });
 };
 
-// ── Meta (Facebook) Pixel ──
 const isDev = process.env.NODE_ENV === "development";
 
 export const trackMetaEvent = (
@@ -41,8 +40,6 @@ export const trackMetaEvent = (
     params: Record<string, unknown> = {}
 ) => {
     if (typeof window === "undefined" || typeof window.fbq !== "function") {
-        // Em dev, avisa que o evento NÃO foi enviado (pixel não carregado —
-        // geralmente porque o usuário ainda não aceitou os cookies).
         if (isDev) console.log(`[Meta Pixel] ✗ não enviado (pixel não carregado): ${name}`, params);
         return;
     }
@@ -50,7 +47,6 @@ export const trackMetaEvent = (
     window.fbq("track", name, params);
 };
 
-// Dispara o evento de conversão "Lead" quando um formulário é enviado.
 export const trackLead = (params: Record<string, unknown> = {}) => {
     trackMetaEvent("Lead", params);
 };
