@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Mail, Phone, MessageSquare, Send, CheckCircle2, X } from "lucide-react";
 import toast from "react-hot-toast";
-import { sendClickupLead } from "@/app/utils";
+import { sendClickupLead, sendSheetLead } from "@/app/utils";
 import { useWhatsappGate } from "@/app/whatsapp-gate-context";
 import { GlassInput } from "@/components/glass-input";
 
@@ -56,6 +56,15 @@ const LeadGateModal = () => {
         `;
 
         try {
+        sendSheetLead({
+            name: form.name,
+            email: form.email,
+            whatsapp: form.whatsapp,
+            message: form.message,
+            origin: pendingUrl
+            ? "Botão de WhatsApp (formulário)"
+            : "Formulário automático (5s)",
+        });
         await sendClickupLead(form.name, description);
         markCaptured();
 

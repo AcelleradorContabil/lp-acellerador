@@ -47,3 +47,10 @@ yarn-error.log*
 next-env.d.ts
 .claude/
 .claude/
+
+.env
+
+# credenciais de service account (Google Cloud) — NUNCA versionar
+gen-lang-client-0523633724-4f76a7f0e3b2.json
+*.json.key
+*-service-account*.json

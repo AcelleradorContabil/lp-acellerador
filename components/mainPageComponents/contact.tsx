@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
-import { sendClickupLead } from "@/app/utils";
+import { sendClickupLead, sendSheetLead } from "@/app/utils";
 import { useWhatsappGate } from "@/app/whatsapp-gate-context";
 import { GlassInput } from "@/components/glass-input";
 import toast from "react-hot-toast";
@@ -150,6 +150,7 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
         toast.error("Aceite os termos para continuar."); return;
         }
         setLoading(true);
+        sendSheetLead({ name: form.name, email: form.email, whatsapp: form.whatsapp, message: form.message, origin: "Seção de contato" });
         await sendClickupLead(form.name, `Email: ${form.email}\nWhatsApp: ${form.whatsapp}\nMensagem: ${form.message}`);
         toast.success("Recebemos seu contato! Nossa equipe entrará em breve.");
         setForm({ name: "", email: "", whatsapp: "", message: "", terms: false });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { sendClickupLead } from "@/app/utils";
+import { sendClickupLead, sendSheetLead } from "@/app/utils";
 import toast from "react-hot-toast";
 
 const LeadForm = () => {
@@ -32,6 +32,13 @@ const LeadForm = () => {
         `;
 
         sendClickupLead(title, description);
+        sendSheetLead({
+        name: emailData.name,
+        email: emailData.email,
+        whatsapp: emailData.whatsapp,
+        message: emailData.message,
+        origin: "Formulário (lead-form)",
+        });
         toast.success(
         "Seu contato foi salvo com sucesso em nossa base de dados. Em breve nossa equipe entrará em contato!"
         );
