@@ -1,5 +1,9 @@
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
-export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+// Aceita um ou mais pixels separados por virgula: "123,456"
+export const META_PIXEL_IDS = (process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
 
 declare global {
     interface Window {

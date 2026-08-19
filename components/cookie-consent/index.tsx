@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Script from "next/script";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
-import { META_PIXEL_ID } from "@/lib/analytics";
+import { META_PIXEL_IDS } from "@/lib/analytics";
 
 const CONSENT_KEY = "cookie_consent";
 
@@ -23,14 +23,15 @@ const CookieConsent = () => {
     };
 
     const showBanner = ready && consent === null;
-    const pixelEnabled = consent === "accepted" && !!META_PIXEL_ID;
+    const pixelEnabled = consent === "accepted" && META_PIXEL_IDS.length > 0;
 
     return (
         <>
         {/* ── Meta Pixel: só é injetado DEPOIS do aceite ── */}
         {pixelEnabled && (
+            <>
             <Script id="meta-pixel" strategy="afterInteractive">
-            {`
+                {`
                 !function(f,b,e,v,n,t,s)
                 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
                 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -39,10 +40,24 @@ const CookieConsent = () => {
                 t.src=v;s=b.getElementsByTagName(e)[0];
                 s.parentNode.insertBefore(t,s)}(window, document,'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '${META_PIXEL_ID}');
+                ${META_PIXEL_IDS.map((id) => `fbq('init', '${id}');`).join(" ")}
                 fbq('track', 'PageView');
-            `}
+                `}
             </Script>
+            <noscript>
+                {META_PIXEL_IDS.map((id) => (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                    key={id}
+                    height="1"
+                    width="1"
+                    style={{ display: "none" }}
+                    alt=""
+                    src={`https://www.facebook.com/tr?id=${id}&ev=PageView&noscript=1`}
+                />
+                ))}
+            </noscript>
+            </>
         )}
 
         {/* ── Banner ── */}
