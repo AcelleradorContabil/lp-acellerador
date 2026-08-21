@@ -56,7 +56,8 @@ const LeadGateModal = () => {
         `;
 
         try {
-        sendSheetLead({
+        sendClickupLead(form.name, description);
+        await sendSheetLead({
             name: form.name,
             email: form.email,
             whatsapp: form.whatsapp,
@@ -65,7 +66,6 @@ const LeadGateModal = () => {
             ? "Botão de WhatsApp (formulário)"
             : "Formulário automático (5s)",
         });
-        await sendClickupLead(form.name, description);
         markCaptured();
 
         if (pendingUrl) {

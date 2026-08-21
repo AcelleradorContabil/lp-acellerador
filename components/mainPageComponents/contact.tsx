@@ -151,8 +151,8 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
         }
         setLoading(true);
         try {
-        sendSheetLead({ name: form.name, email: form.email, whatsapp: form.whatsapp, message: form.message, origin: "Seção de contato" });
-        await sendClickupLead(form.name, `Email: ${form.email}\nWhatsApp: ${form.whatsapp}\nMensagem: ${form.message}`);
+        sendClickupLead(form.name, `Email: ${form.email}\nWhatsApp: ${form.whatsapp}\nMensagem: ${form.message}`);
+        await sendSheetLead({ name: form.name, email: form.email, whatsapp: form.whatsapp, message: form.message, origin: "Seção de contato" });
         toast.success("Recebemos seu contato! Nossa equipe entrará em breve.");
         setForm({ name: "", email: "", whatsapp: "", message: "", terms: false });
         } catch (err) {

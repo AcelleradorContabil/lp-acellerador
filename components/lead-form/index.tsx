@@ -32,14 +32,14 @@ const LeadForm = () => {
         `;
 
         try {
-        sendSheetLead({
+        sendClickupLead(title, description);
+        await sendSheetLead({
             name: emailData.name,
             email: emailData.email,
             whatsapp: emailData.whatsapp,
             message: emailData.message,
             origin: "Formulário (lead-form)",
         });
-        await sendClickupLead(title, description);
         toast.success(
             "Seu contato foi salvo com sucesso em nossa base de dados. Em breve nossa equipe entrará em contato!"
         );
