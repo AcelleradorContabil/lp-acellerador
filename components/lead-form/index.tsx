@@ -31,24 +31,29 @@ const LeadForm = () => {
         Mensagem: ${emailData.message}
         `;
 
-        sendClickupLead(title, description);
+        try {
         sendSheetLead({
-        name: emailData.name,
-        email: emailData.email,
-        whatsapp: emailData.whatsapp,
-        message: emailData.message,
-        origin: "Formulário (lead-form)",
+            name: emailData.name,
+            email: emailData.email,
+            whatsapp: emailData.whatsapp,
+            message: emailData.message,
+            origin: "Formulário (lead-form)",
         });
+        await sendClickupLead(title, description);
         toast.success(
-        "Seu contato foi salvo com sucesso em nossa base de dados. Em breve nossa equipe entrará em contato!"
+            "Seu contato foi salvo com sucesso em nossa base de dados. Em breve nossa equipe entrará em contato!"
         );
         setEmailData({
-        name: "",
-        email: "",
-        whatsapp: "",
-        message: "",
-        check_terms: false,
+            name: "",
+            email: "",
+            whatsapp: "",
+            message: "",
+            check_terms: false,
         });
+        } catch (err) {
+        console.error("Falha ao enviar lead:", err);
+        toast.error("Não foi possível enviar. Tente novamente.");
+        }
     };
 
     return (

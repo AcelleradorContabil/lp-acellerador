@@ -9,11 +9,21 @@ export const sendClickupLead = async (title: string, description: string) => {
         body: JSON.stringify({ title, description }),
     });
 
-    const data = await response.json();
-
-    if (response.ok) {
-        trackLead();
+    // A rota pode responder com texto puro em caso de erro inesperado —
+    // por isso o parse é tolerante, nunca lança por corpo não-JSON.
+    const raw = await response.text();
+    let data: any = null;
+    try {
+        data = raw ? JSON.parse(raw) : null;
+    } catch {
+        data = { ok: response.ok, raw };
     }
+
+    if (!response.ok) {
+        throw new Error(data?.error || `Falha ao enviar lead (${response.status})`);
+    }
+
+    trackLead();
 
     return data;
 }

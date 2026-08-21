@@ -150,11 +150,17 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
         toast.error("Aceite os termos para continuar."); return;
         }
         setLoading(true);
+        try {
         sendSheetLead({ name: form.name, email: form.email, whatsapp: form.whatsapp, message: form.message, origin: "Seção de contato" });
         await sendClickupLead(form.name, `Email: ${form.email}\nWhatsApp: ${form.whatsapp}\nMensagem: ${form.message}`);
         toast.success("Recebemos seu contato! Nossa equipe entrará em breve.");
         setForm({ name: "", email: "", whatsapp: "", message: "", terms: false });
+        } catch (err) {
+        console.error("Falha ao enviar contato:", err);
+        toast.error("Não foi possível enviar. Tente novamente.");
+        } finally {
         setLoading(false);
+        }
     };
 
     return (
