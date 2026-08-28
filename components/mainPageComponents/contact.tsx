@@ -197,8 +197,16 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
                 value={form.message} onChange={(v) => setForm({ ...form, message: v })} />
 
             <label className="flex items-start gap-2.5 cursor-pointer group">
+                {/* Checkbox real (escondido) para que clicar em qualquer
+                    parte do label — inclusive no texto — marque o aceite. */}
+                <input
+                type="checkbox"
+                checked={form.terms}
+                onChange={(e) => setForm({ ...form, terms: e.target.checked })}
+                className="sr-only"
+                />
                 <div
-                onClick={() => setForm({ ...form, terms: !form.terms })}
+                aria-hidden="true"
                 className={`
                     mt-0.5 w-4 h-4 shrink-0 rounded border flex items-center justify-center
                     transition-all duration-200
