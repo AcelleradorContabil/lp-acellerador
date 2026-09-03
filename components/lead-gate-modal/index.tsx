@@ -1,23 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Mail, Phone, MessageSquare, Send, CheckCircle2, X } from "lucide-react";
+import {
+    User,
+    Mail,
+    Phone,
+    Building2,
+    Users,
+    MessageSquare,
+    Send,
+    X,
+} from "lucide-react";
 import toast from "react-hot-toast";
-import { sendClickupLead, sendSheetLead } from "@/app/utils";
-import { useWhatsappGate } from "@/app/whatsapp-gate-context";
+import { useLeadGate } from "@/app/lead-gate-context";
+import { useLeadForm } from "@/hooks/useLeadForm";
 import { GlassInput } from "@/components/glass-input";
 
 const LeadGateModal = () => {
-    const { isOpen, pendingUrl, close, markCaptured } = useWhatsappGate();
-    const [submitting, setSubmitting] = useState(false);
-    const [form, setForm] = useState({
-        name: "",
-        email: "",
-        whatsapp: "",
-        message: "",
-        terms: false,
-    });
+    const { isOpen, pendingAction, close, markCaptured } = useLeadGate();
+    const { values, setField, submitting, isValid, submit } = useLeadForm(
+        pendingAction ? "Formulário de acesso (CTA)" : "Formulário automático (5s)"
+    );
+
+    const handleSubmit = async (event: React.FormEvent) => {
+        // A aba precisa ser aberta ANTES do await, senão o navegador bloqueia
+        // o popup por não estar mais dentro do gesto do usuário.
+        const target =
+        isValid && pendingAction?.type === "url"
+            ? window.open("about:blank", "_blank")
+            : null;
+        if (target) target.opener = null;
+
+        const sent = await submit(event);
+
+        if (!sent) {
+        target?.close();
+        return;
+        }
+
+        markCaptured();
+
+        if (pendingAction?.type === "url") {
+        if (target) target.location.href = pendingAction.url;
+        else window.location.href = pendingAction.url;
+        } else if (pendingAction?.type === "run") {
+        pendingAction.run();
+        } else {
+        toast.success("Obrigado! Em breve nossa equipe entrará em contato.");
+        }
+
+        close();
+    };
 
     useEffect(() => {
         if (!isOpen) return;
@@ -27,64 +61,6 @@ const LeadGateModal = () => {
         document.body.style.overflow = prev;
         };
     }, [isOpen]);
-
-    const handleClose = () => close();
-
-    const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
-
-        if (!form.name || !form.email || !form.whatsapp) {
-        toast.error("Por favor, preencha todos os campos obrigatórios.");
-        return;
-        }
-
-        if (!form.terms) {
-        toast.error("Por favor, aceite os termos para continuar.");
-        return;
-        }
-
-        setSubmitting(true);
-
-        const waWindow = pendingUrl ? window.open("about:blank", "_blank") : null;
-        if (waWindow) waWindow.opener = null;
-
-        const description = `
-        Email: ${form.email}
-        Whatsapp: ${form.whatsapp}
-        Mensagem: ${form.message}
-        Origem: ${pendingUrl ? "Botão de WhatsApp (formulário)" : "Formulário automático (5s)"}
-        `;
-
-        try {
-        sendClickupLead(form.name, description);
-        await sendSheetLead({
-            name: form.name,
-            email: form.email,
-            whatsapp: form.whatsapp,
-            message: form.message,
-            origin: pendingUrl
-            ? "Botão de WhatsApp (formulário)"
-            : "Formulário automático (5s)",
-        });
-        markCaptured();
-
-        if (pendingUrl) {
-            if (waWindow) waWindow.location.href = pendingUrl;
-            else window.location.href = pendingUrl;
-        } else {
-            toast.success("Obrigado! Em breve nossa equipe entrará em contato.");
-        }
-
-        close();
-        } catch (err) {
-        // O motivo real (config do Sheets, rede, etc.) vem na mensagem do erro.
-        console.error("Falha ao gravar lead na planilha:", err);
-        waWindow?.close();
-        toast.error("Não foi possível enviar. Tente novamente.");
-        } finally {
-        setSubmitting(false);
-        }
-    };
 
     return (
         <AnimatePresence>
@@ -97,7 +73,7 @@ const LeadGateModal = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                onClick={handleClose}
+                onClick={close}
                 className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm"
             />
 
@@ -111,9 +87,9 @@ const LeadGateModal = () => {
                 className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none"
             >
                 <div
-                className="relative w-full max-w-md flex flex-col pointer-events-auto rounded-t-2xl sm:rounded-2xl overflow-hidden"
+                className="relative w-full max-w-md max-h-[92vh] sm:max-h-[90vh] overflow-y-auto flex flex-col pointer-events-auto rounded-t-2xl sm:rounded-2xl"
                 style={{
-                    background: "rgba(255,255,255,0.04)",
+                    background: "rgba(6,28,54,0.92)",
                     backdropFilter: "blur(24px)",
                     WebkitBackdropFilter: "blur(24px)",
                     border: "1px solid rgba(255,255,255,0.10)",
@@ -127,7 +103,7 @@ const LeadGateModal = () => {
                 {/* Botão fechar */}
                 <button
                     type="button"
-                    onClick={handleClose}
+                    onClick={close}
                     aria-label="Fechar"
                     className="absolute top-3 right-3 z-10 p-1.5 rounded-full text-white/30 hover:text-white/80 hover:bg-white/[0.06] transition-all duration-200"
                 >
@@ -137,11 +113,11 @@ const LeadGateModal = () => {
                 <div className="p-5 md:p-7 flex flex-col gap-5">
                     <div>
                     <h3 className="text-lg font-bold text-white mb-1">
-                        {pendingUrl ? "Antes de continuar" : "Fale com a gente"}
+                        {pendingAction ? "Antes de continuar" : "Fale com a gente"}
                     </h3>
                     <p className="text-sm text-white/40">
-                        {pendingUrl
-                        ? "Deixe seus dados e te levamos direto para o WhatsApp."
+                        {pendingAction
+                        ? "Deixe seus dados uma única vez e siga navegando à vontade."
                         : "Nossa equipe responde em até 24 horas úteis."}
                     </p>
                     </div>
@@ -150,54 +126,45 @@ const LeadGateModal = () => {
                     <GlassInput
                         icon={User}
                         placeholder="Seu nome *"
-                        value={form.name}
-                        onChange={(v) => setForm({ ...form, name: v })}
+                        value={values.name}
+                        onChange={(v) => setField("name", v)}
                     />
                     <GlassInput
                         icon={Mail}
                         type="email"
                         placeholder="Seu e-mail *"
-                        value={form.email}
-                        onChange={(v) => setForm({ ...form, email: v })}
+                        value={values.email}
+                        onChange={(v) => setField("email", v)}
                     />
                     <GlassInput
                         icon={Phone}
                         placeholder="Seu WhatsApp *"
-                        value={form.whatsapp}
-                        onChange={(v) => setForm({ ...form, whatsapp: v })}
+                        value={values.whatsapp}
+                        onChange={(v) => setField("whatsapp", v)}
+                    />
+                    <GlassInput
+                        icon={Building2}
+                        placeholder="Nome da sua empresa *"
+                        value={values.company}
+                        onChange={(v) => setField("company", v)}
+                    />
+                    <GlassInput
+                        icon={Users}
+                        type="number"
+                        min={1}
+                        inputMode="numeric"
+                        placeholder="Quantidade de colaboradores *"
+                        value={values.employees}
+                        onChange={(v) => setField("employees", v)}
                     />
                     <GlassInput
                         icon={MessageSquare}
                         textarea
-                        rows={4}
+                        rows={3}
                         placeholder="Mensagem (opcional)"
-                        value={form.message}
-                        onChange={(v) => setForm({ ...form, message: v })}
+                        value={values.message}
+                        onChange={(v) => setField("message", v)}
                     />
-
-                    <label className="flex items-start gap-2.5 cursor-pointer group">
-                        {/* Checkbox real (escondido) para que clicar em qualquer
-                            parte do label — inclusive no texto — marque o aceite. */}
-                        <input
-                        type="checkbox"
-                        checked={form.terms}
-                        onChange={(e) => setForm({ ...form, terms: e.target.checked })}
-                        className="sr-only"
-                        />
-                        <div
-                        aria-hidden="true"
-                        className={`
-                            mt-0.5 w-4 h-4 shrink-0 rounded border flex items-center justify-center
-                            transition-all duration-200
-                            ${form.terms ? "bg-mainOrange border-mainOrange" : "border-white/25 bg-white/[0.05]"}
-                        `}
-                        >
-                        {form.terms && <CheckCircle2 className="w-3 h-3 text-white" />}
-                        </div>
-                        <span className="text-xs text-white/40 leading-relaxed">
-                        Autorizo o uso dos dados acima para contato comercial.
-                        </span>
-                    </label>
 
                     <button
                         type="submit"
@@ -211,7 +178,7 @@ const LeadGateModal = () => {
                         {submitting ? "Enviando..." : (
                         <>
                             <Send className="w-4 h-4" />
-                            {pendingUrl ? "Ir para o WhatsApp" : "Enviar mensagem"}
+                            {pendingAction ? "Enviar e continuar" : "Enviar mensagem"}
                         </>
                         )}
                     </button>

@@ -67,7 +67,7 @@ const AppBody = ({ children }: Props) => {
             }`}
             >
             {children}
-            <FloatingWhatsappButton/>
+            <FloatingWhatsappButton />
             </div>
             <PurchaseModal />
             <LeadGateModal />

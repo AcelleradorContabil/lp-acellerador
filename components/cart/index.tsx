@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { X, ShoppingCart, Check, AlertCircle } from "lucide-react";
 import { useCart } from "@/app/cart-context";
 import type { CartItem } from "@/app/cart-context";
-import { trackWhatsappClick } from "@/lib/analytics";
+import { useLeadGate } from "@/app/lead-gate-context";
 
 interface PlanSuggestionModalProps {
     isOpen: boolean;
@@ -84,6 +84,8 @@ export function Cart() {
         clearCart,
     } = useCart();
 
+        const { requireLead } = useLeadGate();
+
         const [editingPrice, setEditingPrice] = useState<string | null>(null);
         const [tempPrice, setTempPrice] = useState<string>("");
         const [cnpjCount, setCnpjCount] = useState<number>(1);
@@ -125,9 +127,10 @@ export function Cart() {
             const message = encodeURIComponent(
             `Olá! Gostaria de finalizar a compra com os seguintes itens:\n${itemsText}\n${totalText}`
             );
-            const whatsappNumber = "5551993437038";
-            trackWhatsappClick("cart_checkout");
-            window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+            requireLead("cart_checkout", {
+            type: "url",
+            url: `https://wa.me/5551993437038?text=${message}`,
+            });
         };
 
         const handleCheckout = () => {
@@ -153,19 +156,19 @@ export function Cart() {
 
         const handleAcceptPlan = () => {
             setShowPlanModal(false);
-            clearCart();
             const message = encodeURIComponent(
             `Olá! Gostaria de finalizar a compra com o pacote ${planSuggestion?.suggestedPlan.name}`
             );
-            const whatsappNumber = "5551993437038";
-            trackWhatsappClick("cart_plan_accept");
-            window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+            clearCart();
+            requireLead("cart_plan_accept", {
+            type: "url",
+            url: `https://wa.me/5551993437038?text=${message}`,
+            });
         };
 
         const handleDeclinePlan = () => {
             setShowPlanModal(false);
-            const totalPrice = getTotalPrice();
-            sendOrderToWhatsapp()
+            sendOrderToWhatsapp();
         };
 
         if (!state.isOpen) {

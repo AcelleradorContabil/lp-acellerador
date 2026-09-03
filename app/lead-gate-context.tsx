@@ -8,27 +8,41 @@ import React, {
     useRef,
     useState,
 } from "react";
-import { trackWhatsappClick, trackLead, type WhatsappLocation } from "@/lib/analytics";
+import { trackCtaClick, type CtaLocation } from "@/lib/analytics";
+import { captureLeadSource } from "@/lib/lead-source";
 
+const CAPTURED_KEY = "lead_captured";
 const DISMISSED_KEY = "lead_gate_dismissed";
 const AUTO_OPEN_DELAY_MS = 5000;
 
-type WhatsappGateContextType = {
+export type GatedAction =
+    | { type: "url"; url: string }
+    | { type: "run"; run: () => void };
+
+type LeadGateContextType = {
     isOpen: boolean;
-    pendingUrl: string | null;
-    requestWhatsapp: (url: string, location: WhatsappLocation) => void;
+    captured: boolean;
+    pendingAction: GatedAction | null;
+    requireLead: (location: CtaLocation, action: GatedAction) => void;
     close: () => void;
     markCaptured: () => void;
 };
 
-const Context = createContext<WhatsappGateContextType | null>(null);
+const Context = createContext<LeadGateContextType | null>(null);
 
-const readSessionFlag = (key: string) =>
-    typeof window !== "undefined" && sessionStorage.getItem(key) === "true";
+export const runGatedAction = (action: GatedAction) => {
+    if (action.type === "url") {
+        window.open(action.url, "_blank", "noopener,noreferrer");
+    } else {
+        action.run();
+    }
+};
 
-const WhatsappGateProvider = ({ children }: { children: React.ReactNode }) => {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [pendingUrl, setPendingUrl] = useState<string | null>(null);
+const LeadGateProvider = ({ children }: { children: React.ReactNode }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [captured, setCaptured] = useState(false);
+    const [hydrated, setHydrated] = useState(false);
+    const [pendingAction, setPendingAction] = useState<GatedAction | null>(null);
     const autoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const clearAutoTimer = useCallback(() => {
@@ -39,59 +53,68 @@ const WhatsappGateProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     useEffect(() => {
-        if (readSessionFlag(DISMISSED_KEY)) return;
+        // Antes de qualquer coisa: a URL ainda tem os parâmetros de campanha.
+        captureLeadSource();
+        setCaptured(localStorage.getItem(CAPTURED_KEY) === "true");
+        setHydrated(true);
+    }, []);
+
+    useEffect(() => {
+        if (!hydrated || captured) return;
+        if (sessionStorage.getItem(DISMISSED_KEY) === "true") return;
 
         autoTimer.current = setTimeout(() => {
-        setPendingUrl(null);
+        setPendingAction(null);
         setIsOpen(true);
         }, AUTO_OPEN_DELAY_MS);
 
         return () => clearAutoTimer();
+    }, [hydrated, captured, clearAutoTimer]);
+
+    const markCaptured = useCallback(() => {
+        localStorage.setItem(CAPTURED_KEY, "true");
+        setCaptured(true);
+        clearAutoTimer();
     }, [clearAutoTimer]);
 
-    const requestWhatsapp = useCallback(
-        (url: string, location: WhatsappLocation) => {
-        trackWhatsappClick(location); // GA4
-        trackLead({ location }); // Meta Pixel → evento "Lead"
-
+    const requireLead = useCallback(
+        (location: CtaLocation, action: GatedAction) => {
+        trackCtaClick(location);
         clearAutoTimer();
-        setPendingUrl(url);
+
+        if (captured) {
+            runGatedAction(action);
+            return;
+        }
+
+        setPendingAction(action);
         setIsOpen(true);
         },
-        [clearAutoTimer]
+        [captured, clearAutoTimer]
     );
 
     const close = useCallback(() => {
-        if (typeof window !== "undefined") {
         sessionStorage.setItem(DISMISSED_KEY, "true");
-        }
         clearAutoTimer();
         setIsOpen(false);
-        setPendingUrl(null);
-    }, [clearAutoTimer]);
-
-    const markCaptured = useCallback(() => {
-        if (typeof window !== "undefined") {
-        sessionStorage.setItem(DISMISSED_KEY, "true");
-        }
-        clearAutoTimer();
+        setPendingAction(null);
     }, [clearAutoTimer]);
 
     return (
         <Context.Provider
-        value={{ isOpen, pendingUrl, requestWhatsapp, close, markCaptured }}
+        value={{ isOpen, captured, pendingAction, requireLead, close, markCaptured }}
         >
         {children}
         </Context.Provider>
     );
 };
 
-const useWhatsappGate = () => {
+const useLeadGate = () => {
     const ctx = useContext(Context);
     if (!ctx) {
-        throw new Error("useWhatsappGate deve ser usado dentro de WhatsappGateProvider");
+        throw new Error("useLeadGate deve ser usado dentro de LeadGateProvider");
     }
     return ctx;
 };
 
-export { WhatsappGateProvider, useWhatsappGate };
+export { LeadGateProvider, useLeadGate };

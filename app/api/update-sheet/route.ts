@@ -1,11 +1,9 @@
 import crypto from "crypto";
 
-// Roda no runtime Node (precisamos do módulo crypto para assinar o JWT).
 export const runtime = "nodejs";
 
 const SHEET_ID = process.env.GOOGLE_SHEET_ID || "";
 const CLIENT_EMAIL = process.env.GOOGLE_SHEETS_CLIENT_EMAIL || "";
-// A chave vem do .env com "\n" literais — convertemos de volta para quebras reais.
 const PRIVATE_KEY = (process.env.GOOGLE_SHEETS_PRIVATE_KEY || "").replace(/\\n/g, "\n");
 const SHEET_TAB = process.env.GOOGLE_SHEET_TAB || "Leads";
 
@@ -17,7 +15,6 @@ function base64url(input: Buffer | string) {
     .replace(/\//g, "_");
 }
 
-// Assina um JWT com a service account e troca por um access token OAuth2.
 async function getAccessToken() {
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: "RS256", typ: "JWT" };
@@ -56,7 +53,16 @@ async function getAccessToken() {
 
 export async function POST(request: Request) {
   try {
-    const { name, email, whatsapp, message, origin } = await request.json();
+    const {
+      name,
+      email,
+      whatsapp,
+      company,
+      employees,
+      message,
+      origin,
+      source,
+    } = await request.json();
 
     if (!name || !email) {
       return new Response("name e email são obrigatórios", { status: 400 });
@@ -67,8 +73,6 @@ export async function POST(request: Request) {
       return new Response("Google Sheets não configurado", { status: 500 });
     }
 
-    // A private_key correta é um bloco PEM. Se não for, o erro é de configuração
-    // (provavelmente colaram o private_key_id no lugar da private_key).
     if (!PRIVATE_KEY.includes("BEGIN PRIVATE KEY")) {
       console.error(
         "GOOGLE_SHEETS_PRIVATE_KEY inválida: esperado bloco PEM (-----BEGIN PRIVATE KEY-----). " +
@@ -88,6 +92,9 @@ export async function POST(request: Request) {
     const timestamp = new Date().toLocaleString("pt-BR", {
       timeZone: "America/Sao_Paulo",
     });
+    // Colunas novas sempre vão para o FIM da linha, para não deslocar o que
+    // já está preenchido na planilha: empresa/colaboradores em G-H e o
+    // canal de origem em I.
     const row = [
       timestamp,
       name,
@@ -95,9 +102,12 @@ export async function POST(request: Request) {
       whatsapp || "",
       message || "",
       origin || "",
+      company || "",
+      employees || "",
+      source || "",
     ];
 
-    const range = `${SHEET_TAB}!A:F`;
+    const range = `${SHEET_TAB}!A:I`;
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(
       range
     )}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;

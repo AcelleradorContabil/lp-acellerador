@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { useCountAnimation, useInViewport } from "@/hooks/useCountAnimation";
 
-// ── Live feed data ─────────────────────────────────────────────────────────────
 const FEED_POOL = [
   { robot: "eSocial", company: "Omega Contábil", action: "Transmitido com sucesso" },
   { robot: "DCTF WEB", company: "MegaOffice", action: "Recibo salvo automaticamente" },
@@ -35,7 +34,6 @@ function nextFeedItem() {
 
 type FeedItem = ReturnType<typeof nextFeedItem>;
 
-// ── Stat counter (used inside dashboard) ──────────────────────────────────────
 const StatCounter = ({
   value, prefix = "", suffix = "", label, sublabel, delay = 0, isInView,
 }: {
@@ -59,7 +57,6 @@ const StatCounter = ({
   );
 };
 
-// ── Dashboard mockup ───────────────────────────────────────────────────────────
 const ACTIVE_ROBOTS = [
   "eSocial", "DCTF WEB", "FGTS Digital", "Folha",
   "REINF", "DAS Simples", "EFD", "MIT", "Rescisão",
@@ -285,7 +282,6 @@ const DashboardMockup = ({ isInView }: { isInView: boolean }) => {
   );
 };
 
-// ── Value cards data ───────────────────────────────────────────────────────────
 const values = [
   {
     icon: <Award className="w-5 h-5" />,
@@ -325,7 +321,6 @@ const values = [
   },
 ];
 
-// ── Stats bar item ─────────────────────────────────────────────────────────────
 const StatsBarItem = ({
   end, prefix, suffix, label, isInView, delay,
 }: {
@@ -345,7 +340,6 @@ const StatsBarItem = ({
   );
 };
 
-// ── Main section ───────────────────────────────────────────────────────────────
 const Experience = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.08 });
@@ -376,7 +370,6 @@ const Experience = () => {
     }
   };
 
-  // Auto-pause quando a seção sai do viewport
   useEffect(() => {
     const section = jhonnyRef.current;
     if (!section) return;

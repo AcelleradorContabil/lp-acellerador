@@ -1,6 +1,10 @@
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
-// Aceita um ou mais pixels separados por virgula: "123,456"
-export const META_PIXEL_IDS = (process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "")
+
+const DEFAULT_META_PIXEL_ID = "1048834397539711";
+
+export const META_PIXEL_IDS = (
+    process.env.NEXT_PUBLIC_META_PIXEL_ID || DEFAULT_META_PIXEL_ID
+)
     .split(",")
     .map((id) => id.trim())
     .filter(Boolean);
@@ -14,13 +18,18 @@ declare global {
     }
 }
 
-export type WhatsappLocation =
-    | "floating"
-    | "footer"
-    | "contact_cta"
-    | "packages_cta"
+export type CtaLocation =
+    | "header"
+    | "sidebar"
+    | "hero"
+    | "products_card"
+    | "products_card_mobile"
+    | "packages_card"
     | "packages_footer"
     | "packages_custom"
+    | "contact_cta"
+    | "footer"
+    | "floating"
     | "cart_checkout"
     | "cart_plan_accept"
     | "purchase_modal";
@@ -33,8 +42,8 @@ export const trackEvent = (
     window.gtag("event", name, params);
 };
 
-export const trackWhatsappClick = (location: WhatsappLocation) => {
-    trackEvent("whatsapp_click", { location });
+export const trackCtaClick = (location: CtaLocation) => {
+    trackEvent("cta_form_click", { location });
 };
 
 const isDev = process.env.NODE_ENV === "development";

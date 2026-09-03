@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 const GlassInput = ({
+    id,
     icon: Icon,
     type = "text",
     placeholder,
@@ -10,7 +11,10 @@ const GlassInput = ({
     onChange,
     textarea,
     rows,
+    min,
+    inputMode,
 }: {
+    id?: string;
     icon: React.ElementType;
     type?: string;
     placeholder: string;
@@ -18,6 +22,8 @@ const GlassInput = ({
     onChange: (v: string) => void;
     textarea?: boolean;
     rows?: number;
+    min?: number;
+    inputMode?: "text" | "numeric" | "email" | "tel";
 }) => {
     const [focused, setFocused] = useState(false);
     const Tag = textarea ? "textarea" : "input";
@@ -33,16 +39,20 @@ const GlassInput = ({
         `}>
         <Icon className={`w-4 h-4 mt-3.5 shrink-0 transition-colors duration-200 ${focused ? "text-mainOrange" : "text-white/30"}`} />
         <Tag
+            id={id}
             type={type}
             placeholder={placeholder}
             value={value}
             rows={rows}
+            min={min}
+            inputMode={inputMode}
             onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange(e.target.value)}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             className={`
             w-full py-3.5 bg-transparent outline-none text-sm text-white placeholder-white/30
             caret-mainOrange resize-none
+            [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
             `}
         />
         </div>

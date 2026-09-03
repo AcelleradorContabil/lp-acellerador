@@ -1,117 +1,75 @@
-import React, { useEffect, useState } from "react";
-import { sendClickupLead, sendSheetLead } from "@/app/utils";
+import React from "react";
 import toast from "react-hot-toast";
+import { useLeadForm } from "@/hooks/useLeadForm";
+import { useLeadGate } from "@/app/lead-gate-context";
 
 const LeadForm = () => {
-    const [emailData, setEmailData] = useState({
-        name: "",
-        email: "",
-        whatsapp: "",
-        message: "",
-        check_terms: false,
-    });
-
-    const handleSave = async (event: React.FormEvent) => {
-        event.preventDefault();
-
-        if (!emailData.name || !emailData.email || !emailData.whatsapp) {
-        toast.error("Por favor, preencha todos os campos obrigatórios.");
-        return;
-        }
-
-        if (!emailData.check_terms) {
-        toast.error("Por favor, aceite os termos para continuar");
-        return;
-        }
-
-        const title = emailData.name;
-        const description = `
-        Email: ${emailData.email}
-        Whatsapp: ${emailData.whatsapp}
-        Mensagem: ${emailData.message}
-        `;
-
-        try {
-        sendClickupLead(title, description);
-        await sendSheetLead({
-            name: emailData.name,
-            email: emailData.email,
-            whatsapp: emailData.whatsapp,
-            message: emailData.message,
-            origin: "Formulário (lead-form)",
-        });
+    const { markCaptured } = useLeadGate();
+    const { values, setField, submitting, submit } = useLeadForm(
+        "Formulário (lead-form)",
+        () => {
+        markCaptured();
         toast.success(
             "Seu contato foi salvo com sucesso em nossa base de dados. Em breve nossa equipe entrará em contato!"
         );
-        setEmailData({
-            name: "",
-            email: "",
-            whatsapp: "",
-            message: "",
-            check_terms: false,
-        });
-        } catch (err) {
-        console.error("Falha ao enviar lead:", err);
-        toast.error("Não foi possível enviar. Tente novamente.");
         }
-    };
+    );
 
     return (
         <form
-        onSubmit={(e) => handleSave(e)}
+        onSubmit={submit}
         className="flex flex-col gap-3 items-center text-black"
         >
         <input
             className="p-3 w-full outline-none caret-mainOrange rounded-md"
             type="text"
             placeholder="Seu Nome *"
-            value={emailData.name}
-            onChange={(e) => setEmailData({ ...emailData, name: e.target.value })}
+            value={values.name}
+            onChange={(e) => setField("name", e.target.value)}
         />
         <input
             className="p-3 w-full outline-none caret-mainOrange rounded-md"
             type="email"
             placeholder="Seu Email *"
-            value={emailData.email}
-            onChange={(e) => setEmailData({ ...emailData, email: e.target.value })}
+            value={values.email}
+            onChange={(e) => setField("email", e.target.value)}
         />
         <input
             className="p-3 w-full outline-none caret-mainOrange rounded-md"
             type="text"
             placeholder="Seu Whatsapp *"
-            value={emailData.whatsapp}
-            onChange={(e) =>
-            setEmailData({ ...emailData, whatsapp: e.target.value })
-            }
+            value={values.whatsapp}
+            onChange={(e) => setField("whatsapp", e.target.value)}
+        />
+        <input
+            className="p-3 w-full outline-none caret-mainOrange rounded-md"
+            type="text"
+            placeholder="Nome da sua empresa *"
+            value={values.company}
+            onChange={(e) => setField("company", e.target.value)}
+        />
+        <input
+            className="p-3 w-full outline-none caret-mainOrange rounded-md"
+            type="number"
+            min={1}
+            inputMode="numeric"
+            placeholder="Quantidade de colaboradores *"
+            value={values.employees}
+            onChange={(e) => setField("employees", e.target.value)}
         />
         <textarea
             rows={5}
             placeholder="Sua mensagem"
             className="w-full resize-none p-3 outline-none caret-mainOrange rounded-md"
-            value={emailData.message}
-            onChange={(e) =>
-            setEmailData({ ...emailData, message: e.target.value })
-            }
+            value={values.message}
+            onChange={(e) => setField("message", e.target.value)}
         />
-        <label className="text-white gap-1 flex">
-            <input
-            type="checkbox"
-            className="accent-mainOrange"
-            checked={emailData.check_terms}
-            onChange={(e) =>
-                setEmailData({ ...emailData, check_terms: e.target.checked })
-            }
-            />
-            <span>
-            Autorizo que os dados preenchidos acima sejam utilizados para nosso
-            contato comercial.
-            </span>
-        </label>
         <button
-            className="p-2 bg-mainOrange rounded-md w-1/2 text-white"
+            className="p-2 bg-mainOrange rounded-md w-1/2 text-white disabled:opacity-60"
             type="submit"
+            disabled={submitting}
         >
-            Enviar
+            {submitting ? "Enviando..." : "Enviar"}
         </button>
         </form>
     );

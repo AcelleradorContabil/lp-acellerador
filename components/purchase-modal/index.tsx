@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { robotsData } from "@/app/cart-context";
 import { useGlobalContext, GlobalContextType } from "@/app/context";
-import { trackWhatsappClick } from "@/lib/analytics";
+import { useLeadGate } from "@/app/lead-gate-context";
 
 const QtyControl = ({
     value,
@@ -131,6 +131,7 @@ const RobotRow = ({
 const PurchaseModal = () => {
     const { isPurchaseModalOpen, closePurchaseModal } =
         useGlobalContext() as GlobalContextType;
+    const { requireLead } = useLeadGate();
 
     const [activeTab, setActiveTab] = useState<"dp" | "fiscal">("dp");
     const [selected, setSelected] = useState<Record<string, number>>({}); // id → cnpjQty
@@ -182,8 +183,10 @@ const PurchaseModal = () => {
         ];
 
         const msg = encodeURIComponent(lines.join("\n"));
-        trackWhatsappClick("purchase_modal");
-        window.open(`https://wa.me/5551993437038?text=${msg}`, "_blank");
+        requireLead("purchase_modal", {
+        type: "url",
+        url: `https://wa.me/5551993437038?text=${msg}`,
+        });
     };
 
     return (

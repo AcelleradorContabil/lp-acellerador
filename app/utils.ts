@@ -1,8 +1,5 @@
 import { trackLead } from "@/lib/analytics";
 
-// ClickUp foi descontinuado internamente. Mantemos o envio como best-effort:
-// nunca lança, nunca bloqueia o formulário e nunca decide o sucesso do envio.
-// Qualquer falha fica só no console — quem manda é o Google Sheets.
 export const sendClickupLead = async (title: string, description: string) => {
     try {
         await fetch("/api/update-clickup", {
@@ -21,13 +18,41 @@ export type SheetLead = {
     name: string;
     email: string;
     whatsapp?: string;
+    company?: string;
+    employees?: string;
     message?: string;
     origin?: string;
+    /** De onde o lead veio, em uma frase: "Instagram (campanha: x)", "Direto". */
+    source?: string;
 };
 
-// Grava o lead na planilha do Google Sheets (colunas separadas).
-// Esta é a fonte de verdade do envio: lança em caso de falha para que o
-// formulário mostre erro, e só dispara a conversão do Pixel se gravou mesmo.
+/**
+ * Cria a oportunidade no PipeRun. Best-effort, igual ao ClickUp: o lead já
+ * está garantido no Sheets, então uma falha aqui não bloqueia o usuário.
+ */
+export const sendCrmLead = async (lead: SheetLead) => {
+    try {
+        const response = await fetch("/api/crm-lead", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(lead),
+        });
+
+        const result = await response.json();
+
+        if (!result?.ok) {
+            console.warn("sendCrmLead não registrou a oportunidade:", result);
+        }
+
+        return result;
+    } catch (err) {
+        console.warn("sendCrmLead falhou (ignorado):", err);
+        return { ok: false };
+    }
+};
+
 export const sendSheetLead = async (lead: SheetLead) => {
     const response = await fetch("/api/update-sheet", {
         method: "POST",
@@ -37,7 +62,6 @@ export const sendSheetLead = async (lead: SheetLead) => {
         body: JSON.stringify(lead),
     });
 
-    // A rota responde com texto puro ("OK" ou a mensagem de erro).
     const body = await response.text();
 
     if (!response.ok) {

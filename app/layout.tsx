@@ -3,7 +3,7 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { GlobalContextProvider } from "./context";
 import { CartProvider } from "./cart-context";
-import { WhatsappGateProvider } from "./whatsapp-gate-context";
+import { LeadGateProvider } from "./lead-gate-context";
 import { Toaster } from "react-hot-toast";
 import Script from "next/script";
 import { GA_ID } from "@/lib/analytics";
@@ -121,9 +121,9 @@ export default function RootLayout({
             <CookieConsent />
             <GlobalContextProvider>
             <CartProvider>
-                <WhatsappGateProvider>
+                <LeadGateProvider>
                 {children}
-                </WhatsappGateProvider>
+                </LeadGateProvider>
                 <Toaster
                 position="top-right"
                 toastOptions={{

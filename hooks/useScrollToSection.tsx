@@ -1,4 +1,3 @@
-// hooks/useScrollToSection.tsx
 import { useCallback, useEffect, useState } from "react";
 
 interface ScrollOptions {

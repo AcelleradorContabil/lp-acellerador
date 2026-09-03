@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Mail, MapPin, Phone, ArrowUpRight, Instagram, Linkedin } from "lucide-react";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
-import { useWhatsappGate } from "@/app/whatsapp-gate-context";
+import { useLeadGate } from "@/app/lead-gate-context";
 
 const navLinks = [
     { id: "inicio", label: "Início" },
@@ -18,7 +18,7 @@ const navLinks = [
 
 const Footer = () => {
     const { scrollToSection } = useScrollToSection();
-    const { requestWhatsapp } = useWhatsappGate();
+    const { requireLead } = useLeadGate();
     const year = new Date().getFullYear();
 
     return (
@@ -130,15 +130,10 @@ const Footer = () => {
                     </a>
                 </li>
                 <li>
-                    <a
-                    href="https://wa.me/5551993437038"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        requestWhatsapp("https://wa.me/5551993437038", "footer");
-                    }}
-                    className="group flex items-start gap-3 text-sm text-white/50 hover:text-white transition-colors duration-200"
+                    <button
+                    type="button"
+                    onClick={() => requireLead("footer", { type: "url", url: "https://wa.me/5551993437038" })}
+                    className="group flex items-start gap-3 text-sm text-white/50 hover:text-white transition-colors duration-200 text-left"
                     >
                     <div className="w-7 h-7 shrink-0 rounded-lg bg-mainOrange/[0.10] border border-mainOrange/20 flex items-center justify-center text-mainOrange mt-0.5">
                         <Phone className="w-3.5 h-3.5" />
@@ -146,7 +141,7 @@ const Footer = () => {
                     <span className="leading-snug">
                         +55 (51) 99343-7038
                     </span>
-                    </a>
+                    </button>
                 </li>
                 <li>
                     <div className="flex items-start gap-3 text-sm text-white/50">

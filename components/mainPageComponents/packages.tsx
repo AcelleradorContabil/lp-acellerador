@@ -7,7 +7,7 @@ import {
     ArrowRight, MessageCircle, Bot, ChevronDown, Building2,
     Wrench, Sparkles,
 } from "lucide-react";
-import { useWhatsappGate } from "@/app/whatsapp-gate-context";
+import { useLeadGate } from "@/app/lead-gate-context";
 
 interface SLA { whatsapp: string; ajustes: string; }
 interface Package {
@@ -86,7 +86,7 @@ const PackageCard = ({
 }: {
     pkg: Package; index: number; expanded: boolean; onToggle: () => void; isInView: boolean;
 }) => {
-    const { requestWhatsapp } = useWhatsappGate();
+    const { requireLead } = useLeadGate();
     const isPopular = !!pkg.popular;
     const [hovered, setHovered] = useState(false);
 
@@ -310,14 +310,9 @@ const PackageCard = ({
 
             {/* CTA */}
             <div className="mt-auto">
-            <a
-                href={buildWaLink(pkg)}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => {
-                    e.preventDefault();
-                    requestWhatsapp(buildWaLink(pkg), "packages_cta");
-                }}
+            <button
+                type="button"
+                onClick={() => requireLead("packages_card", { type: "url", url: buildWaLink(pkg) })}
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold text-sm active:scale-[0.97] text-white transition-all duration-300"
                 style={active ? {
                 background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
@@ -329,7 +324,7 @@ const PackageCard = ({
             >
                 {pkg.cta_label}
                 <ArrowRight className="w-4 h-4" />
-            </a>
+            </button>
             </div>
         </div>
         </motion.div>
@@ -356,7 +351,7 @@ export function Packages() {
         return () => clearTimeout(t);
     }, [typed, typingStarted]);
 
-    const { requestWhatsapp } = useWhatsappGate();
+    const { requireLead } = useLeadGate();
 
     const toggleCard = (id: string) =>
         setExpandedCards((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -463,21 +458,16 @@ export function Packages() {
             style={{ color: "rgba(200,220,255,0.30)" }}
         >
             Todos os planos incluem usuários ilimitados e suporte via WhatsApp · Dúvidas?{" "}
-            <a
-            href={`https://wa.me/${WHATSAPP}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => {
-                e.preventDefault();
-                requestWhatsapp(`https://wa.me/${WHATSAPP}`, "packages_footer");
-            }}
+            <button
+            type="button"
+            onClick={() => requireLead("packages_footer", { type: "url", url: `https://wa.me/${WHATSAPP}` })}
             className="underline underline-offset-2 transition-colors duration-200"
             style={{ color: "rgba(231,103,20,0.60)" }}
             onMouseEnter={e => (e.currentTarget.style.color = "#e76714")}
             onMouseLeave={e => (e.currentTarget.style.color = "rgba(231,103,20,0.60)")}
             >
             Fale com a gente agora
-            </a>
+            </button>
         </motion.p>
 
         {/* ── Custom project banner ── */}
@@ -531,17 +521,14 @@ export function Packages() {
             </div>
 
             {/* CTA */}
-            <a
-                href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Tenho uma rotina que gostaria de automatizar e quero saber mais sobre projetos personalizados.")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => {
-                    e.preventDefault();
-                    requestWhatsapp(
-                        `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Tenho uma rotina que gostaria de automatizar e quero saber mais sobre projetos personalizados.")}`,
-                        "packages_custom"
-                    );
-                }}
+            <button
+                type="button"
+                onClick={() =>
+                    requireLead("packages_custom", {
+                    type: "url",
+                    url: `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Tenho uma rotina que gostaria de automatizar e quero saber mais sobre projetos personalizados.")}`,
+                    })
+                }
                 className="shrink-0 flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white whitespace-nowrap transition-all duration-200 active:scale-95"
                 style={{
                 background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
@@ -552,7 +539,7 @@ export function Packages() {
             >
                 Falar com o comercial
                 <ArrowRight className="w-4 h-4" />
-            </a>
+            </button>
             </div>
         </motion.div>
         </section>

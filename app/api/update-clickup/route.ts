@@ -1,7 +1,3 @@
-// Integração descontinuada internamente: o lead oficial vai para o Google Sheets
-// (/api/update-sheet). Esta rota é best-effort e SEMPRE responde 200 — uma falha
-// aqui não deve poluir o console do navegador nem afetar o formulário.
-// O motivo real da falha fica no log do servidor.
 export async function POST(request: Request) {
   const data = await request.json();
 

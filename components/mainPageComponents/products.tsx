@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
 import { useGlobalContext, GlobalContextType } from "@/app/context";
+import { useLeadGate } from "@/app/lead-gate-context";
 
 type Robot = {
     id: string;
@@ -140,6 +141,7 @@ const TYPED_PHRASE = "enquanto você lidera.";
 
 const MobileRobotCard = ({ robot, index }: { robot: Robot; index: number }) => {
     const { openPurchaseModal } = useGlobalContext() as GlobalContextType;
+    const { requireLead } = useLeadGate();
     return (
         <motion.div
         initial={{ opacity: 0, y: 28 }}
@@ -209,7 +211,7 @@ const MobileRobotCard = ({ robot, index }: { robot: Robot; index: number }) => {
 
             <div className="flex gap-2">
             <button
-                onClick={openPurchaseModal}
+                onClick={() => requireLead("products_card_mobile", { type: "run", run: openPurchaseModal })}
                 className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-white text-xs font-bold transition-all duration-200"
                 style={{
                 background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
@@ -247,6 +249,7 @@ const MobileRobotCard = ({ robot, index }: { robot: Robot; index: number }) => {
 
 const DetailPanel = ({ robot }: { robot: Robot }) => {
     const { openPurchaseModal } = useGlobalContext() as GlobalContextType;
+    const { requireLead } = useLeadGate();
 
     return (
         <motion.div
@@ -341,7 +344,7 @@ const DetailPanel = ({ robot }: { robot: Robot }) => {
             {/* Actions */}
             <div className="flex gap-3 mt-auto">
             <button
-                onClick={openPurchaseModal}
+                onClick={() => requireLead("products_card", { type: "run", run: openPurchaseModal })}
                 className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl text-white text-sm font-bold active:scale-[0.97] transition-all duration-200"
                 style={{
                 background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",

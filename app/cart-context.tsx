@@ -104,7 +104,6 @@ function cartReducer(state: CartState, action: CartAction): CartState {
             ),
             };
         }
-        // Calcular desconto ao adicionar novo item
         const discount = excludedDiscountItems.includes(action.payload.id)
             ? 0
             : getDiscountPercent(1);
