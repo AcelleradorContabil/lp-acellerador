@@ -140,7 +140,7 @@ const LeadGateModal = () => {
                         icon={Phone}
                         type="tel"
                         inputMode="tel"
-                        placeholder="Seu WhatsApp * — (51) 99999-9999"
+                        placeholder="Seu WhatsApp *"
                         value={values.whatsapp}
                         onChange={(v) => setField("whatsapp", v)}
                     />

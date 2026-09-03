@@ -38,7 +38,7 @@ const LeadForm = () => {
             className="p-3 w-full outline-none caret-mainOrange rounded-md"
             type="tel"
             inputMode="tel"
-            placeholder="Seu Whatsapp * — (51) 99999-9999"
+            placeholder="Seu Whatsapp *"
             value={values.whatsapp}
             onChange={(e) => setField("whatsapp", e.target.value)}
         />
