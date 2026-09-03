@@ -4,7 +4,7 @@ const CRM_BASE = "https://api.pipe.run/v1";
 
 const PIPELINE_ID = Number(process.env.CRM_PIPELINE_ID || 80972);
 const STAGE_ID = Number(process.env.CRM_STAGE_ID || 629576);
-const ORIGIN_ID = Number(process.env.CRM_ORIGIN_ID || 759195);
+const ORIGIN_ID = Number(process.env.CRM_ORIGIN_ID || 714765);
 
 type CrmLead = {
   name: string;
