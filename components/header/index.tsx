@@ -5,6 +5,7 @@ import { useScrollToSection } from "@/hooks/useScrollToSection";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useGlobalContext, GlobalContextType } from "@/app/context";
 import { useLeadGate } from "@/app/lead-gate-context";
+import { primaryCtaAction } from "@/lib/cta";
 
 const Header = () => {
     const { scrollToSection, isScrolling } = useScrollToSection();
@@ -119,7 +120,7 @@ const Header = () => {
 
             {/* CTA — right */}
             <button
-            onClick={() => requireLead("header", { type: "run", run: openPurchaseModal })}
+            onClick={() => requireLead("header", primaryCtaAction(openPurchaseModal))}
             disabled={isScrolling}
             style={{ boxShadow: "0 0 14px rgba(231,103,20,0.40), 0 2px 10px rgba(231,103,20,0.25)" }}
             onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 28px rgba(231,103,20,0.65), 0 4px 16px rgba(231,103,20,0.40)")}

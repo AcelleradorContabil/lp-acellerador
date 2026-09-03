@@ -11,6 +11,7 @@ import {
 import { useScrollToSection } from "@/hooks/useScrollToSection";
 import { useGlobalContext, GlobalContextType } from "@/app/context";
 import { useLeadGate } from "@/app/lead-gate-context";
+import { primaryCtaAction } from "@/lib/cta";
 
 type Robot = {
     id: string;
@@ -211,7 +212,7 @@ const MobileRobotCard = ({ robot, index }: { robot: Robot; index: number }) => {
 
             <div className="flex gap-2">
             <button
-                onClick={() => requireLead("products_card_mobile", { type: "run", run: openPurchaseModal })}
+                onClick={() => requireLead("products_card_mobile", primaryCtaAction(openPurchaseModal))}
                 className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-white text-xs font-bold transition-all duration-200"
                 style={{
                 background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",
@@ -344,7 +345,7 @@ const DetailPanel = ({ robot }: { robot: Robot }) => {
             {/* Actions */}
             <div className="flex gap-3 mt-auto">
             <button
-                onClick={() => requireLead("products_card", { type: "run", run: openPurchaseModal })}
+                onClick={() => requireLead("products_card", primaryCtaAction(openPurchaseModal))}
                 className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl text-white text-sm font-bold active:scale-[0.97] transition-all duration-200"
                 style={{
                 background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",

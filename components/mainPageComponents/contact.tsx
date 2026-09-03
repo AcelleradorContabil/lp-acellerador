@@ -177,7 +177,8 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
                 onChange={(v) => setField("name", v)} />
             <GlassInput icon={Mail} type="email" placeholder="Seu e-mail *" value={values.email}
                 onChange={(v) => setField("email", v)} />
-            <GlassInput icon={Phone} placeholder="Seu WhatsApp *" value={values.whatsapp}
+            <GlassInput icon={Phone} type="tel" inputMode="tel"
+                placeholder="Seu WhatsApp * — (51) 99999-9999" value={values.whatsapp}
                 onChange={(v) => setField("whatsapp", v)} />
             <GlassInput icon={Building2} placeholder="Nome da sua empresa *" value={values.company}
                 onChange={(v) => setField("company", v)} />

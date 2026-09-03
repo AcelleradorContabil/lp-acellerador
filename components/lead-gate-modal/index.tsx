@@ -138,7 +138,9 @@ const LeadGateModal = () => {
                     />
                     <GlassInput
                         icon={Phone}
-                        placeholder="Seu WhatsApp *"
+                        type="tel"
+                        inputMode="tel"
+                        placeholder="Seu WhatsApp * — (51) 99999-9999"
                         value={values.whatsapp}
                         onChange={(v) => setField("whatsapp", v)}
                     />

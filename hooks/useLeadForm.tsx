@@ -23,6 +23,21 @@ const EMPTY_VALUES: LeadFormValues = {
     message: "",
 };
 
+const PHONE_DIGITS = 11; // DDD (2) + 9 dígitos
+
+/** Aplica a máscara (51) 99343-7038 conforme o usuário digita. */
+export const formatPhone = (raw: string) => {
+    const digits = raw.replace(/\D/g, "").slice(0, PHONE_DIGITS);
+
+    if (!digits) return "";
+    if (digits.length <= 2) return `(${digits}`;
+    if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+};
+
+const isValidPhone = (value: string) =>
+    value.replace(/\D/g, "").length === PHONE_DIGITS;
+
 const REQUIRED_FIELDS: (keyof LeadFormValues)[] = [
     "name",
     "email",
@@ -36,15 +51,25 @@ export const useLeadForm = (origin: string, onSuccess?: () => void) => {
     const [submitting, setSubmitting] = useState(false);
 
     const setField = (field: keyof LeadFormValues, value: string) =>
-        setValues((prev) => ({ ...prev, [field]: value }));
+        setValues((prev) => ({
+        ...prev,
+        [field]: field === "whatsapp" ? formatPhone(value) : value,
+        }));
 
-    const isValid = REQUIRED_FIELDS.every((field) => !!values[field].trim());
+    const isValid =
+        REQUIRED_FIELDS.every((field) => !!values[field].trim()) &&
+        isValidPhone(values.whatsapp);
 
     const submit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (!isValid) {
+        if (!REQUIRED_FIELDS.every((field) => !!values[field].trim())) {
         toast.error("Por favor, preencha todos os campos obrigatórios.");
+        return false;
+        }
+
+        if (!isValidPhone(values.whatsapp)) {
+        toast.error("Informe um WhatsApp válido com DDD e 9 dígitos.");
         return false;
         }
 

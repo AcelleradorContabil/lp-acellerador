@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
 import { useGlobalContext, GlobalContextType } from "@/app/context";
 import { useLeadGate } from "@/app/lead-gate-context";
+import { primaryCtaAction } from "@/lib/cta";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import {
@@ -262,7 +263,7 @@ const Start = () => {
                 className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-10 w-full sm:w-auto"
                 >
                 <button
-                    onClick={() => requireLead("hero", { type: "run", run: openPurchaseModal })}
+                    onClick={() => requireLead("hero", primaryCtaAction(openPurchaseModal))}
                     className="flex items-center justify-center gap-2 px-7 py-4 sm:py-3.5 rounded-xl bg-mainOrange text-white font-bold text-sm active:scale-95 transition-all duration-200"
                     style={{ boxShadow: "0 0 20px rgba(231,103,20,0.50), 0 4px 16px rgba(231,103,20,0.30)" }}
                     onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 36px rgba(231,103,20,0.75), 0 4px 24px rgba(231,103,20,0.45)")}

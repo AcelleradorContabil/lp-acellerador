@@ -8,6 +8,7 @@ import Image from "next/image";
 import FloatingWhatsappButton from "../whatsapp-icon";
 import { PurchaseModal } from "../purchase-modal";
 import { LeadGateModal } from "../lead-gate-modal";
+import { PURCHASE_MODAL_ENABLED } from "@/lib/feature-flags";
 
 type Props = {
     children: React.ReactNode;
@@ -69,7 +70,7 @@ const AppBody = ({ children }: Props) => {
             {children}
             <FloatingWhatsappButton />
             </div>
-            <PurchaseModal />
+            {PURCHASE_MODAL_ENABLED && <PurchaseModal />}
             <LeadGateModal />
         </main>
         )
