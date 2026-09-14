@@ -55,7 +55,11 @@ const LeadGateProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         // Antes de qualquer coisa: a URL ainda tem os parâmetros de campanha.
         captureLeadSource();
-        setCaptured(localStorage.getItem(CAPTURED_KEY) === "true");
+        // O gate vale por sessão, não para sempre: quem voltar noutro dia
+        // preenche de novo. Limpa o registro antigo em localStorage, que
+        // deixava os CTAs pulando o formulário permanentemente.
+        localStorage.removeItem(CAPTURED_KEY);
+        setCaptured(sessionStorage.getItem(CAPTURED_KEY) === "true");
         setHydrated(true);
     }, []);
 
@@ -72,7 +76,7 @@ const LeadGateProvider = ({ children }: { children: React.ReactNode }) => {
     }, [hydrated, captured, clearAutoTimer]);
 
     const markCaptured = useCallback(() => {
-        localStorage.setItem(CAPTURED_KEY, "true");
+        sessionStorage.setItem(CAPTURED_KEY, "true");
         setCaptured(true);
         clearAutoTimer();
     }, [clearAutoTimer]);

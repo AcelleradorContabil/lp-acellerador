@@ -151,7 +151,9 @@ const Sidebar = () => {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35, delay: 0.28 }}
-                    onClick={() => { closeSidebar(); setTimeout(() => requireLead("sidebar", primaryCtaAction(openPurchaseModal)), 300); }}
+                    // Sem setTimeout: fora do gesto do clique o navegador
+                    // bloqueia a abertura do WhatsApp como popup.
+                    onClick={() => { closeSidebar(); requireLead("sidebar", primaryCtaAction(openPurchaseModal)); }}
                     className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-white text-sm font-bold active:scale-95 transition-all duration-200"
                     style={{
                     background: "linear-gradient(135deg, #e76714 0%, #f0821e 100%)",

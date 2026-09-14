@@ -6,6 +6,7 @@ import Image from "next/image";
 import { GlassInput } from "@/components/glass-input";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { useLeadGate } from "@/app/lead-gate-context";
+import { LEAD_THANKS_URL } from "@/lib/cta";
 import toast from "react-hot-toast";
 import {
     Zap,
@@ -140,13 +141,28 @@ const BackgroundElements = () => (
 
 const ContactForm = ({ inView }: { inView: boolean }) => {
     const { markCaptured } = useLeadGate();
-    const { values, setField, submitting, submit } = useLeadForm(
-        "Seção de contato",
-        () => {
-        markCaptured();
-        toast.success("Recebemos seu contato! Nossa equipe entrará em breve.");
+    const { values, setField, submitting, isValid, submit } =
+        useLeadForm("Seção de contato");
+
+    const handleSubmit = async (event: React.FormEvent) => {
+        // Abrimos a aba ANTES do await: depois dele o navegador já não
+        // reconhece o gesto do usuário e bloqueia como popup.
+        const target = isValid ? window.open("about:blank", "_blank") : null;
+        if (target) target.opener = null;
+
+        const sent = await submit(event);
+
+        if (!sent) {
+        target?.close();
+        return;
         }
-    );
+
+        markCaptured();
+        toast.success("Recebemos seu contato! Vamos continuar no WhatsApp.");
+
+        if (target) target.location.href = LEAD_THANKS_URL;
+        else window.location.href = LEAD_THANKS_URL;
+    };
 
     return (
         <motion.div
@@ -172,7 +188,7 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
             <p className="text-sm text-white/40">Nossa equipe responde em até 24 horas úteis.</p>
             </div>
 
-            <form onSubmit={submit} className="flex flex-col gap-3">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <GlassInput id="contato-nome" icon={User} placeholder="Seu nome *" value={values.name}
                 onChange={(v) => setField("name", v)} />
             <GlassInput icon={Mail} type="email" placeholder="Seu e-mail *" value={values.email}

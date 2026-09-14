@@ -86,22 +86,25 @@ export const useLeadForm = (origin: string, onSuccess?: () => void) => {
         `Origem: ${origin}`,
         ].join("\n");
 
-        try {
-        await Promise.all([
-            sendClickupLead(values.name, description),
-            sendCrmLead({ ...values, origin }),
-            sendSheetLead({ ...values, origin, source }),
+        // allSettled, não all: uma integração fora do ar não pode derrubar as
+        // outras nem — principalmente — impedir que a pessoa caia no WhatsApp.
+        // Antes, uma falha só do Sheets gravava o lead no CRM e mesmo assim
+        // fechava a aba do WhatsApp já aberta.
+        const results = await Promise.allSettled([
+        sendClickupLead(values.name, description),
+        sendCrmLead({ ...values, origin }),
+        sendSheetLead({ ...values, origin, source }),
         ]);
+
+        const failed = results.filter((r) => r.status === "rejected");
+        if (failed.length) {
+        console.error("Falha parcial ao registrar o lead:", failed);
+        }
+
         setValues(EMPTY_VALUES);
+        setSubmitting(false);
         onSuccess?.();
         return true;
-        } catch (err) {
-        console.error("Falha ao enviar lead:", err);
-        toast.error("Não foi possível enviar. Tente novamente.");
-        return false;
-        } finally {
-        setSubmitting(false);
-        }
     };
 
     return { values, setField, submitting, isValid, submit };

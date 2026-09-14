@@ -12,10 +12,10 @@ import {
     Send,
     X,
 } from "lucide-react";
-import toast from "react-hot-toast";
 import { useLeadGate } from "@/app/lead-gate-context";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { GlassInput } from "@/components/glass-input";
+import { LEAD_THANKS_URL } from "@/lib/cta";
 
 const LeadGateModal = () => {
     const { isOpen, pendingAction, close, markCaptured } = useLeadGate();
@@ -26,8 +26,11 @@ const LeadGateModal = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         // A aba precisa ser aberta ANTES do await, senão o navegador bloqueia
         // o popup por não estar mais dentro do gesto do usuário.
+        // Todo envio termina no WhatsApp, inclusive o do modal automático
+        // (pendingAction === null), que antes só mostrava um toast.
+        const goesToWhatsapp = pendingAction?.type !== "run";
         const target =
-        isValid && pendingAction?.type === "url"
+        isValid && goesToWhatsapp
             ? window.open("about:blank", "_blank")
             : null;
         if (target) target.opener = null;
@@ -41,13 +44,12 @@ const LeadGateModal = () => {
 
         markCaptured();
 
-        if (pendingAction?.type === "url") {
-        if (target) target.location.href = pendingAction.url;
-        else window.location.href = pendingAction.url;
-        } else if (pendingAction?.type === "run") {
+        if (pendingAction?.type === "run") {
         pendingAction.run();
         } else {
-        toast.success("Obrigado! Em breve nossa equipe entrará em contato.");
+        const url = pendingAction?.url ?? LEAD_THANKS_URL;
+        if (target) target.location.href = url;
+        else window.location.href = url;
         }
 
         close();

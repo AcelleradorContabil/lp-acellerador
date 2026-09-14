@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Mail, MapPin, Phone, ArrowUpRight, Instagram, Linkedin } from "lucide-react";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
 import { useLeadGate } from "@/app/lead-gate-context";
+import { buildWaLink } from "@/lib/cta";
 
 const navLinks = [
     { id: "inicio", label: "Início" },
@@ -132,7 +133,7 @@ const Footer = () => {
                 <li>
                     <button
                     type="button"
-                    onClick={() => requireLead("footer", { type: "url", url: "https://wa.me/5551993437038" })}
+                    onClick={() => requireLead("footer", { type: "url", url: buildWaLink("Olá! Vim pelo site da Acellerador e gostaria de falar com o time.") })}
                     className="group flex items-start gap-3 text-sm text-white/50 hover:text-white transition-colors duration-200 text-left"
                     >
                     <div className="w-7 h-7 shrink-0 rounded-lg bg-mainOrange/[0.10] border border-mainOrange/20 flex items-center justify-center text-mainOrange mt-0.5">

@@ -2,22 +2,36 @@ import React from "react";
 import toast from "react-hot-toast";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { useLeadGate } from "@/app/lead-gate-context";
+import { LEAD_THANKS_URL } from "@/lib/cta";
 
 const LeadForm = () => {
     const { markCaptured } = useLeadGate();
-    const { values, setField, submitting, submit } = useLeadForm(
-        "Formulário (lead-form)",
-        () => {
-        markCaptured();
-        toast.success(
-            "Seu contato foi salvo com sucesso em nossa base de dados. Em breve nossa equipe entrará em contato!"
-        );
-        }
+    const { values, setField, submitting, isValid, submit } = useLeadForm(
+        "Formulário (lead-form)"
     );
+
+    const handleSubmit = async (event: React.FormEvent) => {
+        // A aba precisa abrir antes do await, senão vira popup bloqueado.
+        const target = isValid ? window.open("about:blank", "_blank") : null;
+        if (target) target.opener = null;
+
+        const sent = await submit(event);
+
+        if (!sent) {
+        target?.close();
+        return;
+        }
+
+        markCaptured();
+        toast.success("Contato salvo! Vamos continuar no WhatsApp.");
+
+        if (target) target.location.href = LEAD_THANKS_URL;
+        else window.location.href = LEAD_THANKS_URL;
+    };
 
     return (
         <form
-        onSubmit={submit}
+        onSubmit={handleSubmit}
         className="flex flex-col gap-3 items-center text-black"
         >
         <input
