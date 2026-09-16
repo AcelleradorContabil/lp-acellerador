@@ -9,6 +9,7 @@ const WrapperPartners = async () => {
   const partners = [
     "akartos.webp",
     "apice.png",
+    "auditar.svg",
     "cg.jpg",
     "contabexpress.png",
     "ecs.png",
@@ -17,17 +18,13 @@ const WrapperPartners = async () => {
     "focosmais.jpg",
     "fortus.avif",
     "funcional.png",
-    "grupoinn.webp",
     "jjr.jpg",
-    "macrocont.webp",
     "mast.png",
-    "max.jpeg",
     "megaoffice.png",
     "pessato.png",
+    "planning-logo.svg",
     "rsm contabilidade.jpg",
-    "samapli.png",
     "silveira soares.jpg",
-    "sousa e couto.jpg",
     "zip.png",
   ];
   
