@@ -11,6 +11,7 @@ export type LeadFormValues = {
     whatsapp: string;
     company: string;
     employees: string;
+    clients: string;
     message: string;
 };
 
@@ -20,6 +21,7 @@ const EMPTY_VALUES: LeadFormValues = {
     whatsapp: "",
     company: "",
     employees: "",
+    clients: "",
     message: "",
 };
 
@@ -35,6 +37,11 @@ export const formatPhone = (raw: string) => {
     return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 };
 
+const NUMERIC_FIELDS: (keyof LeadFormValues)[] = ["employees", "clients"];
+
+/** Mantém só dígitos: descarta letras, sinais, vírgula e espaços. */
+const onlyDigits = (raw: string) => raw.replace(/\D/g, "");
+
 const isValidPhone = (value: string) =>
     value.replace(/\D/g, "").length === PHONE_DIGITS;
 
@@ -44,6 +51,7 @@ const REQUIRED_FIELDS: (keyof LeadFormValues)[] = [
     "whatsapp",
     "company",
     "employees",
+    "clients",
 ];
 
 export const useLeadForm = (origin: string, onSuccess?: () => void) => {
@@ -53,7 +61,12 @@ export const useLeadForm = (origin: string, onSuccess?: () => void) => {
     const setField = (field: keyof LeadFormValues, value: string) =>
         setValues((prev) => ({
         ...prev,
-        [field]: field === "whatsapp" ? formatPhone(value) : value,
+        [field]:
+            field === "whatsapp"
+            ? formatPhone(value)
+            : NUMERIC_FIELDS.includes(field)
+            ? onlyDigits(value)
+            : value,
         }));
 
     const isValid =
@@ -82,6 +95,7 @@ export const useLeadForm = (origin: string, onSuccess?: () => void) => {
         `WhatsApp: ${values.whatsapp}`,
         `Empresa: ${values.company}`,
         `Colaboradores: ${values.employees}`,
+        `Quantidade de clientes: ${values.clients}`,
         `Mensagem: ${values.message}`,
         `Origem: ${origin}`,
         ].join("\n");

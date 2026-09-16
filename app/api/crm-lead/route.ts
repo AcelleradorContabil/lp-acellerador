@@ -12,6 +12,7 @@ type CrmLead = {
   whatsapp?: string;
   company?: string;
   employees?: string;
+  clients?: string;
   message?: string;
   origin?: string;
 };
@@ -71,6 +72,7 @@ async function findOrCreatePerson(
 
   const observation = [
     lead.employees ? `Colaboradores: ${lead.employees}` : null,
+    lead.clients ? `Quantidade de clientes: ${lead.clients}` : null,
     lead.company ? `Empresa: ${lead.company}` : null,
     lead.message ? `Mensagem: ${lead.message}` : null,
     lead.origin ? `Origem do formulario: ${lead.origin}` : null,

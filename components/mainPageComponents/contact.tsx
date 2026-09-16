@@ -22,6 +22,7 @@ import {
     Users,
     MessageSquare,
     Send,
+    Briefcase,
 } from "lucide-react";
 
 const RocketIcon = ({ className }: { className?: string }) => (
@@ -198,9 +199,12 @@ const ContactForm = ({ inView }: { inView: boolean }) => {
                 onChange={(v) => setField("whatsapp", v)} />
             <GlassInput icon={Building2} placeholder="Nome da sua empresa *" value={values.company}
                 onChange={(v) => setField("company", v)} />
-            <GlassInput icon={Users} type="number" min={1} inputMode="numeric"
+            <GlassInput icon={Users} type="text" inputMode="numeric"
                 placeholder="Quantidade de colaboradores *" value={values.employees}
                 onChange={(v) => setField("employees", v)} />
+            <GlassInput icon={Briefcase} type="text" inputMode="numeric"
+                placeholder="Quantidade de clientes *" value={values.clients}
+                onChange={(v) => setField("clients", v)} />
             <GlassInput icon={MessageSquare} textarea rows={4} placeholder="Mensagem (opcional)"
                 value={values.message} onChange={(v) => setField("message", v)} />
 

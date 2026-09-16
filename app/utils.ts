@@ -20,6 +20,7 @@ export type SheetLead = {
     whatsapp?: string;
     company?: string;
     employees?: string;
+    clients?: string;
     message?: string;
     origin?: string;
     /** De onde o lead veio, em uma frase: "Instagram (campanha: x)", "Direto". */

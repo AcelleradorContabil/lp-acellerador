@@ -65,12 +65,21 @@ const LeadForm = () => {
         />
         <input
             className="p-3 w-full outline-none caret-mainOrange rounded-md"
-            type="number"
-            min={1}
+            type="text"
+            pattern="[0-9]*"
             inputMode="numeric"
             placeholder="Quantidade de colaboradores *"
             value={values.employees}
             onChange={(e) => setField("employees", e.target.value)}
+        />
+        <input
+            className="p-3 w-full outline-none caret-mainOrange rounded-md"
+            type="text"
+            pattern="[0-9]*"
+            inputMode="numeric"
+            placeholder="Quantidade de clientes *"
+            value={values.clients}
+            onChange={(e) => setField("clients", e.target.value)}
         />
         <textarea
             rows={5}

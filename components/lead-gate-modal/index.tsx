@@ -11,6 +11,7 @@ import {
     MessageSquare,
     Send,
     X,
+    Briefcase,
 } from "lucide-react";
 import { useLeadGate } from "@/app/lead-gate-context";
 import { useLeadForm } from "@/hooks/useLeadForm";
@@ -154,12 +155,19 @@ const LeadGateModal = () => {
                     />
                     <GlassInput
                         icon={Users}
-                        type="number"
-                        min={1}
+                        type="text"
                         inputMode="numeric"
                         placeholder="Quantidade de colaboradores *"
                         value={values.employees}
                         onChange={(v) => setField("employees", v)}
+                    />
+                    <GlassInput
+                        icon={Briefcase}
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="Quantidade de clientes *"
+                        value={values.clients}
+                        onChange={(v) => setField("clients", v)}
                     />
                     <GlassInput
                         icon={MessageSquare}

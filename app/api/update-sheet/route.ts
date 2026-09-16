@@ -59,6 +59,7 @@ export async function POST(request: Request) {
       whatsapp,
       company,
       employees,
+      clients,
       message,
       origin,
       source,
@@ -94,7 +95,7 @@ export async function POST(request: Request) {
     });
     // Colunas novas sempre vão para o FIM da linha, para não deslocar o que
     // já está preenchido na planilha: empresa/colaboradores em G-H e o
-    // canal de origem em I.
+    // canal de origem em I, quantidade de clientes em J.
     const row = [
       timestamp,
       name,
@@ -105,9 +106,10 @@ export async function POST(request: Request) {
       company || "",
       employees || "",
       source || "",
+      clients || "",
     ];
 
-    const range = `${SHEET_TAB}!A:I`;
+    const range = `${SHEET_TAB}!A:J`;
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(
       range
     )}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
