@@ -29,13 +29,11 @@ body {
     text-wrap: balance;
   }
   
-  /* Animação para elementos que deslizam da esquerda */
   .animate-slide-in {
     animation: slideIn 0.5s ease-out forwards;
     opacity: 0;
   }
   
-  /* Animação suave de fade in */
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out forwards;
   }
@@ -61,36 +59,30 @@ body {
   }
 }
 
-/* Previne scroll horizontal indesejado */
 html {
   overflow-x: hidden;
 }
 
-/* Suaviza as transições de scroll */
 html.is-scrolling {
   scroll-behavior: auto;
 }
 
-/* Remove o outline padrão e adiciona um personalizado */
 *:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(231, 103, 20, 0.5);
 }
 
-/* Melhora a aparência dos botões durante interação */
 button, a {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-/* Evita zoom automático em inputs no iOS Safari (requer ≥16px) */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   input, textarea, select {
     font-size: 16px !important;
   }
 }
 
-/* Animações customizadas */
 @keyframes float {
   0%, 100% {
     transform: translateY(0) translateX(0) scale(1);
@@ -125,4 +117,58 @@ button, a {
 
 .animate-shimmer {
   animation: shimmer 3s ease-in-out infinite;
+}
+.hero-in {
+  animation: hero-in var(--hero-duration, 0.7s) cubic-bezier(0.4, 0, 0.2, 1)
+    var(--hero-delay, 0s) both;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: var(--hero-from, none);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-pop {
+  animation: hero-pop 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes hero-pop {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.hero-float {
+  animation: hero-float 5s ease-in-out infinite;
+}
+
+@keyframes hero-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in,
+  .hero-pop,
+  .hero-float {
+    animation: none;
+  }
+}
+
+.below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1200px;
 }

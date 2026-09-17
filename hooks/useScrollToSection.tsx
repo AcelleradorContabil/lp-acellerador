@@ -19,10 +19,9 @@ export const useScrollToSection = () => {
 
         if (!element) return;
 
-        const targetPosition =
+        const getTarget = () =>
             element.getBoundingClientRect().top + window.pageYOffset - offset;
         const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
         const startTime = performance.now();
 
         setIsScrolling(true);
@@ -32,7 +31,7 @@ export const useScrollToSection = () => {
             const progress = Math.min(elapsed / duration, 1);
             const ease = easeInOutCubic(progress);
 
-            window.scrollTo(0, startPosition + distance * ease);
+            window.scrollTo(0, startPosition + (getTarget() - startPosition) * ease);
 
             if (progress < 1) {
             requestAnimationFrame(animateScroll);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Play, Pause, ChevronLeft, ChevronRight, User, Building2, Star } from "lucide-react";
 
 const videoTestimonials = [
@@ -64,6 +64,7 @@ const VideoTestimonials = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const nearView = useInView(sectionRef, { once: true, margin: "600px 0px" });
 
   const current = videoTestimonials[currentIndex];
 
@@ -78,11 +79,11 @@ const VideoTestimonials = () => {
   };
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && nearView) {
       videoRef.current.load();
       setIsPlaying(false);
     }
-  }, [currentIndex]);
+  }, [currentIndex, nearView]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -112,13 +113,11 @@ const VideoTestimonials = () => {
 
   return (
     <section ref={sectionRef} id="depoimentos-video" className="py-16 md:py-24 relative overflow-hidden bg-[#020c1e]">
-      {/* Ambient backgrounds */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-mainOrange/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blueAcellera/10 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-[1800px] mx-auto px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 relative z-10">
 
-        {/* Header */}
         <div className="text-center mb-12 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -149,13 +148,10 @@ const VideoTestimonials = () => {
           </motion.p>
         </div>
 
-        {/* Main carousel layout */}
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-10 lg:gap-14">
 
-          {/* ── Portrait video ── */}
           <div className="relative flex items-center gap-4 lg:gap-6 flex-shrink-0">
 
-            {/* Desktop prev button */}
             <button
               onClick={prev}
               className="hidden md:flex w-11 h-11 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center hover:bg-mainOrange hover:border-mainOrange transition-all duration-300 shrink-0"
@@ -163,7 +159,6 @@ const VideoTestimonials = () => {
               <ChevronLeft className="w-5 h-5" />
             </button>
 
-            {/* Video container — 9:16 */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -180,7 +175,6 @@ const VideoTestimonials = () => {
                 }}
                 onClick={togglePlay}
               >
-                {/* Top accent */}
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-mainOrange/70 to-transparent z-10" />
 
                 <video
@@ -189,11 +183,11 @@ const VideoTestimonials = () => {
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
                   playsInline
+                  preload="metadata"
                 >
-                  <source src={current.videoUrl} type="video/mp4" />
+                  {nearView && <source src={current.videoUrl} type="video/mp4" />}
                 </video>
 
-                {/* Play overlay */}
                 {!isPlaying && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/35 hover:bg-black/25 transition-all duration-300">
                     <motion.div
@@ -207,7 +201,6 @@ const VideoTestimonials = () => {
                   </div>
                 )}
 
-                {/* Pause overlay */}
                 {isPlaying && (
                   <div
                     className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300"
@@ -222,10 +215,8 @@ const VideoTestimonials = () => {
                   </div>
                 )}
 
-                {/* Bottom gradient overlay */}
                 <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/80 to-transparent pointer-events-none z-10" />
 
-                {/* Client badge at bottom */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 z-20 pointer-events-none">
                   <div className="flex items-center gap-2.5">
                     <div className={`w-8 h-8 rounded-xl bg-gradient-to-br ${current.color} flex items-center justify-center shrink-0`}>
@@ -240,7 +231,6 @@ const VideoTestimonials = () => {
               </motion.div>
             </AnimatePresence>
 
-            {/* Desktop next button */}
             <button
               onClick={next}
               className="hidden md:flex w-11 h-11 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center hover:bg-mainOrange hover:border-mainOrange transition-all duration-300 shrink-0"
@@ -249,7 +239,6 @@ const VideoTestimonials = () => {
             </button>
           </div>
 
-          {/* ── Info panel ── */}
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
@@ -259,14 +248,12 @@ const VideoTestimonials = () => {
               transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
               className="flex flex-col gap-6 flex-1 w-full lg:max-w-none"
             >
-              {/* Stars */}
               <div className="flex gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-mainOrange text-mainOrange" />
                 ))}
               </div>
 
-              {/* Highlight */}
               <div>
                 <p className="text-mainOrange text-xs font-black uppercase tracking-widest mb-3">Destaque</p>
                 <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight">
@@ -274,7 +261,6 @@ const VideoTestimonials = () => {
                 </h3>
               </div>
 
-              {/* Quote */}
               <p
                 className="text-base md:text-lg leading-relaxed"
                 style={{ color: "rgba(255,255,255,0.55)" }}
@@ -282,7 +268,6 @@ const VideoTestimonials = () => {
                 "{current.quote}"
               </p>
 
-              {/* Client card */}
               <div
                 className="flex items-center gap-4 p-4 rounded-2xl"
                 style={{
@@ -299,9 +284,7 @@ const VideoTestimonials = () => {
                 </div>
               </div>
 
-              {/* Counter + nav — desktop dots + mobile full nav */}
               <div className="flex items-center gap-4">
-                {/* Mobile nav buttons */}
                 <button
                   onClick={prev}
                   className="md:hidden flex w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center active:bg-mainOrange active:border-mainOrange transition-all duration-300 shrink-0"
@@ -309,7 +292,6 @@ const VideoTestimonials = () => {
                   <ChevronLeft className="w-4 h-4" />
                 </button>
 
-                {/* Dots */}
                 <div className="flex gap-2">
                   {videoTestimonials.map((_, i) => (
                     <button
@@ -322,7 +304,6 @@ const VideoTestimonials = () => {
                   ))}
                 </div>
 
-                {/* Mobile next button */}
                 <button
                   onClick={next}
                   className="md:hidden flex w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center active:bg-mainOrange active:border-mainOrange transition-all duration-300 shrink-0"
@@ -330,7 +311,6 @@ const VideoTestimonials = () => {
                   <ChevronRight className="w-4 h-4" />
                 </button>
 
-                {/* Counter text */}
                 <span className="text-white/25 text-xs font-medium ml-auto">
                   {currentIndex + 1} / {videoTestimonials.length}
                 </span>

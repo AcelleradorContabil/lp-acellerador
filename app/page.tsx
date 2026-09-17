@@ -15,15 +15,14 @@ export default function Home() {
     return (
         <AppBody>
         <Start />
-        <Products />
-        <Onboarding />
-        <Packages />
-        {/* <Testimonials /> */}
-        <VideoTestimonials />
-        <Experience />
-        <WrapperPartners />
-        <Contact />
-        <Footer />
+        <div className="below-fold"><Products /></div>
+        <div className="below-fold"><Onboarding /></div>
+        <div className="below-fold"><Packages /></div>
+        <div className="below-fold"><VideoTestimonials /></div>
+        <div className="below-fold"><Experience /></div>
+        <div className="below-fold"><WrapperPartners /></div>
+        <div className="below-fold"><Contact /></div>
+        <div className="below-fold"><Footer /></div>
         </AppBody>
     );
 }

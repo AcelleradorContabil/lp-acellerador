@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Header } from "../header";
 import { GlobalContextType, useGlobalContext } from "@/app/context";
 import { Sidebar } from "../sidebar";
@@ -51,29 +51,21 @@ const SidebarHeader = () => {
 };
 
 const AppBody = ({ children }: Props) => {
-    const [isMounted, setIsMounted] = useState<boolean>(false);
-    const { isMobile } = useGlobalContext() as GlobalContextType;
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
     return (
-        isMounted && (
         <main>
-            {isMobile ? <SidebarHeader /> : <Header />}
-            <div
-            className={`flex flex-col gap-10 md:gap-20 bg-blueAcellera ${
-                isMobile ? "pt-16" : "pt-0"
-            }`}
-            >
+            <div className="xl:hidden">
+                <SidebarHeader />
+            </div>
+            <div className="hidden xl:block">
+                <Header />
+            </div>
+            <div className="flex flex-col gap-10 md:gap-20 bg-blueAcellera pt-16 xl:pt-0">
             {children}
             <FloatingWhatsappButton />
             </div>
             {PURCHASE_MODAL_ENABLED && <PurchaseModal />}
             <LeadGateModal />
         </main>
-        )
     );
 };
 

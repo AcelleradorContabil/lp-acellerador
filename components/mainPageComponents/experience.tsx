@@ -111,7 +111,6 @@ const DashboardMockup = ({ isInView }: { isInView: boolean }) => {
     >
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-mainOrange/60 to-transparent" />
 
-      {/* Window chrome */}
       <div
         className="flex items-center justify-between px-5 py-3.5"
         style={{ borderBottom: "1px solid rgba(255,255,255,0.07)", background: "rgba(0,0,0,0.20)" }}
@@ -130,7 +129,6 @@ const DashboardMockup = ({ isInView }: { isInView: boolean }) => {
         </div>
       </div>
 
-      {/* Stats row */}
       <div
         ref={statsRef as React.RefObject<HTMLDivElement>}
         className="grid grid-cols-3 sm:grid-cols-5 gap-px overflow-x-auto"
@@ -149,7 +147,6 @@ const DashboardMockup = ({ isInView }: { isInView: boolean }) => {
         ))}
       </div>
 
-      {/* Main content */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.04)" }}>
         <div className="md:col-span-2 bg-[#010e24] p-5">
           <div className="flex items-center justify-between mb-4">
@@ -261,7 +258,6 @@ const DashboardMockup = ({ isInView }: { isInView: boolean }) => {
         </div>
       </div>
 
-      {/* Status bar */}
       <div
         className="flex items-center justify-between px-5 py-2.5"
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)", background: "rgba(0,0,0,0.15)" }}
@@ -355,6 +351,7 @@ const Experience = () => {
 
   const jhonnyRef = useRef<HTMLDivElement>(null);
   const jhonnyInView = useInView(jhonnyRef, { once: true, amount: 0.2 });
+  const jhonnyNearView = useInView(jhonnyRef, { once: true, margin: "600px 0px" });
 
   const [isPlayingJhonny, setIsPlayingJhonny] = useState(false);
   const videoJhonnyRef = useRef<HTMLVideoElement>(null);
@@ -369,6 +366,10 @@ const Experience = () => {
       setIsPlayingJhonny(!isPlayingJhonny);
     }
   };
+
+  useEffect(() => {
+    if (jhonnyNearView) videoJhonnyRef.current?.load();
+  }, [jhonnyNearView]);
 
   useEffect(() => {
     const section = jhonnyRef.current;
@@ -388,13 +389,11 @@ const Experience = () => {
   return (
     <section ref={sectionRef} id="sobre" className="scroll-mt-20 relative overflow-hidden">
 
-      {/* Ambient glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full bg-mainOrange/[0.04] blur-[140px]" />
         <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-blueAcellera/20 blur-[100px]" />
       </div>
 
-      {/* ── 1. Full-width statement banner ── */}
       <motion.div
         initial={{ opacity: 0, y: 28 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -406,14 +405,11 @@ const Experience = () => {
           boxShadow: "0 20px 60px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.07)",
         }}
       >
-        {/* Orange top shimmer */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-mainOrange/70 to-transparent" />
-        {/* Ambient orbs */}
         <div className="absolute -right-24 -top-24 w-80 h-80 rounded-full bg-mainOrange/[0.07] blur-[100px] pointer-events-none" />
         <div className="absolute -left-16 bottom-0 w-60 h-60 rounded-full bg-blueAcellera/30 blur-[80px] pointer-events-none" />
 
         <div className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-14 md:py-18">
-          {/* Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.88 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -431,7 +427,6 @@ const Experience = () => {
           </motion.div>
 
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-            {/* Left: Statement */}
             <div className="max-w-2xl">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
@@ -455,7 +450,6 @@ const Experience = () => {
               </motion.p>
             </div>
 
-            {/* Right: 3 metric pills */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -492,11 +486,9 @@ const Experience = () => {
         </div>
       </motion.div>
 
-      {/* ── 2. Megaoffice Section ── */}
       <div ref={megaRef} className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-20">
         <div className="max-w-6xl mx-auto">
 
-          {/* Section header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={megaInView ? { opacity: 1, y: 0 } : {}}
@@ -518,7 +510,6 @@ const Experience = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
 
-            {/* LEFT: Megaoffice branded card */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={megaInView ? { opacity: 1, x: 0 } : {}}
@@ -534,7 +525,6 @@ const Experience = () => {
               >
                 <div className="h-[2px] bg-gradient-to-r from-transparent via-mainOrange/60 to-transparent" />
 
-                {/* Logo */}
                 <div className="flex items-center justify-center px-12 py-10 border-b border-white/[0.06]">
                   <Image
                     src="/partners/megaoffice.png"
@@ -545,7 +535,6 @@ const Experience = () => {
                   />
                 </div>
 
-                {/* Metrics row */}
                 <div className="grid grid-cols-3 divide-x divide-white/[0.06]">
                   {[
                     { value: "+25", label: "anos de mercado" },
@@ -559,7 +548,6 @@ const Experience = () => {
                   ))}
                 </div>
 
-                {/* Quote strip */}
                 <div className="px-6 py-5 border-t border-white/[0.06]" style={{ background: "rgba(0,0,0,0.15)" }}>
                   <p className="text-sm text-white/35 italic leading-relaxed">
                     "Vivemos os mesmos prazos, a mesma pressão, o mesmo volume. Por isso a Acellerador funciona — criamos o que precisávamos."
@@ -568,7 +556,6 @@ const Experience = () => {
               </div>
             </motion.div>
 
-            {/* RIGHT: Origin story */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={megaInView ? { opacity: 1, x: 0 } : {}}
@@ -601,7 +588,6 @@ const Experience = () => {
         </div>
       </div>
 
-      {/* ── 2.5 Jhonny Martins ── */}
       <div
         id="jhonny"
         ref={jhonnyRef}
@@ -612,7 +598,6 @@ const Experience = () => {
           background: "linear-gradient(180deg, rgba(2,10,26,0.60) 0%, rgba(1,6,18,0.80) 100%)",
         }}
       >
-        {/* Dramatic background glow */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] rounded-full bg-mainOrange/[0.05] blur-[120px]" />
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-mainOrange/30 to-transparent" />
@@ -622,7 +607,6 @@ const Experience = () => {
         <div className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-20 md:py-24">
           <div className="max-w-6xl mx-auto">
 
-            {/* Section label */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={jhonnyInView ? { opacity: 1, y: 0 } : {}}
@@ -635,10 +619,8 @@ const Experience = () => {
               </div>
             </motion.div>
 
-            {/* Main grid: video LEFT, content RIGHT */}
             <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr] xl:grid-cols-[380px_1fr] gap-8 md:gap-10 lg:gap-14 items-center">
 
-              {/* ── Video — left, hero position ── */}
               <motion.div
                 initial={{ opacity: 0, x: -32, scale: 0.97 }}
                 animate={jhonnyInView ? { opacity: 1, x: 0, scale: 1 } : {}}
@@ -652,7 +634,6 @@ const Experience = () => {
                     boxShadow: "0 40px 80px rgba(0,0,0,0.65), 0 0 100px rgba(231,103,20,0.08), inset 0 1px 0 rgba(255,255,255,0.06)",
                   }}
                 >
-                  {/* Orange top accent */}
                   <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-mainOrange to-transparent z-10" />
 
                   <div className="relative aspect-[9/16]">
@@ -660,13 +641,13 @@ const Experience = () => {
                       ref={videoJhonnyRef}
                       className="w-full h-full object-cover"
                       playsInline
+                      preload="metadata"
                       onPlay={() => setIsPlayingJhonny(true)}
                       onPause={() => setIsPlayingJhonny(false)}
                     >
-                      <source src="/videos/jhonny-martins.mp4" type="video/mp4" />
+                      {jhonnyNearView && <source src="/videos/jhonny-martins.mp4" type="video/mp4" />}
                     </video>
 
-                    {/* Play overlay */}
                     {!isPlayingJhonny && (
                       <div
                         className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group/play"
@@ -687,7 +668,6 @@ const Experience = () => {
                       </div>
                     )}
 
-                    {/* Pause overlay — aparece no hover enquanto toca */}
                     {isPlayingJhonny && (
                       <div
                         className="absolute inset-0 flex items-center justify-center cursor-pointer opacity-0 hover:opacity-100 transition-opacity duration-300"
@@ -708,7 +688,6 @@ const Experience = () => {
                     )}
                   </div>
 
-                  {/* Bottom label bar */}
                   <div
                     className="flex items-center gap-3 px-5 py-3"
                     style={{ background: "rgba(0,0,0,0.50)", borderTop: "1px solid rgba(255,255,255,0.06)" }}
@@ -721,14 +700,12 @@ const Experience = () => {
                 </div>
               </motion.div>
 
-              {/* ── Content — right ── */}
               <motion.div
                 initial={{ opacity: 0, x: 32 }}
                 animate={jhonnyInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.75, delay: 0.15, ease: [0.4, 0, 0.2, 1] }}
                 className="space-y-7"
               >
-                {/* Credential chips */}
                 <div className="flex flex-wrap gap-2">
                   {["Vice-Presidente · SERAC", "O Contador das Estrelas", "Speaker Nacional", "+10.000 clientes recorrentes"].map((chip) => (
                     <span
@@ -745,7 +722,6 @@ const Experience = () => {
                   ))}
                 </div>
 
-                {/* Name — hero headline */}
                 <div>
                   <h3
                     className="text-5xl md:text-6xl lg:text-7xl font-black leading-none tracking-tighter text-white mb-1"
@@ -760,7 +736,6 @@ const Experience = () => {
                   </h3>
                 </div>
 
-                {/* Pull quote */}
                 <blockquote
                   className="relative pl-5"
                   style={{ borderLeft: "2px solid rgba(231,103,20,0.50)" }}
@@ -770,12 +745,10 @@ const Experience = () => {
                   </p>
                 </blockquote>
 
-                {/* Description */}
                 <p className="text-white/45 leading-relaxed">
                   Somos sócios de Jhonny Martins no Fireclub. Vice-Presidente da SERAC e referência nacional em contabilidade, ele atende mais de 10.000 clientes recorrentes em todo o Brasil — entre eles XP Investimentos, Bradesco, Thiago Nigro e Boca Rosa. Uma parceria construída sobre autoridade real e propósito compartilhado.
                 </p>
 
-                {/* Value points */}
                 <div className="space-y-3 pt-1">
                   {[
                     { icon: <ShieldCheck className="w-4 h-4" />, text: "Sociedade no Fireclub — parceria de negócios real" },
@@ -794,7 +767,6 @@ const Experience = () => {
         </div>
       </div>
 
-      {/* ── 3. Dark stats bar ── */}
       <div
         ref={statsBannerRef}
         className="relative"
@@ -826,10 +798,8 @@ const Experience = () => {
         </div>
       </div>
 
-      {/* ── 4. 2-col: Values + Dashboard ── */}
       <div className="relative z-10 px-5 sm:px-8 md:px-16 lg:px-20 xl:px-24 py-16">
 
-        {/* Values section */}
         <div ref={valuesRef} className="mb-16">
           <motion.div
             initial={{ opacity: 0, y: 16 }}

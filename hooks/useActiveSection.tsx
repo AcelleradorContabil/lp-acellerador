@@ -1,4 +1,3 @@
-// hooks/useActiveSection.tsx
 import { useEffect, useState } from "react";
 
 export const useActiveSection = (
@@ -14,8 +13,9 @@ export const useActiveSection = (
         for (let i = sectionIds.length - 1; i >= 0; i--) {
             const section = document.getElementById(sectionIds[i]);
             if (section) {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top + window.scrollY;
+            const sectionHeight = rect.height;
 
             if (
                 scrollPosition >= sectionTop &&
