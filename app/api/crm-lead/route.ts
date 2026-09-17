@@ -6,6 +6,10 @@ const PIPELINE_ID = Number(process.env.CRM_PIPELINE_ID || 80972);
 const STAGE_ID = Number(process.env.CRM_STAGE_ID || 629576);
 const ORIGIN_ID = Number(process.env.CRM_ORIGIN_ID || 714765);
 
+// Campos customizados do deal exibidos na aba "Dados para Contrato - Acellerador".
+const FIELD_EMPLOYEES_ID = 542261; // Nº de funcionários
+const FIELD_CNPJS_ID = 542260; // Número de CNPJ´s
+
 type CrmLead = {
   name: string;
   email: string;
@@ -102,6 +106,13 @@ function buildTitle(lead: CrmLead) {
   return lead.name.trim();
 }
 
+function buildCustomFields(lead: CrmLead) {
+  return [
+    { id: FIELD_EMPLOYEES_ID, value: lead.employees?.trim() },
+    { id: FIELD_CNPJS_ID, value: lead.clients?.trim() },
+  ].filter((field) => field.value);
+}
+
 export async function POST(request: Request) {
   let lead: CrmLead;
 
@@ -127,6 +138,8 @@ export async function POST(request: Request) {
     const companyId = await findOrCreateCompany(lead.company);
     const personId = await findOrCreatePerson(lead, companyId);
 
+    const customFields = buildCustomFields(lead);
+
     const deal = await crm("/deals", {
       method: "POST",
       body: JSON.stringify({
@@ -137,6 +150,7 @@ export async function POST(request: Request) {
         ...(personId ? { person_id: personId } : {}),
         ...(companyId ? { company_id: companyId } : {}),
         ...(ORIGIN_ID ? { origin_id: ORIGIN_ID } : {}),
+        ...(customFields.length ? { custom_fields: customFields } : {}),
       }),
     });
 
