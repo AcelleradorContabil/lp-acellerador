@@ -98,12 +98,16 @@ async function findOrCreatePerson(
 }
 
 function buildTitle(lead: CrmLead) {
-  const company = lead.company?.trim();
+  const clients = lead.clients?.trim();
   const employees = lead.employees?.trim();
 
-  if (company && employees) return `${company} (${employees} colab.)`;
-  if (company) return company;
-  return lead.name.trim();
+  return [
+    lead.name.trim(),
+    clients ? `${clients} clientes` : null,
+    employees ? `${employees} colaboradores` : null,
+  ]
+    .filter(Boolean)
+    .join(" - ");
 }
 
 function buildCustomFields(lead: CrmLead) {
